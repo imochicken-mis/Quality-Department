@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Packing Data - Imo Quality</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/preview-modal.css?v=2" />
+  
+  <link rel="stylesheet" href="../css/sidebar.css?v=3" />
+  <link rel="stylesheet" href="../css/dashboard.css?v=2" />
+  <link rel="stylesheet" href="../css/professional.css?v=38" />
+</head>
+<body class="dashboard-body">
+
+  <div class="dashboard-layout">
+
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+
+<header class="page-header">
+  <div class="page-header-text">
+    <h1>Packing Data</h1>
+    <p>Packing Operations Entry</p>
+  </div>
+ <div class="header-actions">
+    <label class="switch" title="Theme">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider">
+        <div class="star star_1"></div>
+        <div class="star star_2"></div>
+        <div class="star star_3"></div>
+        <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+          <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path>
+        </svg>
+      </span>
+    </label>
+    <button class="Btn" id="sidebarLogout" type="button">
+      <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+      <div class="text">Logout</div>
+    </button>
+  </div>
+</header>
+
+      <section class="form-section">
+        <form class="slaughter-form" id="packingForm">
+
+          <!-- 01: Basic Information -->
+          <div class="form-section-title">
+            <span class="section-num">01</span>
+            <span>Basic Information</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group date-group packing-date-group">
+              <label for="date">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Date <span class="required">*</span>
+              </label>
+              <input type="date" id="date" name="date" required />
+            </div>
+          </div>
+
+          <!-- 02: Chlorine Levels -->
+          <div class="form-section-title">
+            <span class="section-num">02</span>
+            <span>Chlorine Levels</span>
+          </div>
+
+          <div class="form-grid chlorine-compact-grid">
+            <div class="form-group chlorine-level-field">
+              <label for="chlorine7am">CL Level 7 AM <span class="required">*</span></label>
+              <input type="number" id="chlorine7am" name="chlorine7am" placeholder="e.g. 0.5" step="0.01" required />
+            </div>
+            <div class="form-group chlorine-remark-field">
+              <label for="chlorine7amRemark">Remark — 7 AM</label>
+              <input type="text" id="chlorine7amRemark" name="chlorine7amRemark" placeholder="Reason / action taken" />
+            </div>
+            <div class="form-group chlorine-level-field">
+              <label for="chlorine1pm">CL Level 1 PM <span class="required">*</span></label>
+              <input type="number" id="chlorine1pm" name="chlorine1pm" placeholder="e.g. 0.6" step="0.01" required />
+            </div>
+            <div class="form-group chlorine-remark-field">
+              <label for="chlorine1pmRemark">Remark — 1 PM</label>
+              <input type="text" id="chlorine1pmRemark" name="chlorine1pmRemark" placeholder="Reason / action taken" />
+            </div>
+          </div>
+
+          <!-- 03: Production Parameters -->
+          <div class="form-section-title">
+            <span class="section-num">03</span>
+            <span>Production Parameters</span>
+          </div>
+
+          <div class="form-grid packing-production-grid">
+            <div class="form-group">
+              <label for="liverTemp">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <path d="M14 2v6h6"></path>
+                </svg>
+                Liver Temp (°C) <span class="required">*</span>
+              </label>
+              <input type="number" id="liverTemp" name="liverTemp" placeholder="e.g. 38.5" step="0.1" required />
+            </div>
+
+            <div class="form-group">
+              <label for="productionFinishTime">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                Production Finish Time <span class="required">*</span>
+              </label>
+              <input type="time" id="productionFinishTime" name="productionFinishTime" required />
+            </div>
+          </div>
+          <div class="packing-dynamic-sections">
+            <section class="packing-dynamic-section">
+              <!-- 04: Delayed Process Time Lots -->
+              <div class="form-section-title">
+                <span class="section-num">04</span>
+                <span>Delayed Process Time Lots</span>
+              </div>
+              <div class="dynamic-items" id="delayedItems">
+                <div class="dynamic-item-row">
+                  <div class="item-select-wrap">
+                    <select class="item-select" name="delayedItem[]"><option value="">-- Select Item --</option></select>
+                  </div>
+                  <div class="item-kilos-wrap">
+                    <input type="number" class="item-kilos" name="delayedKilos[]" placeholder="Kilos" step="0.1" />
+                  </div>
+                  <button type="button" class="btn-remove-item" title="Remove">×</button>
+                </div>
+              </div>
+              <button type="button" class="btn-add-item" data-target="delayedItems">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add Delayed Lot
+              </button>
+            </section>
+
+          </div>
+
+
+          <!-- 05: Remarks -->
+          <div class="form-section-title">
+            <span class="section-num">05</span>
+            <span>Additional Notes</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="remarks">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Remarks
+              </label>
+              <textarea id="remarks" name="remarks" placeholder="Enter any additional notes..." rows="2"></textarea>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" id="submitBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Save</span>
+            </button>
+          </div>
+
+        </form>
+
+        <div class="form-message" id="formMessage"></div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="../js/input-feedback.js?v=1"></script>
+  <script src="../js/users.js?v=3"></script>
+  <script src="../js/sidebar.js?v=19"></script>
+  <script src="../js/packing.js?v=5"></script>
+  <script src="../js/preview-modal.js?v=3"></script> 
+
+
+</body>
+</html>

@@ -1,0 +1,708 @@
+/* ============================================
+   REPORT PRO - shared professional look for report pages
+   (Quality Report, Water Report, Master Report)
+   Load LAST, after the page's own css.
+   PDF mode (.pdf-mode) is left untouched.
+   ============================================ */
+
+.report-page {
+  --rp-ink: #0f172a;
+  --rp-muted: #64748b;
+  --rp-line: #cbd5e1;
+  --rp-line-strong: #475569;
+  --rp-head: #1e3a5f;          /* table header band */
+  --rp-head-ink: #ffffff;
+  --rp-group: #dbe5f1;
+  --rp-zebra: #f6f9fc;
+  --rp-hover: #e8f1fd;
+  --rp-accent: #2563eb;
+  --rp-card: #ffffff;
+  --rp-shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+}
+body.dark-mode.report-page {
+  --rp-ink: #e2e8f0;
+  --rp-muted: #94a3b8;
+  --rp-line: #334155;
+  --rp-line-strong: #64748b;
+  --rp-head: #0b1220;
+  --rp-head-ink: #e2e8f0;
+  --rp-group: #1b2a41;
+  --rp-zebra: #182234;
+  --rp-hover: #22314a;
+  --rp-card: #1e293b;
+  --rp-shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+}
+
+/* ===== Filter bar ===== */
+.report-page .filter-section {
+  background: var(--rp-card);
+  border: 1px solid var(--rp-line);
+  border-left: 4px solid var(--rp-accent);
+  border-radius: 12px;
+  box-shadow: var(--rp-shadow);
+}
+.report-page .filter-section .form-group label {
+  color: var(--rp-muted);
+  letter-spacing: .6px;
+}
+.report-page .filter-section .form-group input {
+  border: 1.5px solid var(--rp-line);
+  background: var(--rp-card);
+  color: var(--rp-ink);
+  border-radius: 8px;
+}
+.report-page .filter-section .form-group input:focus {
+  border-color: var(--rp-accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+}
+
+/* ===== Buttons ===== */
+.report-page .btn-report-load,
+.report-page .btn-report-print,
+.report-page .btn-report-remarks {
+  border-radius: 8px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.report-page .btn-report-load:hover,
+.report-page .btn-report-print:hover,
+.report-page .btn-report-remarks:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.report-page .btn-report-load:active,
+.report-page .btn-report-print:active,
+.report-page .btn-report-remarks:active { transform: translateY(0); }
+.report-page .btn-report-load:disabled,
+.report-page .btn-report-print:disabled,
+.report-page .btn-report-remarks:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* ===== Empty / loading states ===== */
+.report-page .birds-empty,
+.report-page .birds-loading {
+  background: var(--rp-card);
+  border: 1.5px dashed var(--rp-line);
+  border-radius: 12px;
+  color: var(--rp-muted);
+  padding: 2.5rem 1rem;
+}
+
+/* ===== Report sheet card ===== */
+.report-page .report-sheet:not(.pdf-mode) {
+  background: var(--rp-card);
+  border: 1px solid var(--rp-line);
+  border-top: 4px solid var(--rp-head);
+  border-radius: 12px;
+  box-shadow: var(--rp-shadow);
+  color: var(--rp-ink);
+}
+.report-page .report-sheet:not(.pdf-mode) .report-main-title {
+  color: var(--rp-head);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-main-title { color: #93c5fd; }
+.report-page .report-sheet:not(.pdf-mode) .report-date-batch { color: var(--rp-muted); }
+.report-page .report-sheet:not(.pdf-mode) .report-date-batch strong { color: var(--rp-ink); }
+
+/* ===== Tables (Quality / Water / Master) ===== */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--rp-line-strong);
+  border-radius: 8px;
+  overflow: hidden;
+  color: var(--rp-ink);
+}
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) :is(th, td) {
+  border: 0;
+  border-right: 1px solid var(--rp-line);
+  border-bottom: 1px solid var(--rp-line);
+}
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) tr > :last-child { border-right: 0; }
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) tbody tr:last-child > * { border-bottom: 0; }
+
+/* header band */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) thead th {
+  background: var(--rp-head);
+  color: var(--rp-head-ink);
+  border-right-color: rgba(255, 255, 255, .18);
+  border-bottom-color: rgba(255, 255, 255, .25);
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+/* group header row (Master report: Live Birds / Slaughter / EV / Packing) */
+.report-page .report-sheet:not(.pdf-mode) .mr-table .mr-group th {
+  background: #12294a;
+  letter-spacing: .8px;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .mr-table .mr-group th { background: #162338; }
+
+/* zebra + hover (body cells that are plain white) */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table) tbody tr:nth-child(even) > td { background: var(--rp-zebra); }
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table) tbody tr:hover > td { background: var(--rp-hover); }
+.report-page .report-sheet:not(.pdf-mode) .mr-table tbody td { background: var(--rp-card); }
+
+/* Water report: pH / CL status colours zebra + hover walata override wenna denna epa */
+.report-page .report-sheet:not(.pdf-mode) .wp-table tbody td.wp-ok  { background: #d1f2e4 !important; color: #047857 !important; }
+.report-page .report-sheet:not(.pdf-mode) .wp-table tbody td.wp-bad { background: #fde2e2 !important; color: #b91c1c !important; }
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .wp-table tbody td.wp-ok  { background: rgba(16, 185, 129, .22) !important; color: #34d399 !important; }
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .wp-table tbody td.wp-bad { background: rgba(239, 68, 68, .22) !important; color: #f87171 !important; }
+.report-page .report-sheet:not(.pdf-mode) .mr-table tbody td.mr-day { background: var(--rp-zebra); }
+.report-page .report-sheet:not(.pdf-mode) .mr-table tbody tr:hover > td:not(.mr-day) { background: var(--rp-hover); }
+.report-page .report-sheet:not(.pdf-mode) .mr-table td.mr-date { color: var(--rp-head); }
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .mr-table td.mr-date { color: #93c5fd; }
+
+/* sticky header + first column while scrolling the wide table */
+.report-page .mr-table-wrap { max-height: 70vh; overflow: auto; border-radius: 8px; }
+.report-page .report-sheet:not(.pdf-mode) .mr-table thead { position: sticky; top: 0; z-index: 3; }
+.report-page .report-sheet:not(.pdf-mode) .mr-table { overflow: visible; }   /* overflow:hidden thibboth sticky wada nokara */
+
+/* inputs inside report (remarks) */
+.report-page .remark-input {
+  border: 1.5px solid var(--rp-line);
+  border-radius: 6px;
+  background: var(--rp-card);
+  color: var(--rp-ink);
+}
+.report-page .remark-input:focus { border-color: var(--rp-accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, .15); outline: none; }
+
+/* scrollbars */
+.report-page .report-sheet,
+.report-page .mr-table-wrap { scrollbar-width: thin; scrollbar-color: #94a3b8 transparent; }
+
+/* ===== Print: hide controls ===== */
+@media print {
+  .report-page .no-print,
+  .report-page .filter-section,
+  .report-page .sidebar,
+  .report-page .page-header { display: none !important; }
+  .report-page .report-sheet:not(.pdf-mode) { box-shadow: none; border: 0; }
+}
+/* ===== Loading / empty: same look on every report page ===== */
+.report-page .birds-loading,
+.report-page .birds-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.report-page .birds-loading p,
+.report-page .birds-empty p { margin: 0; font-size: 0.9rem; }
+
+.report-page .loading-spinner {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0.8rem;
+  border: 3px solid var(--rp-line);
+  border-top-color: var(--rp-accent);
+  border-radius: 50%;
+  animation: rpSpin 0.8s linear infinite;
+}
+@keyframes rpSpin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   REPORT PRO — WOW SCREEN POLISH
+   Premium gradient look for admin report pages (screen only).
+   PDF mode (.pdf-mode) and @media print stay untouched.
+   ============================================================ */
+
+.report-page {
+  --rp-accent2: #8b5cf6;   /* violet */
+  --rp-accent3: #60a5fa;   /* light blue */
+  --rp-grad-border: linear-gradient(135deg, #bfdbfe 0%, #e2e8f0 35%, #ddd6fe 70%, #bfdbfe 100%);
+  --rp-grad-accent: linear-gradient(90deg, #1e3a8a 0%, #2563eb 35%, #6366f1 68%, #8b5cf6 100%);
+}
+
+body.dark-mode.report-page {
+  --rp-accent2: #a78bfa;
+  --rp-accent3: #93c5fd;
+  --rp-grad-border: linear-gradient(135deg, #1e3a8a 0%, #334155 40%, #4c1d95 75%, #1e3a8a 100%);
+  --rp-grad-accent: linear-gradient(90deg, #2563eb 0%, #3b82f6 35%, #6366f1 68%, #a78bfa 100%);
+}
+
+/* ============================================
+   1. FILTER BAR → gradient-bordered glass card
+   ============================================ */
+.report-page .filter-section {
+  position: relative;
+  border: 1.5px solid transparent;
+  border-left: none;
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    var(--rp-grad-border) border-box;
+  box-shadow:
+    0 6px 20px -8px rgba(37, 99, 235, 0.22),
+    var(--rp-shadow);
+}
+
+/* accent bar (replaces the old plain border-left) */
+.report-page .filter-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 4px;
+  background: var(--rp-grad-accent);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+}
+
+/* labels → gradient text + glowing icons */
+.report-page .filter-section .form-group label {
+  color: #2563eb;
+  background: linear-gradient(90deg, #334155 15%, #2563eb 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.report-page .filter-section .form-group label svg {
+  color: var(--rp-accent);
+  filter: drop-shadow(0 1px 2px rgba(37, 99, 235, 0.4));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.report-page .filter-section .form-group label:hover svg {
+  transform: scale(1.2) rotate(-5deg);
+  filter: drop-shadow(0 2px 4px rgba(37, 99, 235, 0.55));
+}
+
+body.dark-mode.report-page .filter-section .form-group label {
+  background: linear-gradient(90deg, #cbd5e1 15%, #93c5fd 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* filter inputs — tinted fill + sweep underline (matches data-input pages) */
+.report-page .filter-section .form-group input {
+  border: 1.5px solid #d5e0f5;
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #8b5cf6 100%),
+    linear-gradient(180deg, #f7faff, #ffffff);
+  background-repeat: no-repeat, no-repeat;
+  background-size: 0% 2.5px, 100% 100%;
+  background-position: left bottom, center;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transition: border-color 0.22s ease, box-shadow 0.28s ease, background-size 0.35s ease, transform 0.22s ease;
+}
+
+.report-page .filter-section .form-group input:hover {
+  border-color: #7eabf7;
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 12px -3px rgba(59, 130, 246, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.report-page .filter-section .form-group input:focus {
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  background-size: 100% 2.5px, 100% 100%;
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.16),
+    0 10px 22px -8px rgba(37, 99, 235, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+body.dark-mode.report-page .filter-section .form-group input {
+  border-color: #2c3e5f;
+  background-color: #0e1830;
+  background-image:
+    linear-gradient(90deg, #60a5fa 0%, #93c5fd 45%, #a78bfa 100%),
+    linear-gradient(180deg, #101c36, #0e1830);
+  color: #e2e8f0;
+}
+
+/* dark border must win over the light-mode report-pro input rule (same sheet) */
+body.dark-mode.report-page .filter-section .form-group input,
+body.dark-mode.report-page .rr-filter select {
+  border-color: #2c3e5f;
+}
+
+body.dark-mode.report-page .filter-section .form-group input:focus {
+  border-color: #60a5fa;
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.25),
+    0 0 26px rgba(59, 130, 246, 0.3);
+}
+
+/* ============================================
+   2. BUTTONS → gradient + shine sweep
+   ============================================ */
+.report-page .btn-report-load {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 55%, #6d28d9 110%);
+  box-shadow:
+    0 6px 18px rgba(37, 99, 235, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.report-page .btn-report-print,
+.report-page .btn-report-remarks {
+  position: relative;
+  overflow: hidden;
+}
+
+.report-page .btn-report-load::after,
+.report-page .btn-report-print::after,
+.report-page .btn-report-remarks::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.35) 50%, transparent 80%);
+  transition: left 0.55s ease;
+  pointer-events: none;
+}
+
+.report-page .btn-report-load:hover,
+.report-page .btn-report-print:hover,
+.report-page .btn-report-remarks:hover {
+  transform: translateY(-2px);
+}
+
+.report-page .btn-report-load:hover::after,
+.report-page .btn-report-print:hover::after,
+.report-page .btn-report-remarks:hover::after {
+  left: 130%;
+}
+
+.report-page .btn-report-load:hover {
+  box-shadow:
+    0 10px 26px rgba(37, 99, 235, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.report-page .btn-report-print {
+  box-shadow:
+    0 4px 12px rgba(239, 68, 68, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.report-page .btn-report-remarks {
+  box-shadow:
+    0 4px 12px rgba(16, 185, 129, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.report-page .btn-report-print:hover { box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+.report-page .btn-report-remarks:hover { box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+
+/* Generated: text → soft pill */
+.report-page .report-generated {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: var(--iq-primary-soft, rgba(59, 130, 246, 0.12));
+  color: #1d4ed8;
+}
+
+body.dark-mode.report-page .report-generated { color: #93c5fd; }
+
+/* ============================================
+   3. REPORT SHEET → gradient top band + depth
+   ============================================ */
+.report-page .report-sheet:not(.pdf-mode) {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--rp-line);
+  border-top: none;
+  box-shadow:
+    0 10px 30px -12px rgba(30, 58, 138, 0.25),
+    var(--rp-shadow);
+}
+
+/* gradient top band */
+.report-page .report-sheet:not(.pdf-mode)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--rp-grad-accent);
+  box-shadow: 0 0 14px rgba(79, 70, 229, 0.55);
+  z-index: 1;
+}
+
+/* entrance */
+.report-page .report-sheet:not(.pdf-mode) {
+  animation: rpRise 0.4s ease both;
+}
+
+@keyframes rpRise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   4. DOCUMENT HEAD → premium ink gradient frame
+   ============================================ */
+.report-page .report-sheet:not(.pdf-mode) .report-head {
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, #334155 0%, #64748b 35%, #8b5cf6 100%) border-box;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-head {
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, #64748b 0%, #0b1220 45%, #4c1d95 100%) border-box;
+}
+
+.report-page .report-sheet:not(.pdf-mode) .report-head-logo {
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.06), transparent);
+}
+
+/* main title → gradient text with blue underline */
+.report-page .report-sheet:not(.pdf-mode) .report-main-title {
+  background: linear-gradient(90deg, #0f172a 10%, #1e3a8a 55%, #6d28d9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration-color: #2563eb;
+  text-decoration-thickness: 2px;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-main-title {
+  background: linear-gradient(90deg, #f1f5f9 10%, #93c5fd 55%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-decoration-color: #60a5fa;
+}
+
+/* doc-code table edge tint */
+.report-page .report-sheet:not(.pdf-mode) .report-doc-table td:first-child,
+.report-page .report-sheet:not(.pdf-mode) .report-doc-table .doc-standard {
+  background: linear-gradient(180deg, #f1f5f9, #e8eef8);
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-doc-table td:first-child,
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-doc-table .doc-standard {
+  background: linear-gradient(180deg, #16223c, #0f172a);
+}
+
+/* date/batch + legend → chips */
+.report-page .report-sheet:not(.pdf-mode) .report-date-batch strong {
+  color: var(--rp-accent);
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-date-batch strong {
+  color: #93c5fd;
+}
+
+.report-page .report-sheet:not(.pdf-mode) .report-legend {
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, #93c5fd, #c4b5fd) border-box;
+  font-weight: 600;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-legend {
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, #1e40af, #4c1d95) border-box;
+}
+
+/* ============================================
+   5. TABLES → navy gradient headers + hover glow
+   ============================================ */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) thead th {
+  background-image: linear-gradient(180deg, #2b4d85 0%, #1e3a5f 100%);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Master report lot chip */
+.report-page .report-sheet:not(.pdf-mode) .mr-lot em {
+  background: var(--iq-primary-soft, rgba(59, 130, 246, 0.12));
+  padding: 0.1rem 0.5rem;
+  border-radius: 6px;
+}
+
+/* group headers (Quality Parameters / Mortality / Master groups) → blue→violet tint */
+.report-page .report-sheet:not(.pdf-mode) :is(.qp-group, .mort-group, .mr-table .mr-group) th {
+  background-image: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 50%, #ddd6fe 100%) !important;
+  color: #1e3a8a !important;
+  letter-spacing: 1px;
+  text-shadow: none;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.qp-group, .mort-group, .mr-table .mr-group) th {
+  background-image: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%) !important;
+  color: #bfdbfe !important;
+}
+
+/* sub header row */
+.report-page .report-sheet:not(.pdf-mode) .an-row th {
+  background-image: linear-gradient(180deg, #f8fafc, #eef2f7) !important;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .an-row th {
+  background-image: linear-gradient(180deg, #172033, #101a2e) !important;
+}
+
+/* hover → accent bar on first cell */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table) tbody tr:hover > td:first-child {
+  box-shadow: inset 3px 0 0 var(--rp-accent);
+}
+
+/* A / NA marks → soft ring glow */
+.report-page .report-sheet:not(.pdf-mode) .report-table td.mark-a {
+  box-shadow: inset 0 0 0 1.5px rgba(16, 185, 129, 0.4);
+}
+
+.report-page .report-sheet:not(.pdf-mode) .report-table td.mark-na {
+  box-shadow: inset 0 0 0 1.5px rgba(239, 68, 68, 0.35);
+}
+
+/* Returns reports (.rr-table — shop-returns / returns-report) + summary chips + filter selects */
+.report-page .report-sheet:not(.pdf-mode) .rr-table thead th {
+  background-image: linear-gradient(180deg, #2b4d85 0%, #1e3a5f 100%);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.report-page .report-sheet:not(.pdf-mode) .rr-table thead th.rr-group {
+  background-image: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 50%, #ddd6fe 100%) !important;
+  color: #1e3a8a !important;
+  letter-spacing: 1px;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table thead th.rr-group {
+  background-image: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%) !important;
+  color: #bfdbfe !important;
+}
+
+.report-page .report-sheet:not(.pdf-mode) .rr-table tbody tr:hover > td:not(.rr-bad) {
+  background: var(--rp-hover);
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table tbody tr:hover > td:not(.rr-bad) {
+  background: var(--rp-hover);
+}
+
+.report-page .report-sheet:not(.pdf-mode) .rr-table tfoot td {
+  background-image: linear-gradient(180deg, #dbe4f0, #cdd9ec);
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table tfoot td {
+  background-image: linear-gradient(180deg, #162338, #101a2e);
+}
+
+/* summary chips card */
+.report-page .rr-summary {
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, #bfdbfe, #ddd6fe) border-box;
+}
+
+body.dark-mode.report-page .rr-summary {
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, #1e40af 0%, #312e81 100%) border-box;
+}
+
+.report-page .rr-summary b { color: var(--rp-ink); }
+
+/* filter selects on returns pages — tinted + branded chevron */
+.report-page .rr-filter select {
+  border: 1.5px solid #d5e0f5;
+  background-color: #ffffff;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"),
+    linear-gradient(180deg, #f7faff, #ffffff);
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 0.9rem center, center;
+  background-size: 12px 12px, 100% 100%;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #0f172a;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  transition: border-color 0.22s ease, box-shadow 0.28s ease, transform 0.22s ease;
+}
+
+.report-page .rr-filter select:hover {
+  border-color: #7eabf7;
+  transform: translateY(-1px);
+}
+
+.report-page .rr-filter select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 4px rgba(59, 130, 246, 0.16),
+    0 10px 22px -8px rgba(37, 99, 235, 0.4);
+}
+
+body.dark-mode.report-page .rr-filter select {
+  border-color: #2c3e5f;
+  background-color: #0e1830;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2393c5fd' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"),
+    linear-gradient(180deg, #101c36, #0e1830);
+  color: #e2e8f0;
+}
+
+/* ============================================
+   6. FOOTER → gradient sign lines + accent page box
+   ============================================ */
+.report-page .report-sheet:not(.pdf-mode) .sign-line {
+  background: linear-gradient(90deg, transparent, #64748b 20%, #64748b 80%, transparent);
+  height: 1.5px;
+}
+
+.report-page .report-sheet:not(.pdf-mode) .report-page-box {
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, #93c5fd, #64748b) border-box;
+  border-radius: 6px;
+}
+
+/* ============================================
+   7. EMPTY STATE → dashed accent frame
+   ============================================ */
+.report-page .birds-empty {
+  border: 2px dashed #bfdbfe;
+  background:
+    linear-gradient(var(--rp-card), var(--rp-card)) padding-box,
+    linear-gradient(135deg, rgba(191, 219, 254, 0.5), rgba(221, 214, 254, 0.5)) border-box;
+  color: var(--rp-muted);
+}
+
+.report-page .birds-empty svg {
+  color: #93c5fd;
+}
+
+body.dark-mode.report-page .birds-empty {
+  border-color: #1e40af;
+}
+
+body.dark-mode.report-page .birds-empty svg {
+  color: #3b82f6;
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .report-page .report-sheet,
+  .report-page .btn-report-load::after,
+  .report-page .btn-report-print::after,
+  .report-page .btn-report-remarks::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

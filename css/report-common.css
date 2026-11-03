@@ -1,0 +1,225 @@
+/* Shared admin report table appearance. Report-specific widths and status colours remain separate. */
+.report-page :is(
+  .report-table,
+  .wp-table,
+  .mr-table,
+  .rr-table,
+  .rj-table,
+  .inspection-report-table,
+  .sample-parameters-report-table,
+  .customer-complaint-report-table,
+  .hygiene-fail-table
+) {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-size: .82rem;
+  color: #334155;
+}
+.report-page :is(
+  .report-table,
+  .wp-table,
+  .mr-table,
+  .rr-table,
+  .rj-table,
+  .inspection-report-table,
+  .sample-parameters-report-table,
+  .customer-complaint-report-table,
+  .hygiene-fail-table
+) :is(th, td) {
+  border: 1px solid #d7e2f3;
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+.report-page :is(
+  .report-table,
+  .wp-table,
+  .mr-table,
+  .rr-table,
+  .rj-table,
+  .inspection-report-table,
+  .sample-parameters-report-table,
+  .customer-complaint-report-table,
+  .hygiene-fail-table
+) thead th {
+  background: #eaf0f8;
+  color: #0f172a;
+  font-weight: 700;
+  text-align: center;
+}
+body.dark-mode.report-page :is(
+  .report-table,
+  .wp-table,
+  .mr-table,
+  .rr-table,
+  .rj-table,
+  .inspection-report-table,
+  .sample-parameters-report-table,
+  .customer-complaint-report-table,
+  .hygiene-fail-table
+) :is(th, td) {
+  border-color: #475569;
+  color: #e2e8f0;
+}
+body.dark-mode.report-page :is(
+  .report-table,
+  .wp-table,
+  .mr-table,
+  .rr-table,
+  .rj-table,
+  .inspection-report-table,
+  .sample-parameters-report-table,
+  .customer-complaint-report-table,
+  .hygiene-fail-table
+) thead th {
+  background: #334155;
+  color: #f8fafc;
+}
+/* Shared report loading and empty states */
+.report-page :is(.birds-empty, .birds-loading) {
+  min-height: 104px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 22px 18px;
+  background: #ffffff;
+  border: 1px dashed #b9cdf2;
+  border-radius: 12px;
+  color: #64748b;
+  text-align: center;
+}
+.report-page :is(.birds-empty, .birds-loading) p {
+  margin: 0;
+  font-size: .88rem;
+  line-height: 1.45;
+}
+.report-page .loading-spinner {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  border: 3px solid #dce5f2;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: reportCommonSpin .8s linear infinite;
+}
+@keyframes reportCommonSpin { to { transform: rotate(360deg); } }
+body.dark-mode.report-page :is(.birds-empty, .birds-loading) {
+  background: #172235;
+  border-color: #475569;
+  color: #cbd5e1;
+}
+body.dark-mode.report-page .loading-spinner {
+  border-color: #475569;
+  border-top-color: #93c5fd;
+}
+
+/* Shared report filter and heading rhythm */
+.report-page .filter-section {
+  gap: 16px;
+}
+.report-page .filter-section .form-group :is(input, select) {
+  height: 42px;
+  min-height: 42px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+.report-page .page-header-text h1 {
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+.report-page .page-header-text p {
+  line-height: 1.35;
+  margin-top: 0;
+}
+
+/* Shared responsive report layout */
+@media (max-width: 720px) {
+  .report-page .filter-section {
+    gap: 12px;
+    padding: 14px;
+  }
+  .report-page .filter-section .form-group {
+    width: 100%;
+    min-width: 0;
+  }
+  .report-page .filter-section .form-group :is(input, select) {
+    width: 100%;
+  }
+  .report-page .filter-section :is(.btn-report-load, .btn-report-print, .btn-report-remarks, button) {
+    width: 100%;
+    min-height: 42px;
+  }
+  .report-page .page-header-text h1 {
+    font-size: 1.35rem;
+    letter-spacing: .6px;
+  }
+  .report-page .page-header-text p {
+    font-size: .82rem;
+  }
+  .report-page .report-sheet:not(.pdf-mode) {
+    border-radius: 10px;
+  }
+  .report-page .report-sheet:not(.pdf-mode) .report-table-wrap,
+  .report-page .report-sheet:not(.pdf-mode) .inspection-table-wrap,
+  .report-page .report-sheet:not(.pdf-mode) .sample-report-table-wrap,
+  .report-page .report-sheet:not(.pdf-mode) .mr-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .report-page :is(.birds-empty, .birds-loading) {
+    min-height: 92px;
+    padding: 18px 14px;
+  }
+}
+
+/* Shared report export icon and menu */
+.report-export-wrap { position: relative; margin-left: auto; z-index: 20; }
+.report-export-trigger {
+  width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; border: 0; border-radius: 8px; background: #251c5f; color: #fff;
+  box-shadow: none; cursor: pointer; transition: transform .2s ease, filter .2s ease;
+}
+.report-export-trigger:hover { background: #251c5f; filter: brightness(1.12); transform: translateY(-1px); }
+.report-export-trigger:focus-visible { outline: 3px solid rgba(37,99,235,.2); outline-offset: 2px; }
+.report-export-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 100;
+  width: 172px; padding: 6px; border: 1px solid #d7e2f3; border-radius: 10px;
+  background: #fff; box-shadow: 0 12px 28px rgba(15,35,70,.16);
+}
+.report-export-menu[hidden] { display: none; }
+.report-export-option {
+  width: 100%; display: flex; align-items: center; gap: 8px; padding: 9px 10px;
+  border: 0; border-radius: 7px; background: transparent; color: #334155;
+  font: inherit; font-size: .78rem; text-align: left; cursor: pointer;
+}
+.report-export-option:hover { background: #eff6ff; color: #1e3a8a; }
+body.dark-mode .report-export-trigger { background: #251c5f; color: #fff; }
+body.dark-mode .report-export-menu { background: #172235; border-color: #475569; }
+body.dark-mode .report-export-option { color: #e2e8f0; }
+body.dark-mode .report-export-option:hover { background: #22304a; color: #bfdbfe; }
+@media (max-width: 720px) {
+  .report-export-wrap { margin-left: 0; }
+  .report-export-trigger { width: 36px; min-width: 36px; height: 36px; }
+}
+/* Shared export menu stacking */
+.report-page .filter-section { position: relative; z-index: 10; overflow: visible; }
+.report-page .report-area { position: relative; z-index: 1; }
+/* Keep Sample Parameters tabs grouped on the right beside the export icon */
+.sample-report-tabs .report-export-wrap { margin-left: 0; }
+/* Legacy PDF controls are replaced by the shared export menu. */
+.report-page .report-print-bar { display: none !important; }
+/* Shared thin full grid for every visible report data table.
+   CCP Control and Return Summary remain horizontal-only by design. */
+.report-page :is(.report-sheet:not(.pdf-mode), .inspection-report-body, .sample-report-table-wrap) table:not(.ccp-master-table):not(.rs-table):not(.report-doc-table):not(.report-foot-table) :is(th, td) {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 1px solid #cbd5e1 !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+}
+body.dark-mode.report-page :is(.report-sheet:not(.pdf-mode), .inspection-report-body, .sample-report-table-wrap) table:not(.ccp-master-table):not(.rs-table):not(.report-doc-table):not(.report-foot-table) :is(th, td) {
+  border-right-color: #475569 !important;
+  border-bottom-color: #475569 !important;
+}

@@ -1,0 +1,302 @@
+/* REJECTION REPORT - extends water-report.css (.wp-table) and report-pro.css */
+.rj-wrap { max-width: 860px; margin: 0 0 1.5rem; }
+.rj-item-table { max-width: 560px; margin: 0; }
+
+/* water-report.css makes rows 106px tall (image column) - not needed here */
+.wp-table.rj-table tbody tr { height: auto; }
+.rj-table td, .rj-table th { padding: 0.5rem 0.7rem; }
+.rj-table td.left { min-width: 0; }
+.rj-table .rj-qty { text-align: right; font-weight: 700; }
+
+.rj-table tfoot td { font-weight: 800; background: #eef2f7; border: 1px solid #334155; }
+.report-page .report-sheet .wp-table.rj-table tfoot td { background: #eef2f7; color: #0f172a; }
+body.dark-mode.report-page .report-sheet .wp-table.rj-table tfoot td { background: #162338; color: #e2e8f0; }
+
+.rj-sub-title {
+  max-width: 860px; margin: 0 0 0.6rem;
+  font-size: 0.9rem; font-weight: 800; color: #0f172a;
+}
+body.dark-mode .rj-sub-title { color: #93c5fd; }
+
+/* In-process report views and month-range controls */
+.report-page .filter-section.rj-filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+.rj-report-tabs {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 0.25rem 0.45rem;
+}
+.rj-report-tabs button {
+  appearance: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #64748b;
+  padding: 0.2rem 0.15rem 0.45rem;
+  margin-bottom: -0.5rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.rj-report-tabs button:hover,
+.rj-report-tabs button.active {
+  color: #2563eb;
+}
+.rj-report-tabs button.active {
+  border-bottom-color: #2563eb;
+}
+.rj-report-filters,
+.rj-month-range {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.rj-report-filters > #rjSingleMonthGroup,
+.rj-month-range .form-group {
+  flex: 0 0 260px;
+  width: 260px;
+  margin: 0;
+}
+.rj-month-range .form-group { flex-basis: 220px; width: 220px; }
+.rj-report-filters .form-group input,
+.rj-month-range .form-group input {
+  height: 42px;
+  box-sizing: border-box;
+}
+#rjMonthRange[hidden],
+#rjSingleMonthGroup[hidden] { display: none !important; }
+.rj-wrap { max-width: 100%; overflow-x: auto; }
+.rj-table { min-width: 640px; }
+
+/* Give the daily remark column more room while keeping the other columns compact. */
+.rj-table.rj-daily-table {
+  width: 100%;
+  table-layout: fixed;
+}
+.rj-table.rj-daily-table th:nth-child(1),
+.rj-table.rj-daily-table td:nth-child(1) { width: 15%; }
+.rj-table.rj-daily-table th:nth-child(2),
+.rj-table.rj-daily-table td:nth-child(2) { width: 30%; }
+.rj-table.rj-daily-table th:nth-child(3),
+.rj-table.rj-daily-table td:nth-child(3) { width: 15%; }
+.rj-table.rj-daily-table th:nth-child(4),
+.rj-table.rj-daily-table td:nth-child(4) { width: 40%; }
+.rj-table.rj-daily-table th:nth-child(3),
+.rj-table.rj-daily-table td:nth-child(3) { text-align: center; }
+.rj-table.rj-daily-table td:nth-child(2),
+.rj-table.rj-daily-table td:nth-child(4) { overflow-wrap: anywhere; }
+
+/* Keep Month-wise columns at a fixed size regardless of month-name length. */
+.rj-table.rj-month-table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+}
+.rj-table.rj-month-table th:nth-child(1),
+.rj-table.rj-month-table td:nth-child(1) { width: 47%; }
+.rj-table.rj-month-table th:nth-child(2),
+.rj-table.rj-month-table td:nth-child(2) { width: 23%; }
+.rj-table.rj-month-table th:nth-child(3),
+.rj-table.rj-month-table td:nth-child(3) { width: 30%; }
+
+/* Item-wise: fixed width for every month column, independent of its label. */
+.rj-table.rj-item-range-table {
+  table-layout: fixed;
+  min-width: 640px;
+}
+.rj-table.rj-item-range-table th:first-child,
+.rj-table.rj-item-range-table td:first-child { width: 220px; }
+.rj-table.rj-item-range-table th:nth-child(n + 2):not(:last-child),
+.rj-table.rj-item-range-table td:nth-child(n + 2):not(:last-child) { width: 110px; }
+.rj-table.rj-item-range-table th:last-child,
+.rj-table.rj-item-range-table td:last-child { width: 110px; }
+
+/* Month-wise comparison chart sits beside its summary table. */
+.rj-month-layout { display: block; }
+.rj-month-layout.is-month-view {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.rj-month-layout.is-month-view .rj-wrap {
+  flex: 0 0 auto;
+  width: 640px;
+  max-width: 100%;
+  overflow-x: visible;
+  margin-bottom: 0;
+}
+.rj-month-chart {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 24px 32px;
+  border: 1px solid #dbe4f0;
+  border-radius: 10px;
+  background: #fff;
+}
+.rj-month-chart[hidden] { display: none !important; }
+.rj-chart-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+.rj-chart-heading h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.rj-chart-heading p {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+.rj-chart-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  color: #64748b;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+.rj-chart-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: #3b82f6;
+}
+.rj-chart-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  width: 100%;
+}
+.rj-chart-y-axis {
+  display: flex;
+  flex: 0 0 38px;
+  height: 210px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 0.4rem;
+  border-right: 1px solid #94a3b8;
+  color: #64748b;
+  font-size: 0.68rem;
+  text-align: right;
+}
+.rj-chart-plot {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: repeat(var(--rj-chart-columns), minmax(38px, 1fr));
+  gap: 0.35rem;
+  min-width: 0;
+}
+.rj-chart-column {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+}
+.rj-chart-bar-area {
+  position: relative;
+  display: flex;
+  height: 210px;
+  align-items: flex-end;
+  justify-content: center;
+  border-bottom: 1px solid #94a3b8;
+  background: repeating-linear-gradient(to top, transparent 0, transparent 51px, #e8edf5 52px, transparent 53px);
+}
+.rj-chart-value {
+  position: absolute;
+  left: 50%;
+  z-index: 1;
+  transform: translateX(-50%);
+  color: #475569;
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.rj-chart-bar {
+  width: min(68%, 34px);
+  min-height: 0;
+  border-radius: 5px 5px 0 0;
+  background: linear-gradient(180deg, #60a5fa, #2563eb);
+  transition: height 0.25s ease;
+  z-index: 1;
+}
+.rj-chart-month {
+  min-height: 1.5rem;
+  padding-top: 0.35rem;
+  text-align: center;
+  color: #475569;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+body.dark-mode .rj-month-chart {
+  border-color: #334155;
+  background: #1e293b;
+}
+body.dark-mode .rj-chart-heading h3 { color: #e2e8f0; }
+body.dark-mode .rj-chart-heading p,
+body.dark-mode .rj-chart-legend,
+body.dark-mode .rj-chart-value,
+body.dark-mode .rj-chart-month { color: #94a3b8; }
+body.dark-mode .rj-chart-y-axis { border-right-color: #64748b; color: #94a3b8; }
+body.dark-mode .rj-chart-bar-area {
+  border-bottom-color: #64748b;
+  background-image: repeating-linear-gradient(to top, transparent 0, transparent 51px, #334155 52px, transparent 53px);
+}
+@media (max-width: 1100px) {
+  .rj-month-layout.is-month-view .rj-wrap {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+  .rj-month-chart { min-width: 0; }
+}
+
+body.dark-mode .rj-report-tabs { border-bottom-color: #334155; }
+body.dark-mode .rj-report-tabs button { color: #94a3b8; }
+body.dark-mode .rj-report-tabs button:hover,
+body.dark-mode .rj-report-tabs button.active { color: #93c5fd; }
+body.dark-mode .rj-report-tabs button.active { border-bottom-color: #60a5fa; }
+@media (max-width: 700px) {
+  .rj-report-tabs { justify-content: flex-start; gap: 1rem; }
+  .rj-report-filters > #rjSingleMonthGroup,
+  .rj-month-range .form-group { flex: 1 1 100%; width: 100%; }
+  .rj-report-filters .btn-report-load { width: 100%; }
+}
+
+/* Keep the chart heading close to the top of its panel. */
+#rjMonthChart.rj-month-chart { padding-top: 0 !important; }
+#rjMonthChart .rj-chart-heading { margin-top: 0 !important; }
+
+/* Keep the month chart close to the table when the layout stacks vertically. */
+#rjMonthLayout.is-month-view {
+  align-content: flex-start;
+  row-gap: 8px;
+}
+#rjMonthLayout.is-month-view > .rj-wrap {
+  margin-bottom: 0;
+}
+#rjMonthLayout.is-month-view > #rjMonthChart {
+  margin-top: 0;
+  align-self: flex-start;
+}

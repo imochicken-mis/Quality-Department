@@ -1,0 +1,73 @@
+/* ============================================
+   STICKY TABLE HEADER - all report pages
+   Load LAST (after the page's own css).
+   The report fits the screen: only the table rows scroll,
+   the column heading band stays on top.
+   ============================================ */
+
+/* report area + sheet fill the remaining screen height */
+.report-area {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.report-sheet:not(.pdf-mode):not([style*="display: none"]):not([style*="display:none"]) {
+  display: flex !important;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* scroll box = all the space left in the sheet */
+.report-sheet:not(.pdf-mode) > :is(.tbl-scroll, .wp-table-wrap, .mr-table-wrap, .rr-table-wrap) {
+  flex: 1 1 auto;
+  min-height: 260px;
+  max-height: none;
+  overflow: auto;
+}
+
+/* tables: sticky needs separate borders and no overflow:hidden */
+.report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) {
+  border-collapse: separate !important;
+  border-spacing: 0;
+  overflow: visible !important;
+  border-top: 1px solid #334155;
+  border-left: 1px solid #334155;
+}
+.report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) :is(th, td) {
+  border: 0;
+  border-right: 1px solid #334155;
+  border-bottom: 1px solid #334155;
+}
+
+/* the fixed heading band (1-row and 2-row headers) */
+.report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) thead {
+  position: sticky !important;
+  top: 0;
+  z-index: 5;
+}
+
+body.dark-mode .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) {
+  border-top-color: #475569;
+  border-left-color: #475569;
+}
+body.dark-mode .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) :is(th, td) {
+  border-right-color: #475569;
+  border-bottom-color: #475569;
+}
+
+/* PDF + print: normal flow, no scroll box */
+.report-sheet.pdf-mode :is(.tbl-scroll, .wp-table-wrap, .mr-table-wrap, .rr-table-wrap) {
+  max-height: none;
+  overflow: visible;
+}
+@media print {
+  .report-area { display: block; }
+  .report-sheet:not(.pdf-mode):not([style*="display: none"]):not([style*="display:none"]) { display: block !important; overflow: visible; }
+  .report-sheet > :is(.tbl-scroll, .wp-table-wrap, .mr-table-wrap, .rr-table-wrap) {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}

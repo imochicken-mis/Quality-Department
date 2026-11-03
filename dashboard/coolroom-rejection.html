@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cool Room Rejection - Imo Quality</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/preview-modal.css?v=2" />
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/sidebar.css?v=3" />
+  <link rel="stylesheet" href="../css/dashboard.css?v=2" />
+  <link rel="stylesheet" href="../css/professional.css?v=23" />
+  <link rel="stylesheet" href="../css/rejection.css" />
+  <link rel="stylesheet" href="../css/coolroom-rejection.css" />
+</head>
+<body class="dashboard-body">
+
+  <div class="dashboard-layout">
+
+    <!-- Sidebar (JS එකෙන් load වෙනවා) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      
+
+<header class="page-header">
+  <div class="page-header-text">
+    <h1>COOL ROOM REJECTION</h1>
+    <p>Daily Cool Room Rejected Items</p>
+  </div>
+  <div class="header-actions">
+    <label class="switch" title="Theme">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider">
+        <div class="star star_1"></div>
+        <div class="star star_2"></div>
+        <div class="star star_3"></div>
+        <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+          <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path>
+        </svg>
+      </span>
+    </label>
+    <button class="Btn" id="sidebarLogout" type="button">
+      <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+      <div class="text">Logout</div>
+    </button>
+  </div>
+</header>
+
+<!-- ===== Slaughter Data Input Form ===== -->
+<section class="form-section">
+
+
+
+  <form class="slaughter-form" id="rejForm">
+
+    <div class="form-section-title">
+      <span class="section-num">01</span>
+      <span>Date</span>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="rejDate">Date <span class="required">*</span></label>
+        <input type="date" id="rejDate" name="rejDate" required />
+      </div>
+    </div>
+
+    <div class="form-section-title">
+      <span class="section-num">02</span>
+      <span>Rejected Items</span>
+    </div>
+
+    <datalist id="rejItems"></datalist>
+
+    <div class="rej-head">
+      <span>#</span><span>Item</span><span>Qty</span><span></span>
+    </div>
+    <div id="rejRows"></div>
+
+    <button type="button" class="rej-add-row" id="rejAddRow">
+      <span class="rej-plus">+</span> Add another item
+    </button>
+
+    <div class="rej-total">Total Qty: <b id="rejTotal">0</b></div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>SAVE</span>
+      </button>
+    </div>
+
+  </form>
+
+  <!-- Message -->
+  <div class="form-message" id="formMessage"></div>
+</section>
+
+    </main>
+
+  </div>
+
+  <!-- JS -->
+  <script src="../js/input-feedback.js?v=1"></script>
+  <script src="../js/users.js?v=3"></script>
+  <script src="../js/sidebar.js?v=19"></script>
+  <script src="../js/preview-modal.js?v=3"></script>
+  <script src="../js/coolroom-rejection.js?v=3"></script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop Returns - Imo Quality</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+
+  
+    <!-- CSS -->
+  <link rel="stylesheet" href="../css/sidebar.css?v=3" />
+  <link rel="stylesheet" href="../css/dashboard.css?v=2" />
+  <link rel="stylesheet" href="../css/birds.css" />
+  <link rel="stylesheet" href="../css/professional.css?v=23" />
+  <link rel="stylesheet" href="../css/preview-modal.css?v=2" />
+  <link rel="stylesheet" href="../css/shop-returns.css" />
+</head>
+<body class="dashboard-body">
+
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+<header class="page-header">
+  <div class="page-header-text">
+    <h1>SHOP RETURNS</h1>
+    <p>Shop Return Decisions by Rep</p>
+  </div>
+  <div class="header-actions">
+    <label class="switch" title="Theme">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider">
+        <div class="star star_1"></div>
+        <div class="star star_2"></div>
+        <div class="star star_3"></div>
+        <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+          <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path>
+        </svg>
+      </span>
+    </label>
+    <button class="Btn" id="sidebarLogout" type="button">
+      <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+      <div class="text">Logout</div>
+    </button>
+  </div>
+</header>
+
+      <!-- Filter Section -->
+      <div class="filter-section sr-filter">
+        <div class="form-group">
+          <label for="srDate">Select Date <span class="required">*</span></label>
+          <input type="date" id="srDate" required />
+        </div>
+        <div class="form-group">
+          <label for="srRep">Select Rep <span class="required">*</span></label>
+          <select id="srRep"><option value="">Loading reps...</option></select>
+        </div>
+      </div>
+
+      <div class="birds-data-section">
+        <div class="birds-empty" id="srEmpty"><p>Select a date and a rep to load shop returns</p></div>
+        <div class="birds-loading" id="srLoading" style="display:none">
+          <div class="loading-spinner"></div><p>Loading items...</p>
+        </div>
+
+        <div class="birds-table-wrap" id="srWrap" style="display:none">
+          <div class="birds-table-scroll">
+            <div class="sr-cards" id="srBody"></div>
+          </div>
+          <div class="sr-total" id="srTotal"></div>
+
+          <div class="sr-saved-note" id="srSavedNote"></div>
+
+          <div class="birds-actions">
+            <button type="button" class="btn-save-birds" id="srSaveBtn">Save</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/input-feedback.js?v=1"></script>
+  <script src="../js/users.js?v=3"></script>
+  <script src="../js/sidebar.js?v=19"></script>
+  <script src="../js/preview-modal.js?v=3"></script>
+  <script src="../js/shop-returns.js?v=3"></script>
+</body>
+</html>

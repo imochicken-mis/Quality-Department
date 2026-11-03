@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>KPI 04 - Imo Quality</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/sidebar.css?v=3">
+  <link rel="stylesheet" href="../css/dashboard.css?v=2">
+  <link rel="stylesheet" href="../css/professional.css?v=16">
+  <link rel="stylesheet" href="../css/kpi-common.css?v=216">
+</head>
+<body class="dashboard-body kpi-page kpi-detail-page kpi-blank-page">
+  <div class="dashboard-layout">
+    <div id="sidebar-container"></div>
+    <main class="main-content kpi-blank-main" aria-label="KPI 04">
+      <section class="kpi-dashboard" aria-label="Hygiene Compliance Rate (%) dashboard">
+        <div class="kpi-heading-row">
+          <div class="kpi-heading-copy">
+            <div class="kpi-number-box">04</div>
+            <div>
+              <h1>Hygiene Compliance Rate (%)</h1>
+              <p>Personal hygiene inspection compliance as a percentage of total inspections</p>
+            </div>
+          </div>
+          <div class="kpi-heading-controls"><label class="kpi-month-picker">
+            <span>Month</span><svg class="kpi-cal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"></path></svg>
+            <input id="kpi4Month" type="month" aria-label="Select month">
+          </label>
+          <div class="kpi-nav-stack">
+            <div class="kpi-nav-icons"><a class="kpi-nav-icon" href="kpi-03.html" aria-label="Previous KPI" title="Previous KPI"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></a><a class="kpi-nav-icon" href="kpi-05.html" aria-label="Next KPI" title="Next KPI"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></a></div>
+            <a class="kpi-back-btn" href="kpi-overview.html">&#8592; Back</a>
+          </div>
+          <button class="Btn" id="sidebarLogout" type="button"><div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div><div class="text">Logout</div></button></div>
+        </div>
+        <div class="kpi-scroll-area"><div class="kpi-summary-grid">
+          <article class="kpi-summary-card kpi-status-card"><span class="kpi-card-icon" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path class="status-tick" d="M8 12.5l2.5 2.5L16 9.5"></path><path class="status-cross" d="M9 9l6 6M15 9l-6 6"></path></svg></span><div><span class="kpi-title-line"><h2>Achievement Status</h2></span><strong id="kpi4Status">-</strong></div></article>
+          <article class="kpi-summary-card kpi-value-card"><span class="kpi-card-icon" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path></svg></span><div><span class="kpi-title-line"><h2>KPI Value</h2><p>(This Month)</p></span><strong id="kpi4Rate">-</strong></div></article>
+          <article class="kpi-summary-card kpi-standard-card"><span class="kpi-card-icon" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="5"></circle><circle cx="12" cy="12" r="1"></circle></svg></span><div><span class="kpi-title-line"><h2>KPI Standard</h2><p>(Target)</p></span><strong id="kpi4Standard">&ge;98%</strong></div></article>
+          <article class="kpi-summary-card kpi-variance-card"><span class="kpi-card-icon" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"></path><path d="M14 7h7v7"></path></svg></span><div><span class="kpi-title-line"><h2>Variance</h2><p>(vs Target)</p></span><strong id="kpi4Variance">-</strong></div></article>
+        </div>
+        <div class="kpi-detail-row">
+          <section class="kpi-progress-panel"><h2>Progress (This Month)</h2><div class="kpi-progress-labels"><span id="kpi4TargetLabel">&ge;98% (Target)</span><span id="kpi4ActualLabel">- (Actual)</span></div><div class="kpi-progress-track"><div id="kpi4Progress" class="kpi-progress-fill"></div><i class="kpi-target-marker" style="left:100%"></i><i class="kpi-actual-marker" id="kpi4ActualMarker"></i></div><div class="kpi-progress-scale"><span>0%</span><span>50%</span><span>100%</span></div></section>
+          <section class="kpi-formula-panel"><div><h2>KPI Formula</h2><p class="kpi-formula-line"><span class="kpi-box"><span class="kpi-eq">=</span><span class="kpi-frac"><span>Compliance Hygiene Inspections</span><span>Total Inspection</span></span> <span class="kpi-times">&times; 100</span></span><span class="kpi-calc kpi-box" id="kpi4Calc"><span class="kpi-eq">=</span><span class="kpi-frac kpi-frac-actual"><span id="kpi4Num">-</span><span id="kpi4Den">-</span></span> <span class="kpi-times">&times; 100</span> = <b id="kpi4Result">-</b></span></p></div></section>
+        </div>
+        <section class="kpi-progress-panel kpi-trend-panel">
+          <div class="kpi-section-bar"><h2>Daily Trend</h2></div>
+          <div id="kpi4DailyChart" class="kpi-monthly-chart" hidden></div>
+          <div id="kpi4DailyTable" class="kpi-monthly-table" hidden></div>
+        </section>
+        <section class="kpi-progress-panel kpi-trend-panel">
+          <div class="kpi-section-bar"><h2>Monthly Trend</h2></div>
+          <div id="kpi4MonthlyChart" class="kpi-monthly-chart" hidden></div>
+          <div id="kpi4MonthlyTable" class="kpi-monthly-table" hidden></div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script src="../js/users.js"></script>
+  <script src="../js/sidebar.js?v=23"></script>
+  <script src="../js/kpi-trend.js?v=3"></script>
+  <script src="../js/kpi-page.js?v=5"></script>
+  <script src="../js/kpi-04.js?v=1"></script>
+</body>
+</html>

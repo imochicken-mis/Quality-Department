@@ -1,0 +1,135 @@
+.sample-report-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin: 0 0 20px;
+  padding: 16px 20px 22px;
+  border: 1px solid #cbdcff;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(23, 48, 83, .08);
+}
+.sample-report-tabs {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 0.25rem 0.45rem;
+  margin: 0 8px;
+}
+
+.sample-report-tab {
+  appearance: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #64748b;
+  padding: 0.2rem 0.15rem 0.45rem;
+  margin-bottom: -0.5rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sample-report-tab:hover,
+.sample-report-tab.active {
+  color: #2563eb;
+}
+
+.sample-report-tab.active {
+  border-bottom-color: #2563eb;
+}
+.sample-report-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+.sample-report-controls { display: flex; align-items: end; gap: 20px; }
+.sample-report-controls[hidden] { display: none; }
+.sample-report-controls .form-group { max-width: 100%; margin: 0; }
+#detailPanel > .form-group { flex: 0 0 260px; width: 260px; max-width: 100%; }
+#summaryPanel > .form-group { flex: 0 0 220px; width: 220px; max-width: 100%; }
+.sample-report-controls input[type="month"] { width: 100%; height: 42px; box-sizing: border-box; }
+.sample-report-controls .btn-report-load {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.65rem 1.4rem; border: 0; border-radius: 10px; background: #251c5f;
+  color: #fff; font: inherit; font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.6px; text-transform: uppercase; cursor: pointer; box-shadow: none; flex-shrink: 0;
+}
+.sample-report-controls .btn-report-load:hover { background: #251c5f; transform: translateY(-1px); }
+.sample-report-table-wrap {
+  display: flex; justify-content: safe center; align-items: center;
+  padding: 16px 0; margin-top: 16px;
+}
+.sample-parameters-report-table { width: 96%; min-width: 850px; max-width: 100%; }
+.sample-parameters-report-table th:first-child,
+.sample-parameters-report-table td:first-child { width: 260px; }
+.sample-parameters-report-table th:nth-child(n+2),
+.sample-parameters-report-table td:nth-child(n+2) { width: 190px; }
+.sample-parameters-report-table td:first-child { text-align: left; }
+.sample-parameters-report-table td:nth-child(n+2) { text-align: center; }
+.sample-report-grand-total th { background: #dbe7f5; font-weight: 800; }
+body.dark-mode .sample-report-panel { background: #1e293b; border-color: #475569; }
+body.dark-mode .sample-report-tabs { border-color: #475569; }
+body.dark-mode .sample-report-grand-total th { background: #334155; }
+@media (max-width: 700px) {
+  .sample-report-panel { padding: 12px; }
+  .sample-report-tabs { justify-content: center; gap: 20px; }
+.sample-report-controls {
+  display: flex;
+  align-items: end;
+  gap: 20px;
+}
+
+#detailPanel > .form-group {
+  flex: 0 0 260px;
+  width: 260px;
+  max-width: 100%;
+}
+
+#summaryPanel > .form-group {
+  flex: 0 0 220px;
+  width: 220px;
+  max-width: 100%;
+}
+
+.sample-report-controls input[type="month"] {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+}
+  .sample-report-controls .form-group { flex: 0 1 100%; width: 100%; }
+  .sample-report-controls .btn-report-load { align-self: flex-start; }
+}
+
+
+
+
+
+/* Keep the Sample Parameters heading visible when the browser leaves full screen. */
+body.sample-parameters-report-page .main-content {
+  display: block;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+}
+body.sample-parameters-report-page .page-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: #f1f5f9;
+}
+body.dark-mode.sample-parameters-report-page .page-header {
+  background: #0f172a;
+}
+/* Give the report table a complete thin outer frame on all four sides. */
+.report-page .sample-report-table-wrap {
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+}
+.report-page .sample-parameters-report-table {
+  border: 1px solid #cbd5e1 !important;
+  border-collapse: collapse;
+}
+body.dark-mode.report-page .sample-report-table-wrap,
+body.dark-mode.report-page .sample-parameters-report-table {
+  border-color: #475569 !important;
+}

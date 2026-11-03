@@ -1,0 +1,15 @@
+# Apps Script code is kept out of the repo
+appscript/
+
+# Excel/Word temp lock files
+~$*
+
+# OS and editor files
+Thumbs.db
+.DS_Store
+.vscode/
+
+# local data and exports
+*.xlsx
+*.xls
+*.pdf

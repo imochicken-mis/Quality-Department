@@ -1,0 +1,363 @@
+/* ============================================
+   REPORT CLEAN - simple light table look
+   Load AFTER report-pro.css. Remove the <link> to go back.
+   PDF mode (.pdf-mode) is untouched.
+   ============================================ */
+
+/* softer colours (report-pro.css variables) */
+.report-page {
+  --rp-line: #e8ebf0;
+  --rp-line-strong: #e2e8f0;
+  --rp-zebra: #ffffff;
+  --rp-hover: #f8fafc;
+  --rp-group: #f1f5f9;
+}
+body.dark-mode.report-page {
+  --rp-line: #2b3a50;
+  --rp-line-strong: #334155;
+  --rp-zebra: #1e293b;
+  --rp-hover: #243247;
+  --rp-group: #223049;
+}
+
+/* ===== table frame: no box, no rounded corners ===== */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) {
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+/* ===== cells: only a thin line under each row ===== */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) :is(th, td) {
+  border-right: 0;
+  border-bottom: 1px solid var(--rp-line);
+}
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .rr-table) :is(th, td) {
+  padding: 0.7rem 0.85rem;
+}
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) tbody td {
+  color: #475569;
+  font-size: 0.8rem;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) tbody td {
+  color: #cbd5e1;
+}
+
+/* ===== header: plain text, no coloured band ===== */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) thead th {
+  background: var(--rp-card);          /* solid, so sticky headers still hide rows under them */
+  background-image: none;
+  color: #334155;
+  text-shadow: none;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  border-right: 0;
+  border-bottom: 1px solid var(--rp-line-strong);
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) thead th {
+  color: #cbd5e1;
+}
+
+/* ===== group header rows (Quality Parameters / Mortality / Master groups) ===== */
+.report-page .report-sheet:not(.pdf-mode) :is(.qp-group, .mort-group, .mr-table .mr-group) th,
+.report-page .report-sheet:not(.pdf-mode) .mr-table .mr-group th,
+.report-page .report-sheet:not(.pdf-mode) .rr-table thead th.rr-group {
+  background: var(--rp-group) !important;
+  background-image: none !important;
+  color: #334155 !important;
+  letter-spacing: 0.3px;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.qp-group, .mort-group, .mr-table .mr-group) th,
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .mr-table .mr-group th,
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table thead th.rr-group {
+  background: var(--rp-group) !important;
+  background-image: none !important;
+  color: #cbd5e1 !important;
+}
+
+/* ===== totals row ===== */
+.report-page .report-sheet:not(.pdf-mode) .rr-table tfoot td,
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table tfoot td {
+  background: var(--rp-group);
+  background-image: none;
+  font-weight: 700;
+}
+
+/* ===== sheet: no gradient top band, light shadow ===== */
+.report-page .report-sheet:not(.pdf-mode)::before { display: none; }
+.report-page .report-sheet:not(.pdf-mode) {
+  border-top: 1px solid var(--rp-line);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  animation: none;
+}
+
+/* ===== title + head box: plain ===== */
+.report-page .report-sheet:not(.pdf-mode) .report-main-title {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--rp-ink);
+}
+.report-page .report-sheet:not(.pdf-mode) .report-head,
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-head {
+  border: 1px solid var(--rp-line);
+  background: var(--rp-card);
+}
+/* ===== v2: clear grid lines + bolder text ===== */
+
+/* outline around the table */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) {
+  border: 1px solid #94a3b8;
+}
+
+/* grid lines between cells */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) :is(th, td) {
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
+}
+.report-page .report-sheet:not(.pdf-mode) :is(.rr-table, .rj-table) :is(th, td) {
+  border: 1px solid #e8ebf0;
+}
+
+/* header: bold on a light grey band */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) thead th {
+  background: #e8edf5;
+  color: #0f172a;
+  font-weight: 700;
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 2px solid #94a3b8;
+}
+
+/* body text: darker + a bit heavier */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) tbody td {
+  color: #1e293b;
+  font-weight: 500;
+}
+.report-page .report-sheet:not(.pdf-mode) .rr-table tbody td.rr-ok {
+  color: #15803d;
+  font-weight: 700;
+}
+
+/* dark mode */
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) {
+  border-color: #64748b;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table) :is(th, td) {
+  border-right-color: #475569;
+  border-bottom-color: #475569;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table :is(th, td) {
+  border-color: #475569;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) thead th {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-right-color: #475569;
+  border-bottom-color: #64748b;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) tbody td {
+  color: #e2e8f0;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table tbody td.rr-ok {
+  color: #4ade80;
+}
+/* ===== v3: font style like the reference table ===== */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;          /* numbers line up */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* header: semi-bold, dark */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) thead th {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* body: regular weight, soft grey */
+.report-page .report-sheet:not(.pdf-mode) :is(.report-table, .wp-table, .mr-table, .rr-table) tbody td {
+  font-size: 0.7125rem;
+  font-weight: 400;
+  color: #475569;
+}
+
+/* Sales/Shop returns report: date + balance */
+.report-page .report-sheet:not(.pdf-mode) .rr-table tbody td.rr-date {
+  font-weight: 600;
+  color: #334155;
+}
+.report-page .report-sheet:not(.pdf-mode) .rr-table tbody td.rr-bad {
+  font-weight: 600;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .rr-table tbody td.rr-date {
+  color: #e2e8f0;
+}
+/* ===== hide the report name on screen (PDF still keeps it) ===== */
+.report-page:not(.keep-title) .report-sheet:not(.pdf-mode) .report-main-title {
+  display: none;
+}
+/* ===== one font for the whole report page: Inter ===== */
+.report-page .sidebar,
+.report-page .sidebar *,
+.report-page .page-header-text,
+.report-page .page-header-text *,
+.report-page .filter-section,
+.report-page .filter-section *,
+.report-page .report-sheet:not(.pdf-mode) * {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+/* ===== Master report: keep the right line on cells that are last in their row (rowspan rows) ===== */
+.report-page .report-sheet:not(.pdf-mode) .mr-table {
+  border-right: 0;                       /* the cells draw the right edge now */
+}
+.report-page .report-sheet:not(.pdf-mode) .mr-table tr > :last-child {
+  border-right: 1px solid #cbd5e1;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .mr-table tr > :last-child {
+  border-right-color: #475569;
+}
+
+/* red cells: thin white divider so stacked red rows don't merge */
+.report-page .report-sheet:not(.pdf-mode) .mr-table td.mr-bad {
+  border-bottom: 1px solid #ffffff;
+}
+/* ===== Load Report button: plain dark indigo ===== */
+.report-page .btn-report-load {
+  background: #251c5f;
+  box-shadow: none;
+}
+.report-page .btn-report-load:hover {
+  background: #251c5f;
+  box-shadow: none;
+}
+/* ===== lighter text for the returns tables (Sales / Shop) ===== */
+.report-page .report-sheet:not(.pdf-mode) .rr-table tbody td {
+  font-size: 0.7125rem;
+  font-weight: 400;
+}
+.report-page .report-sheet:not(.pdf-mode) .rr-table tbody td.rr-date {
+  font-weight: 500;
+}
+/* ===== heading weights on report pages ===== */
+.report-page .page-header-text h1 {
+  font-weight: 500;
+}
+.report-page .page-header-text p {
+  font-weight: 500;
+}
+.report-page .report-sheet:not(.pdf-mode) .report-main-title {
+  font-weight: 500;
+}
+/* Bay column එකේ දකුණු ඉර */
+.report-page .report-sheet:not(.pdf-mode) .mort-group + tr > th:nth-child(2) {
+  border-right: 1px solid #cbd5e1 !important;
+}
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .mort-group + tr > th:nth-child(2) {
+  border-right-color: #475569 !important;
+}
+/* Bay column එකේ දකුණු ඉර */
+.report-page .report-sheet:not(.pdf-mode) .report-table thead tr:nth-child(2) > th:nth-child(8),
+.report-page .report-sheet:not(.pdf-mode) .report-table tbody tr > td:nth-child(14) {
+  border-right: 1px solid #cbd5e1 !important;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-table thead tr:nth-child(2) > th:nth-child(8),
+body.dark-mode.report-page .report-sheet:not(.pdf-mode) .report-table tbody tr > td:nth-child(14) {
+  border-right-color: #475569 !important;
+}
+/* Dark mode: report rows two-tone dark colors */
+body.dark-mode.report-page .report-sheet:not(.pdf-mode)
+:is(.report-table, .wp-table, .mr-table, .rr-table, .rj-table)
+tbody tr:nth-child(odd) > td:not(.wp-ok):not(.wp-bad):not(.rr-bad) {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode.report-page .report-sheet:not(.pdf-mode)
+:is(.report-table, .wp-table, .mr-table, .rr-table, .rj-table)
+tbody tr:nth-child(even) > td:not(.wp-ok):not(.wp-bad):not(.rr-bad) {
+  background-color: #182234 !important;
+  color: #e2e8f0 !important;
+}
+.hygiene-fail-table {
+  width: max-content !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+
+.hygiene-fail-table th,
+.hygiene-fail-table td {
+  box-sizing: border-box;
+  padding: 6px 3px !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  text-align: center;
+}
+
+.hygiene-fail-table th {
+  font-size: 10px;
+  line-height: 1.15;
+}
+
+.hygiene-fail-table th:nth-child(1),
+.hygiene-fail-table td:nth-child(1) {
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+}
+
+.hygiene-fail-table th:nth-child(2),
+.hygiene-fail-table td:nth-child(2) {
+  width: 75px !important;
+  min-width: 75px !important;
+  max-width: 75px !important;
+}
+
+.hygiene-fail-table th:nth-child(n+3),
+.hygiene-fail-table td:nth-child(n+3) {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+.hygiene-fail-dot {
+  display: inline-block;
+  width: 12px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  vertical-align: middle;
+}
+.hygiene-mark {
+  color: #ef4444;
+  font-weight: 600;
+}
+.hygiene-fail-table td.hygiene-mark {
+  color: #ef4444 !important;
+  font-weight: 700;
+}
+.hygiene-fail-table td.hygiene-mark {
+  color: inherit !important;
+}
+
+.hygiene-out-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+#hygieneTableWrap,
+.hygiene-fail-table,
+.hygiene-fail-table th,
+.hygiene-fail-table td {
+  border-radius: 0 !important;
+}
+/* Shared report page title sizing. */
+.report-page .page-header-text h1 { font-size:1.7rem; }
+
+/* Shared filter control sizing. */
+.report-page .filter-section .form-group :is(input, select) { min-height:42px; box-sizing:border-box; }

@@ -1,0 +1,829 @@
+﻿.kpi-blank-main{gap:0;padding:.45rem 0 1rem}
+.kpi-dashboard{width:100%;box-sizing:border-box;padding:1.45rem 1.5rem 1.15rem;background:#fff;border:1px solid #dbe5f1;border-radius:18px;box-shadow:0 8px 28px rgba(15,23,42,.08)}
+.kpi-heading-row{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:.1rem 0 1.25rem;border-bottom:1px solid #edf2f7}
+.kpi-heading-copy{display:flex;align-items:center;gap:1.15rem;min-width:0}
+.kpi-number-box{display:flex;align-items:center;justify-content:center;flex:0 0 112px;height:112px;border-radius:16px;background:#e4efff;color:#172554;font:800 2.35rem/1 Inter,sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.kpi-heading-copy h1{margin:0;color:#122654;font:800 clamp(1.7rem,3.2vw,2.55rem)/1.08 Inter,sans-serif;letter-spacing:-.8px}
+.kpi-heading-copy p{margin:.5rem 0 0;color:#334155;font:500 clamp(.95rem,1.5vw,1.18rem)/1.35 Inter,sans-serif}
+.kpi-month-picker{display:flex;flex-direction:column;gap:.35rem;flex:0 0 300px;padding:.8rem 1rem;border-radius:16px;background:#f1f6ff;color:#274879}
+.kpi-month-picker span{font:800 1.05rem/1 Inter,sans-serif}
+.kpi-month-picker input{width:100%;height:48px;padding:0 .85rem;box-sizing:border-box;border:0;border-radius:12px;background:#e2edff;color:#1049b9;font:800 1.15rem Inter,sans-serif}
+.kpi-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-top:1.25rem}
+.kpi-summary-card{min-height:156px;display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;border:1px solid;border-radius:14px;box-sizing:border-box}
+.kpi-value-card{background:#f1f7ff;border-color:#d7e8ff;color:#194384}.kpi-standard-card{background:#fff8ee;border-color:#ffe7c6;color:#a94900}.kpi-variance-card{background:#effbf7;border-color:#d6f3e8;color:#087b4e}.kpi-status-card{background:#effbf5;border-color:#d4f1e1;color:#087b4e}
+.kpi-card-icon{display:flex;align-items:center;justify-content:center;flex:0 0 76px;width:76px;height:76px;border-radius:50%;background:#dceaff;color:#0b56d5;font:800 3rem/1 Inter,sans-serif}.kpi-standard-card .kpi-card-icon{background:#ffead0;color:#c85608}.kpi-variance-card .kpi-card-icon{background:#d9f5e9;color:#0a9d61}.kpi-check-icon{background:#0ba960;color:#fff;box-shadow:0 0 0 11px rgba(10,169,96,.08);font-size:2.7rem}
+.kpi-summary-card h2{margin:0;color:inherit;font:800 clamp(1.05rem,1.8vw,1.35rem)/1.15 Inter,sans-serif}.kpi-summary-card p{margin:.35rem 0 .5rem;color:inherit;font:700 .98rem Inter,sans-serif}.kpi-summary-card strong{display:block;color:inherit;font:800 clamp(2.45rem,4.1vw,3.45rem)/1 Inter,sans-serif;letter-spacing:-1px}.kpi-status-card h2{color:#264779}.kpi-status-card strong{margin-top:1.15rem;color:#079a58;font-size:2.75rem}
+.kpi-detail-row{display:grid;grid-template-columns:1fr 1.08fr;gap:1rem;margin-top:1rem;padding:1.25rem;background:#f7faff;border-radius:14px}.kpi-progress-panel{position:relative;padding-right:1rem;border-right:1px solid #d9e4f2}.kpi-progress-panel h2,.kpi-formula-panel h2{margin:0;color:#122654;font:800 1.35rem Inter,sans-serif}.kpi-progress-labels{display:flex;justify-content:flex-end;gap:1.5rem;margin:.1rem 0 .2rem;color:#0c5bd3;font:800 .95rem Inter,sans-serif}.kpi-progress-labels span:first-child{color:#ec7600}.kpi-progress-track{position:relative;height:36px;margin:.7rem 0 .45rem;background:#dce4ef;border-radius:999px;overflow:visible}.kpi-progress-fill{height:100%;width:0;background:#2787ee;border-radius:999px;transition:width .3s ease}.kpi-target-marker,.kpi-actual-marker{position:absolute;top:-10px;height:56px;border-left:2px dashed;z-index:2}.kpi-target-marker{left:95%;border-color:#f08a17}.kpi-actual-marker{left:0;border-color:#116be2}.kpi-progress-scale{display:flex;justify-content:space-between;color:#5b718e;font:600 .9rem Inter,sans-serif}.kpi-formula-panel{display:flex;align-items:center;gap:1rem}.kpi-formula-icon{display:flex;align-items:center;justify-content:center;flex:0 0 64px;width:64px;height:64px;border-radius:50%;background:#dfe8f3;color:#415d80;font:800 2rem Inter,sans-serif}.kpi-formula-panel p{margin:.7rem 0 0;padding:.9rem 1rem;background:#edf4fd;border-radius:10px;color:#274879;font:500 1rem/1.45 Inter,sans-serif}.kpi-formula-panel p span{color:#172554;font-weight:600}.kpi-formula-panel p b{font-weight:700}
+body.dark-mode.kpi-detail-page .kpi-dashboard{background:#111827;border-color:#334155;box-shadow:0 8px 28px rgba(2,6,23,.45)}body.dark-mode.kpi-detail-page .kpi-heading-row{border-color:#334155}body.dark-mode.kpi-detail-page .kpi-heading-copy h1{color:#f1f5f9}body.dark-mode.kpi-detail-page .kpi-heading-copy p{color:#cbd5e1}body.dark-mode.kpi-detail-page .kpi-number-box{background:#263b63;color:#dbeafe}body.dark-mode.kpi-detail-page .kpi-month-picker{background:#1e293b;color:#bfdbfe}body.dark-mode.kpi-detail-page .kpi-month-picker input{background:#263b63;color:#bfdbfe}body.dark-mode.kpi-detail-page .kpi-summary-card{filter:saturate(.85);box-shadow:0 3px 12px rgba(2,6,23,.2)}body.dark-mode.kpi-detail-page .kpi-detail-row{background:#172235}body.dark-mode.kpi-detail-page .kpi-progress-panel{border-color:#334155}body.dark-mode.kpi-detail-page .kpi-progress-panel h2,body.dark-mode.kpi-detail-page .kpi-formula-panel h2{color:#e2e8f0}body.dark-mode.kpi-detail-page .kpi-progress-scale{color:#94a3b8}body.dark-mode.kpi-detail-page .kpi-formula-icon{background:#26364e;color:#bfdbfe}body.dark-mode.kpi-detail-page .kpi-formula-panel p{background:#22334d;color:#dbeafe}body.dark-mode.kpi-detail-page .kpi-formula-panel p span{color:#f1f5f9}
+@media(max-width:1050px){.kpi-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi-detail-row{grid-template-columns:1fr}.kpi-progress-panel{padding-right:0;padding-bottom:1rem;border-right:0;border-bottom:1px solid #d9e4f2}}
+@media(max-width:700px){.kpi-heading-row{align-items:stretch;flex-direction:column}.kpi-heading-copy h1{font-size:1.6rem}.kpi-month-picker{flex-basis:auto;width:100%;box-sizing:border-box}.kpi-summary-grid{grid-template-columns:1fr}.kpi-summary-card{min-height:128px}.kpi-card-icon{flex-basis:58px;width:58px;height:58px;font-size:2.25rem}.kpi-summary-card strong{font-size:2.5rem}.kpi-detail-row{padding:.9rem}.kpi-formula-panel{align-items:flex-start;flex-direction:column}}
+
+.kpi-summary-card{min-width:0;overflow:hidden}.kpi-summary-card>div:last-child{min-width:0;max-width:100%}.kpi-summary-card h2,.kpi-summary-card p,.kpi-summary-card strong{max-width:100%;overflow-wrap:anywhere}.kpi-summary-card strong{font-size:clamp(2rem,3.35vw,3.25rem);letter-spacing:-.7px}.kpi-status-card strong{font-size:clamp(2rem,3.05vw,2.75rem)}
+@media(max-width:1300px){.kpi-summary-grid{gap:.75rem}.kpi-summary-card{gap:.7rem;padding:1rem}.kpi-card-icon{flex-basis:62px;width:62px;height:62px;font-size:2.45rem}.kpi-summary-card strong{font-size:clamp(1.9rem,3vw,2.85rem)}.kpi-status-card strong{font-size:clamp(1.8rem,2.8vw,2.45rem)}}
+@media(max-width:1120px){.kpi-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Compact KPI title heading */
+.kpi-heading-copy h1{font-size:clamp(1.65rem,2.8vw,2.65rem);line-height:1.08}
+.kpi-heading-copy p{font-size:clamp(.86rem,1.25vw,1.08rem)}
+@media(max-width:700px){.kpi-heading-copy h1{font-size:1.45rem}.kpi-heading-copy p{font-size:.82rem}}
+/* "01" badge: 50px */
+.kpi-number-box{flex:0 0 50px;width:50px;height:50px;border-radius:10px;font-size:1.2rem}
+@media(max-width:700px){.kpi-number-box{flex-basis:50px;width:50px;height:50px;font-size:1.2rem}}
+
+/* Theme switch on the KPI detail page (moved from kpi.css) */
+.kpi-detail-page .switch{border:1px solid #d7e2ef;background:#fff;box-shadow:0 2px 0 rgba(148,163,184,.22),0 8px 16px rgba(15,23,42,.1)}
+.kpi-detail-page .switch:hover{box-shadow:0 3px 0 rgba(148,163,184,.2),0 12px 22px rgba(37,99,235,.14)}
+.kpi-detail-page .slider{background:#e5e7eb}
+.kpi-detail-page .switch input:checked + .slider{background:#dbeafe}
+.kpi-detail-page .switch input:checked + .slider:before{box-shadow:inset 15px -4px 0 15px #2563eb}
+.kpi-detail-page .switch input:checked ~ .slider .star{background:#2563eb}
+.kpi-detail-page .switch .cloud path{fill:#2563eb}
+.kpi-detail-page .switch{border:0;background:transparent;box-shadow:0 0 10px rgba(0,0,0,.3)}
+.kpi-detail-page .switch:hover{box-shadow:0 0 16px rgba(0,166,255,.45)}
+.kpi-detail-page .slider{background-color:#2a2a2a}
+.kpi-detail-page .switch input:checked + .slider{background-color:#00a6ff}
+.kpi-detail-page .switch input:checked + .slider:before{box-shadow:inset 15px -4px 0 15px #ffcf48}
+.kpi-detail-page .switch input:checked ~ .slider .star{background-color:#fff}
+.kpi-detail-page .switch .cloud path{fill:#fff!important}
+/* "01" box: 75px */
+.kpi-number-box{flex:0 0 75px;width:75px;height:75px;border-radius:12px;font-size:1.8rem}
+@media(max-width:700px){.kpi-number-box{flex-basis:75px;width:75px;height:75px;font-size:1.8rem}}
+/* Heading: smaller, Calibri */
+.kpi-heading-copy h1{font-family:Calibri,Carlito,"Segoe UI",sans-serif;font-size:1.7rem;font-weight:700;line-height:1.1}
+@media(max-width:700px){.kpi-heading-copy h1{font-size:1.3rem}}
+/* Sub-heading: smaller, grey. Main heading: a little larger */
+.kpi-heading-copy p{font-size:.92rem;color:#6b7280;margin-top:.35rem}
+.kpi-heading-copy h1{font-size:1.9rem}
+@media(max-width:700px){.kpi-heading-copy h1{font-size:1.45rem}.kpi-heading-copy p{font-size:.84rem}}
+/* Month filter: no "Month" text box, a bit smaller (the input keeps its aria-label) */
+.kpi-month-picker span{display:none}
+.kpi-month-picker{flex:0 0 200px;padding:.5rem;gap:0;background:transparent}
+.kpi-month-picker input{height:40px;font-size:1rem}
+@media(max-width:700px){.kpi-month-picker{flex-basis:auto;width:100%}}
+/* Month input shows a calendar icon so it is clear where to pick the month */
+.kpi-month-picker input{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E") no-repeat right 12px center/18px 18px;border:1px solid #cbd5e1;border-radius:10px;padding-right:2.4rem;cursor:pointer;color:#0f172a;font-weight:600}
+.kpi-month-picker input::-webkit-calendar-picker-indicator{opacity:0;cursor:pointer}
+/* Clicking anywhere in the month box opens the calendar (the native picker button covers the whole input) */
+.kpi-month-picker input{position:relative}
+.kpi-month-picker input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:auto;height:auto;opacity:0;cursor:pointer}
+/* Whole KPI section a little higher on the page */
+.kpi-dashboard{margin-top:-14px}
+/* Whole KPI section: final position */
+.kpi-dashboard{margin-top:-18px}
+/* Card headings: each on its own line, smaller and tidy */
+.kpi-summary-card h2{display:block;margin:0 0 .3rem;font-family:Inter,sans-serif;font-size:.9rem;font-weight:700;line-height:1.25;letter-spacing:.2px}
+.kpi-summary-card h2 + p{margin:0 0 .4rem}
+/* Card heading sits at the top of its card, on its own line */
+.kpi-summary-card{align-items:flex-start}
+.kpi-summary-card>div:last-child{width:100%;align-self:stretch;display:flex;flex-direction:column;align-items:flex-start}
+.kpi-summary-card h2{margin-top:0;align-self:flex-start}
+/* Card headings stay on one line (no wrapping) */
+.kpi-summary-card h2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+/* Card subtitle "(This Month)" etc. sits on the same line as the heading; the value goes on the next line */
+.kpi-summary-card>div:last-child{flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:.45rem}
+.kpi-summary-card h2{display:inline}
+.kpi-summary-card h2 + p{display:inline;margin:0}
+.kpi-summary-card strong{flex-basis:100%}
+/* Main card value: centred and a little smaller */
+.kpi-summary-card strong{text-align:center;align-self:center;width:100%;font-size:clamp(1.8rem,2.7vw,2.5rem)}
+/* Card content centred in the middle of each card */
+.kpi-summary-card{align-items:center;justify-content:center}
+.kpi-summary-card>div:last-child{justify-content:center;align-items:center;text-align:center}
+.kpi-summary-card h2,.kpi-summary-card h2 + p,.kpi-summary-card strong{text-align:center;justify-content:center}
+/* Headings stay at the top-left as before; only the main value is centred in the card */
+.kpi-summary-card{align-items:flex-start;justify-content:flex-start}
+.kpi-summary-card>div:last-child{align-items:flex-start;justify-content:flex-start;text-align:left}
+.kpi-summary-card h2,.kpi-summary-card h2 + p{text-align:left;justify-content:flex-start}
+.kpi-summary-card strong{text-align:center;align-self:center;margin-top:auto;margin-bottom:auto}
+/* The main value is centred in the middle of its card; the heading stays at the top */
+.kpi-summary-card{position:relative}
+.kpi-summary-card strong{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);width:auto;text-align:center;margin:0}
+/* Month filter a little to the left */
+.kpi-month-picker{margin-left:-14px}
+/* Logout button right of the month filter */
+.kpi-heading-row .Btn{margin-left:.75rem;align-self:center;flex:0 0 auto}
+/* Back to KPI overview, left of the logout button */
+.kpi-back-btn{display:inline-flex;align-items:center;gap:.3rem;height:40px;padding:0 1rem;margin-left:.75rem;align-self:center;border:1.5px solid #cbd5e1;border-radius:999px;background:#fff;color:#334155;font:600 .85rem Inter,sans-serif;text-decoration:none;white-space:nowrap;flex:0 0 auto}
+.kpi-back-btn:hover{border-color:#2563eb;color:#2563eb}
+/* Month filter, Back and logout sit in one neat row with the same height */
+.kpi-heading-row{align-items:center}
+.kpi-month-picker{flex:0 0 auto;width:200px;height:40px;padding:0;gap:0;margin:0;justify-content:center;align-self:center}
+.kpi-month-picker input{height:40px;margin:0}
+.kpi-heading-row .Btn{width:40px;height:40px;margin-left:.75rem;align-self:center}
+.kpi-heading-row .kpi-back-btn{height:40px;margin-left:.75rem}
+.kpi-heading-row .kpi-month-picker{margin-left:0}
+/* Tighter gap between the month filter, Back and logout */
+.kpi-heading-row .Btn{margin-left:.4rem}
+.kpi-heading-row .kpi-back-btn{margin-left:.4rem}
+/* Month filter, Back and logout grouped; the group keeps even, controlled gaps */
+.kpi-heading-controls{display:flex;align-items:center;gap:.5rem;flex:0 0 auto}
+.kpi-heading-row .kpi-heading-controls .Btn,.kpi-heading-row .kpi-heading-controls .kpi-back-btn{margin:0}
+/* Summary cards a little shorter */
+.kpi-summary-card{min-height:120px}
+@media(max-width:700px){.kpi-summary-card{min-height:104px}}
+/* KPI value card: green when the value meets the standard, red when below */
+.kpi-value-card.is-achieved{background:#ecfdf5;border-color:#10b981;color:#047857}
+.kpi-value-card.is-below-target{background:#fef2f2;border-color:#ef4444;color:#b91c1c}
+/* Variance card: green when above the standard, red when at or below it */
+.kpi-variance-card.is-achieved{background:#effbf7;border-color:#d6f3e8;color:#087b4e}
+.kpi-variance-card.is-below-target{background:#fef2f2;border-color:#ef4444;color:#b91c1c}
+/* Variance note: small pill centred under the value (inside the card, not overlapping it) */
+.kpi-variance-note{position:absolute;left:50%;top:calc(50% + 52px);transform:translateX(-50%);display:inline-block;padding:.3rem .95rem;border-radius:999px;font-size:.78rem;font-weight:800;letter-spacing:.3px;white-space:nowrap;background:#d1fae5;color:#047857}
+.kpi-variance-card.is-below-target .kpi-variance-note{background:#fee2e2;color:#b91c1c}
+/* Keep the variance pill inside the shorter card */
+.kpi-variance-note{top:calc(50% + 30px)}
+/* All card headings use the same font as the Variance card heading */
+.kpi-summary-card h2{font-family:Inter,sans-serif !important;font-size:.9rem !important;font-weight:700 !important;line-height:1.25 !important}
+/* Card headings take the colour of their card, same as the Variance heading */
+.kpi-summary-card h2{color:inherit !important}
+/* KPI value card: lifted, 3D look */
+.kpi-value-card{transform:translateY(-6px);box-shadow:0 1px 0 rgba(15,23,42,.06),0 3px 0 rgba(15,23,42,.05),0 14px 24px -6px rgba(15,23,42,.28),0 6px 10px rgba(15,23,42,.10);transition:transform .2s ease,box-shadow .2s ease}
+.kpi-value-card:hover{transform:translateY(-8px);box-shadow:0 1px 0 rgba(15,23,42,.06),0 3px 0 rgba(15,23,42,.05),0 18px 28px -6px rgba(15,23,42,.32),0 8px 12px rgba(15,23,42,.12)}
+/* Other summary cards get the same lifted 3D look as the value card */
+.kpi-summary-card{transform:translateY(-6px);box-shadow:0 1px 0 rgba(15,23,42,.06),0 3px 0 rgba(15,23,42,.05),0 14px 24px -6px rgba(15,23,42,.28),0 6px 10px rgba(15,23,42,.10);transition:transform .2s ease,box-shadow .2s ease}
+.kpi-summary-card:hover{transform:translateY(-8px);box-shadow:0 1px 0 rgba(15,23,42,.06),0 3px 0 rgba(15,23,42,.05),0 18px 28px -6px rgba(15,23,42,.32),0 8px 12px rgba(15,23,42,.12)}
+/* Achievement Status card: green when achieved, red when not achieved (same as the other coloured cards) */
+.kpi-status-card.is-achieved{background:#ecfdf5;border-color:#10b981;color:#047857}
+.kpi-status-card.is-below-target{background:#fef2f2;border-color:#ef4444;color:#b91c1c}
+/* Status text colour follows the card: red when not achieved, green when achieved */
+.kpi-status-card.is-below-target strong{color:#b91c1c !important}
+.kpi-status-card.is-achieved strong{color:#047857 !important}
+/* Variance card after data loads: same green/red as the value card (strong colours, not pale) */
+.kpi-variance-card.is-achieved{background:#ecfdf5;border-color:#10b981;color:#047857}
+.kpi-variance-card.is-below-target{background:#fef2f2;border-color:#ef4444;color:#b91c1c}
+.kpi-variance-card strong{color:inherit !important}
+/* While the data is loading, every summary card is neutral grey; the colours come back once the value is known */
+.kpi-summary-card.kpi-loading{background:#f8fafc !important;border-color:#e2e8f0 !important;color:#64748b !important}
+.kpi-summary-card.kpi-loading strong{color:#64748b !important}
+/* KPI value card: normal border in its state colour, with a soft pulsing glow (green when achieved, red when below, grey while loading) */
+.kpi-value-card,.kpi-status-card{--glow:rgba(148,163,184,.35);animation:kpi-value-glow 2.6s ease-in-out infinite}
+.kpi-value-card.is-achieved,.kpi-status-card.is-achieved{--glow:rgba(16,185,129,.45)}
+.kpi-value-card.is-below-target,.kpi-status-card.is-below-target{--glow:rgba(239,68,68,.42)}
+.kpi-value-card.kpi-loading,.kpi-status-card.kpi-loading{animation:none}
+@keyframes kpi-value-glow{0%,100%{box-shadow:0 0 0 0 var(--glow),0 14px 24px -6px rgba(15,23,42,.28),0 6px 10px rgba(15,23,42,.10)}50%{box-shadow:0 0 0 8px transparent,0 14px 24px -6px rgba(15,23,42,.28),0 6px 10px rgba(15,23,42,.10)}}
+/* Progress and formula panel headings: smaller */
+.kpi-progress-panel h2,.kpi-formula-panel h2{font-size:1rem !important;font-weight:700 !important;line-height:1.25}
+/* Progress labels: smaller; markers are thin lines inside the bar
+and the labels sit above them */
+.kpi-progress-labels{font:700 .72rem Inter,sans-serif;gap:1rem}
+.kpi-target-marker,.kpi-actual-marker{top:4px;height:28px;border-left:1px dashed}
+/* Progress labels as a chart legend: a coloured line sample before each label */
+.kpi-progress-labels{justify-content:flex-start;gap:1.4rem;color:#334155;font:600 .75rem Inter,sans-serif}
+.kpi-progress-labels span{color:#334155;display:inline-flex;align-items:center;gap:.4rem;font-weight:600}
+.kpi-progress-labels span::before{content:"";display:inline-block;width:22px;height:4px;border-radius:2px;background:#116be2}
+.kpi-progress-labels span:first-child{color:#334155}
+.kpi-progress-labels span:first-child::before{background:#ec7600}
+/* Target and actual lines across the bar, clearly visible */
+.kpi-target-marker,.kpi-actual-marker{top:-10px;height:56px;border-left:2px dashed}
+/* Target line on the bar: orange */
+.kpi-target-marker{border-left-color:#ec7600}
+/* Progress bar colour: red at 0%, light as it nears the standard, green at the standard (95%) and beyond. The gradient is scaled to the full bar, so the fill shows the same colour at each position. */
+.kpi-progress-fill{background:linear-gradient(90deg,#ef4444 0%,#f97316 45%,#fde68a 85%,#22c55e 95%,#16a34a 100%);background-repeat:no-repeat}
+/* Progress fill: red at 0%, gradually lighter red, a little green at 80%, green to the end */
+.kpi-progress-fill{background:linear-gradient(90deg,#dc2626 0%,#f87171 40%,#fecaca 70%,#86efac 80%,#22c55e 90%,#16a34a 100%);background-repeat:no-repeat}
+/* Progress bar animation: the fill grows to its value, then a soft light sweep runs across it */
+.kpi-progress-fill{position:relative;overflow:hidden;transition:width .9s cubic-bezier(.22,.8,.3,1)}
+.kpi-progress-fill::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:40%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.45),rgba(255,255,255,0));animation:kpi-progress-sheen 2.6s ease-in-out infinite;pointer-events:none}
+@keyframes kpi-progress-sheen{0%{left:-40%}100%{left:110%}}
+/* Formula as a fraction: compliant over tested, then x 100 */
+.kpi-formula-line{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;margin:.6rem 0 0;font-size:.95rem}
+.kpi-frac{display:inline-flex;flex-direction:column;align-items:center;text-align:center;line-height:1.25}
+.kpi-frac>span:first-child{border-bottom:2px solid currentColor;padding:0 .5rem .25rem}
+.kpi-frac>span:last-child{padding:.25rem .5rem 0}
+.kpi-times{font-size:1.5rem;font-weight:800}
+/* Formula text and x 100 a bit smaller */
+.kpi-formula-line{font-size:.85rem}
+.kpi-times{font-size:1rem;font-weight:700}
+/* Formula with the actual values underneath */
+.kpi-calc{margin:.45rem 0 0;font-size:.85rem;font-weight:700;color:#334155}
+/* Actual-values calculation sits on the right side of the formula panel, not below it */
+.kpi-formula-panel{position:relative}
+.kpi-calc{position:absolute;right:1.25rem;top:50%;transform:translateY(-50%);margin:0;text-align:right;font-size:.95rem;font-weight:800}
+/* Calculation box a little higher on the right of the formula panel */
+.kpi-calc{top:38%}
+/* Formula layout as the reference: = sign, a full-width fraction line, and x 100 on the right */
+.kpi-formula-line{font-size:1rem;align-items:center;gap:.6rem}
+.kpi-frac{display:inline-flex;flex-direction:column;align-items:stretch;text-align:center;min-width:260px}
+.kpi-frac>span{display:block;padding:.2rem .6rem}
+.kpi-frac>span:first-child{border-bottom:2px solid currentColor;padding-bottom:.35rem}
+.kpi-frac>span:last-child{padding-top:.35rem}
+.kpi-times{font-size:1.15rem;font-weight:700;white-space:nowrap}
+/* Formula box: template formula on top, the actual-values calculation underneath, both inside the light box */
+.kpi-formula-line{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;padding:1.1rem 1.4rem;background:#f4f7fc;border-radius:12px;margin-top:.75rem}
+.kpi-calc{flex-basis:100%;margin:.9rem 0 0;padding-top:.7rem;border-top:1px dashed #cbd5e1;text-align:left;font-size:.95rem;font-weight:700;color:#1e3a8a}
+/* Actual formula: compliant over tested (big fraction), x 100, then the bold result */
+.kpi-frac>span{font-size:1.05rem;font-weight:700}
+.kpi-calc{margin:0 0 0 .4rem;font-size:1.1rem;color:#334155}
+.kpi-result{color:#1e3a8a;font-size:1.25rem;font-weight:800}
+/* Result sits right after x 100, on the same line (no separate row or dashed rule) */
+.kpi-formula-line .kpi-calc{position:static;transform:none;flex-basis:auto;border:0;padding:0;margin:0 0 0 .4rem;text-align:left;background:none;white-space:nowrap}
+/* Names and actual values together in the fraction: value shown under each name */
+.kpi-frac-val{display:block;margin-top:.2rem;font-size:1.15rem;font-weight:800;color:#1e3a8a}
+.kpi-frac>span{font-size:.85rem;font-weight:600}
+/* Right side: the real values fraction, then x 100 = result */
+.kpi-calc{display:inline-flex;align-items:center;gap:.5rem;margin:0 0 0 1.25rem;padding:0;border:0;background:none;font-size:1rem;font-weight:700;color:#334155}
+.kpi-frac-actual>span{font-size:1.1rem;font-weight:800;color:#1e3a8a;padding:.2rem .6rem}
+.kpi-frac-actual>span:first-child{border-bottom:2px solid currentColor}
+.kpi-frac-actual{min-width:90px}
+/* Two grey boxes side by side: the formula (names) and the real-value formula, so both fit on screen */
+.kpi-formula-line{display:flex;flex-wrap:wrap;align-items:stretch;gap:1rem;padding:0;background:none;border-radius:0;margin:.75rem 0 0}
+.kpi-box{display:inline-flex;align-items:center;gap:.5rem;padding:1rem 1.2rem;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:12px}
+.kpi-formula-line .kpi-calc.kpi-box{margin:0;border-top:1px solid #e2e8f0;border-top-width:1px;padding:1rem 1.2rem;white-space:nowrap;font-size:1rem}
+/* Formula boxes: full width of the screen, two equal cards side by side (like the summary cards) */
+.kpi-formula-panel{width:100%;box-sizing:border-box}
+.kpi-formula-panel>div{width:100%}
+.kpi-formula-panel p.kpi-formula-line{display:grid;grid-template-columns:1fr 1fr;gap:1rem;width:100%;margin:.75rem 0 0;padding:0;background:none;border-radius:0}
+.kpi-formula-line .kpi-box{width:100%;box-sizing:border-box;justify-content:center;padding:1.1rem 1.25rem;background:#fff;border:1px solid #dbe5f1;border-radius:14px;box-shadow:0 2px 0 rgba(148,163,184,.18),0 8px 18px -6px rgba(15,23,42,.18)}
+.kpi-formula-line .kpi-calc.kpi-box{background:#fff}
+@media(max-width:700px){.kpi-formula-panel p.kpi-formula-line{grid-template-columns:1fr}}
+/* Page box runs to the right edge of the window; only its top-left corner (next to the sidebar) is rounded */
+.kpi-blank-main{padding-right:0 !important}
+.kpi-dashboard{width:auto;margin-right:0;border-radius:18px 0 0 0;border-right:0;box-shadow:0 8px 28px rgba(15,23,42,.08)}
+/* Page box goes up to the top of the window, with its top-left corner (beside the sidebar) rounded */
+.kpi-blank-main{padding:0 !important}
+.kpi-dashboard{margin-top:0 !important;margin-bottom:0;min-height:100vh;box-sizing:border-box;border-radius:18px 0 0 0;border-top:0}
+/* Page box top aligned with the sidebar top (the sidebar sits 1rem from the top of the window) */
+.kpi-dashboard{margin-top:1rem !important;min-height:calc(100vh - 2rem);min-height:calc(100dvh - 2rem)}
+/* Logout button keeps its size on hover, so it does not spread over the Back button and the date box */
+.kpi-heading-controls .Btn:hover{width:40px;border-radius:50%}
+.kpi-heading-controls .Btn:hover .sign{width:100%;padding-left:0}
+.kpi-heading-controls .Btn:hover .text{opacity:0;width:0;padding:0}
+/* Back button: a little smaller, light blue fill */
+.kpi-back-btn{height:34px;padding:0 .8rem;font-size:.78rem;background:#e8f1ff;border-color:#bfd6fb;color:#1e40af}
+.kpi-back-btn:hover{background:#d6e6ff;border-color:#60a5fa;color:#1e3a8a}
+/* Formula panel in Calibri */
+.kpi-formula-panel,.kpi-formula-panel *{font-family:Calibri,Carlito,"Segoe UI",sans-serif !important}
+/* Equals sign at the far left of the formula boxes */
+.kpi-formula-panel p.kpi-formula-line{grid-template-columns:auto 1fr 1fr;align-items:center}
+.kpi-eq{font-size:1.6rem;font-weight:700;color:#1e3a8a;padding:0 .2rem}
+@media(max-width:700px){.kpi-formula-panel p.kpi-formula-line{grid-template-columns:auto 1fr}}
+/* The = sign sits inside the formula box, just before the fraction */
+.kpi-formula-panel p.kpi-formula-line{grid-template-columns:1fr 1fr}
+.kpi-formula-line .kpi-eq{font-size:1.4rem;margin-right:.4rem}
+/* KPI Formula heading: a little larger */
+.kpi-formula-panel h2{font-size:1.15rem !important}
+/* Progress and KPI Formula headings: 12px */
+.kpi-progress-panel h2,.kpi-formula-panel h2{font-size:12px !important;font-weight:700 !important;line-height:1.3}
+/* Progress and KPI Formula headings: 16px */
+.kpi-progress-panel h2,.kpi-formula-panel h2{font-size:16px !important}
+/* Progress and KPI Formula headings in Calibri */
+.kpi-progress-panel h2,.kpi-formula-panel h2{font-family:Calibri,Carlito,"Segoe UI",sans-serif !important}
+/* Progress and KPI Formula headings a little higher */
+.kpi-progress-panel h2,.kpi-formula-panel h2{position:relative;top:-6px;margin-top:0 !important}
+/* KPI name heading: a little larger */
+.kpi-heading-copy h1{font-size:2.1rem !important}
+/* KPI name heading: 2.5rem */
+.kpi-heading-copy h1{font-size:2.5rem !important}
+/* KPI name heading: 2.3rem */
+.kpi-heading-copy h1{font-size:2.3rem !important}
+/* Panel headers as navy bars, and a coloured strip along the bottom of each summary card. The progress fill colour is unchanged. */
+.kpi-progress-panel,.kpi-formula-panel{border-radius:12px;overflow:hidden}
+.kpi-progress-panel>h2,.kpi-formula-panel>h2,.kpi-formula-panel>div>h2{background:#0f1f3d;color:#fff !important;margin:-1rem -1.25rem 1rem;padding:.8rem 1.25rem;top:0}
+.kpi-summary-card{position:relative;overflow:hidden}
+.kpi-summary-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:currentColor;opacity:.75}
+/* Layered blue bands run up to the top edge of the screen and off the right edge, flowing into the page */
+.kpi-heading-row{position:relative;isolation:isolate}
+.kpi-heading-row::before{content:"";position:absolute;top:-1.45rem;right:-1.5rem;bottom:-40px;width:52%;z-index:-1;pointer-events:none;border-radius:0 0 0 100%;background:radial-gradient(ellipse 130% 170% at 100% 100%,#eef6ff 0 52%,#cfe3ff 52% 66%,#a9cdfc 66% 80%,#7fb3f7 80% 92%,#5b9cf2 92%)}
+.kpi-heading-row::after{content:"";position:absolute;top:-1.45rem;right:-1.5rem;bottom:-40px;width:34%;z-index:-1;pointer-events:none;border-radius:0 0 0 100%;background:radial-gradient(ellipse 120% 150% at 100% 100%,rgba(255,255,255,0) 0 50%,rgba(219,234,254,.7) 50% 70%,rgba(147,197,253,.55) 70%)}
+/* Keep the header waves inside the white box: clipped at its top and right edges */
+.kpi-dashboard{overflow:hidden}
+/* Light blue shade at the bottom of the heading area, in the same blue as the wave bands so they blend */
+.kpi-heading-row{background:linear-gradient(180deg,rgba(207,227,255,0) 40%,rgba(207,227,255,.7) 100%)}
+/* Soft blurred edge on the wave bands, so their end blends into the blue shade instead of a hard line */
+.kpi-heading-row::before,.kpi-heading-row::after{filter:blur(2.5px)}
+/* "01" box: 3D, popped up from the page */
+.kpi-number-box{transform:translateY(-4px);background:linear-gradient(145deg,#f4f9ff,#d7e7ff);border:1px solid #bfd6fb;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 0 #9dbef0,0 8px 0 rgba(15,23,42,.06),0 16px 26px -6px rgba(37,99,235,.35);transition:transform .2s ease,box-shadow .2s ease}
+.kpi-number-box:hover{transform:translateY(-6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 0 #9dbef0,0 10px 0 rgba(15,23,42,.06),0 20px 30px -6px rgba(37,99,235,.42)}
+/* No line under the heading row (above the summary cards) */
+.kpi-heading-row{border-bottom:0 !important}
+/* No coloured strip along the bottom of the summary cards */
+.kpi-summary-card::after{display:none}
+/* KPI value card only: icon circle on the left, divider, text, coloured bottom border and a soft curve at the bottom-right */
+.kpi-value-card{display:flex;align-items:center;justify-content:flex-start;gap:1rem;position:relative;overflow:hidden;padding:1.1rem 1.25rem;border-radius:16px;border-bottom:4px solid currentColor;text-align:left}
+.kpi-value-card::before{content:"";position:absolute;right:-25%;bottom:-45%;width:75%;height:110%;border-radius:50%;background:currentColor;opacity:.1;pointer-events:none}
+.kpi-value-card .kpi-card-icon{position:relative;z-index:1;flex:0 0 64px;width:64px;height:64px;border-radius:50%;background:color-mix(in srgb,currentColor 16%,#fff);display:flex;align-items:center;justify-content:center;font-size:0;color:inherit}
+.kpi-value-card>div:last-child{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;border-left:2px solid currentColor;padding-left:1rem;min-width:0;flex:1}
+.kpi-value-card h2{text-align:left;align-self:flex-start;margin:0 0 .25rem}
+.kpi-value-card p{text-align:left;margin:0 0 .3rem}
+.kpi-value-card strong{position:static !important;transform:none !important;text-align:left;margin:0;font-size:clamp(1.8rem,2.6vw,2.4rem)}
+/* KPI value card: heading on its own line at the top; the value centred in the space beside the divider */
+.kpi-value-card>div:last-child{display:grid;grid-template-columns:1fr;grid-template-rows:auto auto 1fr;align-items:center;justify-items:stretch;align-content:stretch}
+.kpi-value-card h2{grid-row:1;justify-self:start;align-self:start;margin:0}
+.kpi-value-card p{grid-row:2;justify-self:start;align-self:start;margin:0 0 .2rem}
+.kpi-value-card strong{grid-row:3;justify-self:center;align-self:center;text-align:center;margin:0}
+/* KPI value card: "KPI Value (This Month)" on one line at the top; the value centred below it */
+.kpi-value-card>div:last-child{display:flex;flex-direction:column;align-items:stretch;justify-content:center}
+.kpi-value-card h2,.kpi-value-card p{display:inline;grid-row:auto;justify-self:auto;align-self:auto}
+.kpi-value-card h2{margin:0}
+.kpi-value-card p{margin:0 0 0 .35rem;font-weight:600;font-size:.9rem}
+.kpi-value-card .kpi-title-line{display:block;margin:0 0 .3rem}
+.kpi-value-card strong{align-self:center;margin:0}
+/* KPI value card: heading at the top, value centred in the space beside the divider */
+.kpi-value-card>div:last-child{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;height:100%;min-height:90px}
+.kpi-value-card .kpi-title-line{align-self:flex-start}
+.kpi-value-card strong{margin:auto 0;align-self:center;text-align:center}
+/* KPI value sits directly under the heading */
+.kpi-value-card>div:last-child{justify-content:flex-start}
+.kpi-value-card strong{margin:.35rem auto 0;align-self:center}
+/* KPI value: static, directly under the heading (not floating at the top right) */
+.kpi-value-card strong{position:static !important;transform:none !important;display:block;width:auto;top:auto;left:auto;right:auto;margin:.35rem 0 0;text-align:left;white-space:nowrap}
+/* KPI value card, final clean layout: icon | divider | heading on top, value directly under it (fits the card width) */
+.kpi-value-card{display:flex;align-items:center;justify-content:flex-start;gap:1rem;text-align:left}
+.kpi-value-card>div:last-child{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;flex:1;min-width:0;height:auto;min-height:0;border-left:2px solid currentColor;padding-left:1rem}
+.kpi-value-card .kpi-title-line{display:block;margin:0 0 .3rem}
+.kpi-value-card .kpi-title-line h2,.kpi-value-card .kpi-title-line p{display:inline;margin:0}
+.kpi-value-card strong{display:block;position:static !important;transform:none !important;margin:0;width:auto;text-align:left;white-space:nowrap;font-size:clamp(1.6rem,2.4vw,2.2rem);line-height:1.1}
+/* KPI value card: heading at the top next to the divider, value centred in the card */
+.kpi-value-card{position:relative}
+.kpi-value-card>div:last-child{position:static !important;display:block !important;min-height:0 !important;height:auto !important;padding:0 !important;border-left:2px solid currentColor;margin-left:0}
+.kpi-value-card .kpi-title-line{position:absolute !important;top:1.05rem;left:calc(64px + 2rem + 1rem);display:block;margin:0;white-space:nowrap}
+.kpi-value-card strong{position:absolute !important;top:50%;left:50%;transform:translate(-50%,-50%) !important;margin:0 !important;white-space:nowrap;text-align:center;font-size:clamp(1.8rem,2.6vw,2.4rem);line-height:1}
+/* KPI value a little lower */
+.kpi-value-card strong{top:58% !important}
+/* No bubble curve inside the KPI value card */
+.kpi-value-card::before{display:none}
+/* Progress and KPI Formula as separate boxes with a gap, each with its navy header bar */
+.kpi-detail-row{background:none;padding:0;gap:1.25rem;border-radius:0}
+.kpi-progress-panel,.kpi-formula-panel{background:#fff;border:1px solid #dbe5f1;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.07);overflow:hidden;padding:0 0 1.25rem;border-right:1px solid #dbe5f1}
+.kpi-progress-panel>h2,.kpi-formula-panel>div>h2{margin:0 0 1rem;padding:.8rem 1.25rem}
+.kpi-progress-panel>*:not(h2){margin-left:1.25rem;margin-right:1.25rem}
+.kpi-formula-panel>div{padding:0}
+.kpi-formula-panel>div>*:not(h2){margin-left:1.25rem;margin-right:1.25rem}
+/* Small inset gap between the formula boxes and the edges of the main formula box */
+.kpi-formula-panel p.kpi-formula-line{margin:.25rem 1.25rem 0 !important;padding:0 .4rem}
+/* Keep both formula boxes inside the panel (no clipping on the right) */
+.kpi-formula-panel p.kpi-formula-line{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.8rem;box-sizing:border-box;width:auto}
+.kpi-formula-line .kpi-box{min-width:0;padding:1rem .8rem;flex-wrap:nowrap;justify-content:center}
+.kpi-formula-line .kpi-calc.kpi-box{white-space:nowrap}
+.kpi-formula-line .kpi-frac{min-width:0;flex:0 1 auto}
+.kpi-formula-line .kpi-frac>span{white-space:nowrap}
+.kpi-formula-panel p.kpi-formula-line{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.kpi-formula-line .kpi-box{gap:.4rem;padding:1rem .6rem}
+.kpi-formula-line .kpi-frac:not(.kpi-frac-actual)>span{font-size:clamp(.72rem,.9vw,.85rem);padding-left:.3rem;padding-right:.3rem}
+.kpi-formula-line .kpi-frac-actual{min-width:48px;flex:0 0 auto}
+.kpi-formula-line .kpi-frac-actual>span{font-size:clamp(.9rem,1.1vw,1.1rem);padding-left:.3rem;padding-right:.3rem}
+.kpi-formula-line .kpi-times,.kpi-formula-line .kpi-calc.kpi-box{font-size:clamp(.85rem,1vw,1rem)}
+.kpi-formula-line .kpi-eq{font-size:clamp(1.1rem,1.4vw,1.4rem);margin-right:0;padding:0}
+
+/* Other summary cards use the same layout as the KPI Value card */
+.kpi-summary-card{position:relative;overflow:hidden;padding:1.1rem 1.25rem;border-bottom:4px solid currentColor;text-align:left}
+.kpi-summary-card .kpi-card-icon{position:relative;z-index:1;flex:0 0 64px;width:64px;height:64px;border-radius:50%;background:color-mix(in srgb,currentColor 16%,#fff);display:flex;align-items:center;justify-content:center;font-size:0;color:inherit}
+.kpi-summary-card>div:last-child{position:static !important;display:block !important;min-height:0 !important;height:auto !important;padding:0 !important;border-left:2px solid currentColor;margin-left:0;flex:1;min-width:0}
+.kpi-summary-card .kpi-title-line{position:absolute !important;top:1.05rem;left:calc(64px + 2rem + 1rem);width:calc(100% - 64px - 3rem);display:block;margin:0}
+.kpi-summary-card .kpi-title-line h2,.kpi-summary-card .kpi-title-line p{display:inline;margin:0}
+.kpi-summary-card .kpi-title-line p{margin:0 0 0 .35rem;font-weight:600;font-size:.9rem}
+.kpi-summary-card strong{position:absolute !important;top:58% !important;left:50%;transform:translate(-50%,-50%) !important;margin:0 !important;white-space:nowrap;text-align:center;font-size:clamp(1.6rem,2.4vw,2.2rem);line-height:1}
+/* Same icon size and vertical accent line on every summary card */
+.kpi-summary-card .kpi-card-icon{width:64px !important;height:64px !important;flex:0 0 64px !important}
+.kpi-summary-card>div:last-child{height:62px !important;align-self:center !important;border-left:2px solid currentColor !important}
+/* Month picker as a pill: calendar icon left, bold month text, chevron right */
+.kpi-heading-row .kpi-month-picker{position:relative;display:flex;align-items:center;flex:0 0 auto;width:250px;height:52px;padding:0 2.6rem 0 3.4rem;box-sizing:border-box;margin:0;border:1px solid #cfe0f7;border-radius:999px;background:linear-gradient(180deg,#ffffff,#eef5ff);box-shadow:0 2px 0 rgba(148,163,184,.22),0 10px 22px rgba(37,99,235,.12);cursor:pointer}
+.kpi-month-picker .kpi-cal-icon{position:absolute;left:1.1rem;top:50%;transform:translateY(-50%);width:22px;height:22px;color:#1e3a8a;pointer-events:none}
+.kpi-heading-row .kpi-month-picker input{height:100%;width:100%;padding:0;margin:0;border:0;background:transparent;color:#0b1f4d;font:700 .92rem Inter,sans-serif;appearance:none;-webkit-appearance:none}
+.kpi-heading-row .kpi-month-picker::after{content:"";position:absolute;right:1.25rem;top:50%;width:9px;height:9px;border-right:2.5px solid #1e3a8a;border-bottom:2.5px solid #1e3a8a;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+/* Slightly smaller month picker */
+.kpi-heading-row .kpi-month-picker{
+  width:220px;
+  height:44px;
+  padding:0 2.2rem 0 1rem;
+}
+.kpi-month-picker .kpi-cal-icon{
+  display:none;
+}
+.kpi-heading-row .kpi-month-picker::after{
+  content:"";
+  right:1rem;
+  top:50%;
+  width:18px;
+  height:18px;
+  border:0;
+  transform:translateY(-50%);
+  pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e3a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cpath d='M16 2v4M8 2v4M3 10h18'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+/* Back button: same pill height and look as the month picker */
+.kpi-heading-controls .kpi-back-btn{display:inline-flex;align-items:center;justify-content:center;height:44px;box-sizing:border-box;padding:0 1.2rem;border:1px solid #cfe0f7;border-radius:999px;background:linear-gradient(180deg,#ffffff,#eef5ff);box-shadow:0 2px 0 rgba(148,163,184,.22),0 10px 22px rgba(37,99,235,.12);color:#0b1f4d;font:800 .95rem Inter,sans-serif;text-decoration:none;white-space:nowrap}
+.kpi-heading-controls .kpi-back-btn:hover{border-color:#93c5fd;box-shadow:0 3px 0 rgba(148,163,184,.2),0 14px 26px rgba(37,99,235,.18)}
+/* Criteria wise compliance bars with the formula beside each bar */
+.kpi-criteria-panel{margin-top:1.25rem}
+.kpi-criteria-list{display:flex;flex-direction:column;gap:.7rem;margin:0 1.25rem;color:#334155;font:600 .9rem Inter,sans-serif}
+.kpi-criteria-row{display:grid;grid-template-columns:minmax(180px,260px) minmax(0,1fr) minmax(190px,240px);align-items:center;gap:1rem}
+.kpi-criteria-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kpi-criteria-track{position:relative;height:14px;border-radius:999px;background:#e8eef7;overflow:visible}
+.kpi-criteria-track::after{content:"";position:absolute;left:95%;top:-4px;bottom:-4px;width:2px;background:#f97316;border-radius:2px}
+.kpi-criteria-fill{height:100%;border-radius:999px;background:#ef4444}
+.kpi-criteria-row.is-achieved .kpi-criteria-fill{background:linear-gradient(90deg,#22c55e,#16a34a)}
+.kpi-criteria-formula{text-align:right;font-weight:700;white-space:nowrap}
+.kpi-criteria-row.is-achieved .kpi-criteria-formula{color:#047857}
+.kpi-criteria-row.is-below-target .kpi-criteria-formula{color:#b91c1c}
+@media(max-width:700px){.kpi-criteria-row{grid-template-columns:1fr;gap:.35rem}.kpi-criteria-formula{text-align:left}}
+/* Criteria column chart: total samples per criteria, green = compliant, red = non-compliant */
+.kpi-criteria-list{display:block;color:#334155;font:600 .9rem Inter,sans-serif}
+.kpi-col-chart{display:flex;align-items:flex-end;gap:1.1rem;overflow-x:auto;padding:.5rem .25rem .25rem;border-bottom:1px solid #cbd5e1}
+.kpi-col{flex:0 0 96px;display:flex;flex-direction:column;align-items:center;cursor:default}
+.kpi-col-bar{height:200px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.kpi-col-total{margin-bottom:.35rem;color:#0b1f4d;font:800 .9rem Inter,sans-serif}
+.kpi-col-stack{width:46px;display:flex;flex-direction:column;border-radius:8px 8px 4px 4px;overflow:hidden;box-shadow:0 4px 10px rgba(15,23,42,.12)}
+.kpi-col-red{background:linear-gradient(180deg,#f87171,#dc2626);min-height:0}
+.kpi-col-green{background:linear-gradient(180deg,#4ade80,#16a34a);min-height:0}
+.kpi-col-name{margin-top:.5rem;min-height:2.5em;text-align:center;font-size:.78rem;line-height:1.25;color:#334155}
+.kpi-col-legend{display:flex;gap:1.25rem;margin-top:.9rem;font:600 .85rem Inter,sans-serif;color:#334155}
+.kpi-col-legend span{display:inline-flex;align-items:center;gap:.4rem}
+.kpi-col-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.kpi-col-legend .is-green{background:#16a34a}
+.kpi-col-legend .is-red{background:#dc2626}
+/* Formula under each criteria column */
+.kpi-col-formula{display:block;margin-top:.3rem;text-align:center;font:600 .76rem/1.35 Inter,sans-serif;color:#334155}
+.kpi-col-formula b{font-weight:800;font-size:.85rem}
+.kpi-col-formula.is-achieved{color:#047857}
+.kpi-col-formula.is-below-target{color:#b91c1c}
+/* Columns share the full chart width evenly */
+.kpi-col-chart{justify-content:space-between;gap:.5rem}
+.kpi-col{flex:1 1 0;min-width:70px}
+/* Minimal flat look for the criteria column chart */
+.kpi-col-chart{gap:.75rem;padding:.25rem 0 0;border-bottom:1px solid #e2e8f0}
+.kpi-col{max-width:120px}
+.kpi-col-total{margin-bottom:.4rem;color:#64748b;font:600 .8rem Inter,sans-serif}
+.kpi-col-stack{width:100%;max-width:44px;box-shadow:none;border-radius:4px 4px 0 0}
+.kpi-col-red{background:#e5484d}
+.kpi-col-green{background:#22a06b}
+.kpi-col-name{min-height:2.6em;margin-top:.55rem;color:#475569;font:500 .78rem/1.3 Inter,sans-serif}
+.kpi-col-legend{margin-top:.75rem;gap:1rem;color:#64748b;font:500 .8rem Inter,sans-serif}
+.kpi-col-legend i{width:10px;height:10px;border-radius:2px}
+.kpi-col-legend .is-green{background:#22a06b}
+.kpi-col-legend .is-red{background:#e5484d}
+/* Square column segments with hover highlight */
+.kpi-col-stack{border-radius:0 !important}
+.kpi-col-red,.kpi-col-green{cursor:pointer}
+.kpi-col-red:hover,.kpi-col-green:hover{filter:brightness(1.1)}
+/* Baseline sits under each column bar (above the names), not across the whole chart */
+.kpi-col-chart{border-bottom:0}
+.kpi-col-bar{width:100%;border-bottom:0}
+.kpi-col-chart{align-items:flex-start;background:linear-gradient(#94a3b8,#94a3b8) 0 calc(.25rem + 200px)/100% 1px no-repeat}
+/* Glass hover card for criteria columns */
+.kpi-col-tip{position:fixed;z-index:1000;min-width:190px;padding:.75rem .95rem;border-radius:16px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s ease,transform .15s ease;background:rgba(255,255,255,.55);backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);border:1px solid rgba(255,255,255,.75);box-shadow:0 12px 32px rgba(15,23,42,.18),inset 0 1px 0 rgba(255,255,255,.85);color:#0b1f4d;font:500 .82rem Inter,sans-serif}
+.kpi-col-tip.is-visible{opacity:1;transform:none}
+.kpi-col-tip-title{margin-bottom:.45rem;font-weight:700;color:#0b1f4d}
+.kpi-col-tip-row{display:flex;align-items:center;gap:.5rem;margin:.25rem 0;color:#334155}
+.kpi-col-tip-row i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.kpi-col-tip-row b{margin-left:auto;font-weight:800;color:#0b1f4d}
+/* Achievement Status value sits to the right of the accent line and fits the card */
+.kpi-summary-card.kpi-status-card strong{left:calc(50% + 25px) !important;max-width:calc(100% - 120px)}
+/* Criteria summary table below the column chart */
+.kpi-criteria-table-wrap{overflow-x:auto;margin-top:1.1rem}
+.kpi-criteria-table{border-collapse:collapse;width:100%;font:500 .85rem Inter,sans-serif;color:#334155}
+.kpi-criteria-table th,.kpi-criteria-table td{padding:.5rem .6rem;border-bottom:1px solid #e2e8f0;text-align:center;min-width:90px}
+.kpi-criteria-table thead th{font-weight:700;color:#0b1f4d;vertical-align:bottom;line-height:1.3}
+.kpi-criteria-table tbody th{text-align:left;font-weight:700;color:#0b1f4d;white-space:nowrap;min-width:140px}
+.kpi-criteria-table td{font-variant-numeric:tabular-nums}
+/* Criteria table headings in navy; vertical row headings grey with a divider line */
+.kpi-criteria-table thead th{color:#0f1f3d}
+.kpi-criteria-table tbody th{color:#0f1f3d;background:#f1f5f9;border-right:1px solid #cbd5e1}
+/* Horizontal criteria header always navy, even where other table rules apply */
+.kpi-criteria-table thead th{color:#0f1f3d !important}
+/* Criteria header row: navy background with white text */
+.kpi-criteria-table thead th{background:#0f1f3d !important;color:#fff !important;border-bottom:0}
+/* Criteria table: fixed first column, every criteria column the same width */
+.kpi-criteria-table{table-layout:fixed}
+.kpi-criteria-table tbody th{width:170px}
+.kpi-criteria-table thead th,.kpi-criteria-table td{width:auto}
+.kpi-criteria-table thead th:first-child{width:150px}
+/* Criteria names centred in their header cells */
+.kpi-criteria-table thead th{text-align:center !important;vertical-align:middle !important}
+/* KPI % cells in the criteria table: green at or above target, red below */
+.kpi-criteria-table td.is-achieved{background:#ecfdf5;color:#047857;font-weight:800}
+.kpi-criteria-table td.is-below-target{background:#fef2f2;color:#b91c1c;font-weight:800}
+/* Thin light dividers separating each criteria name in the navy header */
+.kpi-criteria-table thead th{border-left:1px solid rgba(255,255,255,.35) !important}
+/* More space between the column chart and the criteria table */
+.kpi-criteria-table-wrap{margin-top:2.25rem}
+/* Standard, Variance and Status values sit right of the accent line and scale down so they never touch it */
+.kpi-summary-card:not(.kpi-value-card) strong{left:calc(50% + 25px) !important;max-width:calc(100% - 130px);font-size:clamp(1.5rem,2.3vw,2.2rem)}
+/* Stable summary card layout: icon, accent line, then the figure left-aligned beside the line.
+   Loading a value no longer moves it over the line or icon, on any screen width. */
+.kpi-summary-card{position:relative !important;display:flex !important;align-items:center !important;justify-content:flex-start !important;gap:.9rem !important;padding:1rem 1.1rem !important;overflow:hidden !important;text-align:left !important}
+.kpi-summary-card .kpi-card-icon{flex:0 0 56px !important;width:56px !important;height:56px !important;font-size:0 !important}
+.kpi-summary-card>div:last-child{position:static !important;display:flex !important;flex-direction:column !important;align-items:flex-start !important;justify-content:center !important;flex:1 1 auto !important;min-width:0 !important;height:auto !important;min-height:0 !important;padding:0 0 0 .85rem !important;margin:0 !important;border-left:2px solid currentColor !important;align-self:center !important}
+.kpi-summary-card>div:last-child>.kpi-title-line{position:static !important;display:block !important;top:auto !important;left:auto !important;width:auto !important;margin:0 0 .3rem !important;white-space:normal !important}
+.kpi-summary-card>div:last-child>.kpi-title-line h2,.kpi-summary-card>div:last-child>.kpi-title-line p{display:inline !important;margin:0 !important}
+.kpi-summary-card>div:last-child>.kpi-title-line p{margin-left:.35rem !important}
+.kpi-summary-card>div:last-child>strong{position:static !important;top:auto !important;left:auto !important;right:auto !important;transform:none !important;width:auto !important;max-width:100% !important;margin:0 !important;text-align:left !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;font-size:clamp(1.4rem,2.2vw,2.2rem) !important;line-height:1.05 !important}
+.kpi-summary-card>.kpi-variance-note{position:absolute !important;right:1rem !important;bottom:.75rem !important}
+/* One text-block layout for all four cards. The Variance note is appended after the text block,
+   so the text block is not the last child there; select it by type instead of :last-child. */
+.kpi-summary-card>div:first-of-type{position:static !important;display:flex !important;flex-direction:column !important;align-items:flex-start !important;justify-content:center !important;flex:1 1 auto !important;min-width:0 !important;height:auto !important;min-height:0 !important;padding:0 0 0 .85rem !important;margin:0 !important;border-left:2px solid currentColor !important;align-self:center !important;text-align:left !important}
+.kpi-summary-card>div:first-of-type>.kpi-title-line{position:static !important;display:block !important;top:auto !important;left:auto !important;width:auto !important;margin:0 0 .3rem !important;text-align:left !important}
+.kpi-summary-card h2,.kpi-summary-card p{text-align:left !important}
+.kpi-summary-card>div:first-of-type>strong{position:static !important;top:auto !important;left:auto !important;right:auto !important;transform:none !important;width:auto !important;max-width:100% !important;margin:0 !important;align-self:flex-start !important;text-align:left !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;font-size:clamp(1.4rem,2.2vw,2.2rem) !important;line-height:1.05 !important}
+.kpi-summary-card>.kpi-variance-note{position:absolute !important;top:auto !important;left:auto !important;right:1rem !important;bottom:.75rem !important;transform:none !important;margin:0 !important}
+/* Variance: leave room under the value and put the "above target" note there, aligned with the text */
+.kpi-variance-card{padding-bottom:2.6rem !important}
+.kpi-summary-card>.kpi-variance-note{left:calc(1.1rem + 56px + .9rem + .85rem) !important;right:auto !important;bottom:.7rem !important}
+/* Variance card uses the same padding as the others, so its text lines up with them; the note stays absolute at the bottom */
+.kpi-variance-card{padding:1rem 1.1rem !important}
+/* Heading row stays at the top while the rest of the page scrolls.
+   The dashboard box no longer clips (sticky cannot work inside an overflow:hidden parent);
+   the heading row clips its own header waves instead. */
+.kpi-dashboard{overflow:visible !important}
+.kpi-heading-row{position:sticky !important;top:1rem !important;flex:0 0 auto;z-index:50;overflow:hidden;background:#fff;margin:-1.45rem -1.5rem 0 !important;padding:1.55rem 1.5rem 1.25rem !important;border-radius:18px 0 0 0}
+.kpi-heading-row::before,.kpi-heading-row::after{top:0 !important;right:0 !important}
+/* Scroll the main area on this page so the scroll bar shows and the sticky heading has a scroll container */
+.kpi-page .main-content{height:100vh !important;max-height:100vh !important;overflow:hidden !important;box-sizing:border-box}
+.kpi-dashboard{display:flex;flex-direction:column;height:auto;min-height:0 !important}
+.kpi-scroll-area{flex:1 1 auto;min-height:0;overflow-y:auto;margin:0 -1.5rem -1.15rem;padding:0 1.5rem 1.15rem}
+/* Heading row keeps its light blue look (it was white only because of the sticky change). Stays opaque so content does not show through while scrolling */
+.kpi-heading-row{background:linear-gradient(90deg,#eef5ff 0%,#f7fbff 100%) !important}
+.kpi-status-card>div:first-of-type{container-type:inline-size}
+.kpi-summary-card.kpi-status-card>div:first-of-type>strong{font-size:clamp(.95rem,15cqi,2.2rem) !important;text-overflow:clip !important}
+.kpi-summary-card.kpi-status-card.is-achieved>div:first-of-type>strong{font-size:clamp(.95rem,23cqi,2.2rem) !important}
+.kpi-status-card .status-cross{display:none}
+.kpi-status-card.is-below-target .status-tick{display:none}
+.kpi-status-card.is-below-target .status-cross{display:inline}
+.kpi-trend-panel{
+  margin-top:1rem;
+}
+
+.kpi-trend-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:.75rem;
+}
+
+.kpi-trend-head h2{
+  margin:0;
+}
+
+.kpi-trend-head span{
+  color:#b45309;
+  font-weight:800;
+  font-size:.9rem;
+}
+
+.kpi-monthly-chart{
+  width:100%;
+  min-height:260px;
+  padding:.75rem;
+  box-sizing:border-box;
+  border:1px solid #d7e4f5;
+  border-radius:12px;
+  background:#f4f7fc;
+  overflow:hidden;
+}
+
+.kpi-monthly-chart svg{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+.kpi-monthly-chart .grid-line{
+  stroke:#d9e4f2;
+  stroke-width:1;
+}
+
+.kpi-monthly-chart .target-line{
+  stroke:#f59e0b;
+  stroke-width:2;
+  stroke-dasharray:6 5;
+}
+
+.kpi-monthly-chart .trend-line{
+  fill:none;
+  stroke:#2563eb;
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.kpi-monthly-chart .trend-dot{
+  fill:#2563eb;
+  stroke:#fff;
+  stroke-width:2;
+}
+
+.kpi-monthly-chart text{
+  fill:#274879;
+  font:600 12px Inter,sans-serif;
+}
+
+body.dark-mode.kpi-detail-page .kpi-monthly-chart{
+  background:#22334d;
+  border-color:#334e72;
+}
+
+body.dark-mode.kpi-detail-page .kpi-monthly-chart text{
+  fill:#dbeafe;
+}
+
+@media(max-width:700px){
+  .kpi-trend-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
+.kpi-section-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin:-1rem -1rem 1rem;
+  padding:.85rem 1rem;
+  background:#102348;
+  border-radius:14px 14px 0 0;
+}
+
+.kpi-section-bar h2{
+  margin:0;
+  color:#fff;
+  font-size:1.05rem;
+  font-weight:800;
+}
+
+.kpi-year-filter{
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+  color:#dbeafe;
+  font-size:.82rem;
+  font-weight:700;
+}
+
+.kpi-year-filter select{
+  min-width:90px;
+  padding:.35rem .55rem;
+  border:1px solid #8fb4e8;
+  border-radius:7px;
+  background:#fff;
+  color:#122654;
+  font:700 .85rem Inter,sans-serif;
+}
+
+.kpi-monthly-chart[hidden]{
+  display:none;
+}
+
+.kpi-monthly-chart{
+  margin-top:1rem;
+  padding:.75rem;
+  border:1px solid #d7e4f5;
+  border-radius:12px;
+  background:#f4f7fc;
+}
+
+.kpi-monthly-chart svg{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+.kpi-monthly-chart .grid-line{
+  stroke:#d9e4f2;
+  stroke-width:1;
+}
+
+.kpi-monthly-chart .target-line{
+  stroke:#f59e0b;
+  stroke-width:2;
+  stroke-dasharray:6 5;
+}
+
+.kpi-monthly-chart .trend-line{
+  fill:none;
+  stroke:#2563eb;
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.kpi-monthly-chart .trend-dot{
+  fill:#2563eb;
+  stroke:#fff;
+  stroke-width:2;
+}
+
+.kpi-monthly-chart text{
+  fill:#274879;
+  font:600 12px Inter,sans-serif;
+}
+
+@media(max-width:700px){
+  .kpi-section-bar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}/* Criteria heading bar: same navy bar as the Progress and KPI Formula headings, not pushed above the panel */
+.kpi-criteria-panel>.kpi-section-bar{margin:0 0 1rem;padding:.8rem 1.25rem;background:#0f1f3d;border-radius:0}
+.kpi-criteria-panel>.kpi-section-bar h2{font-size:1rem;line-height:1.3;color:#fff !important}
+/* Monthly trend panel: white box with the same navy top bar as the other panels */
+.kpi-trend-panel{margin-top:1.25rem}
+.kpi-progress-panel>.kpi-section-bar{margin:0 0 1rem;padding:.8rem 1.25rem;background:#0f1f3d;border-radius:0}
+.kpi-progress-panel>.kpi-section-bar h2{font-size:1rem;line-height:1.3;color:#fff !important}
+/* Monthly chart sits flush inside the white trend panel, without its own grey box */
+.kpi-trend-panel>.kpi-monthly-chart{margin:1rem 1.25rem 0;padding:0;border:0;border-radius:0;background:none}
+/* Monthly trend: polished look (soft area under the line, clean grid, white markers, labelled target) */
+.kpi-monthly-chart .grid-line{stroke:#e2e8f0;stroke-width:1}
+.kpi-monthly-chart .trend-area{fill:rgba(37,99,235,.10);stroke:none}
+.kpi-monthly-chart .trend-line{stroke:#1d4ed8;stroke-width:3}
+.kpi-monthly-chart .trend-dot{fill:#fff;stroke:#1d4ed8;stroke-width:2.5}
+.kpi-monthly-chart .target-line{stroke:#f59e0b;stroke-width:1.5}
+.kpi-monthly-chart .target-label{fill:#b45309;font:700 12px Inter,sans-serif}
+.kpi-monthly-chart text{fill:#475569;font:600 11px Inter,sans-serif}
+/* Trend chart refinements: smaller axis text, centred in its box, invisible hover targets for the glass tile */
+.kpi-trend-panel>.kpi-monthly-chart{text-align:center}
+.kpi-monthly-chart svg{margin:0 auto}
+.kpi-monthly-chart text{font:600 9px Inter,sans-serif}
+.kpi-monthly-chart .target-label{font:700 10px Inter,sans-serif}
+.kpi-monthly-chart .trend-hit{fill:transparent;cursor:pointer}
+/* Chart width: side margins were added on top of width:100%, pushing the chart past the panel edge. Let the block fill the space between the margins instead. */
+.kpi-trend-panel>.kpi-monthly-chart{width:auto !important;max-width:none}
+/* Trend area: light green above the standard line, light red below it */
+.kpi-monthly-chart .trend-area-above{fill:rgba(34,197,94,.16)}
+.kpi-monthly-chart .trend-area-below{fill:rgba(239,68,68,.14)}
+/* Chart background: light green above the standard line, light red below it */
+.kpi-monthly-chart .zone-above{fill:rgba(34,197,94,.10)}
+.kpi-monthly-chart .zone-below{fill:rgba(239,68,68,.08)}
+/* Trend points: green when the month reached the standard, red when it did not */
+.kpi-monthly-chart .trend-dot.is-achieved{fill:#16a34a;stroke:#fff}
+.kpi-monthly-chart .trend-dot.is-below-target{fill:#dc2626;stroke:#fff}
+/* Monthly table under the line chart, aligned with the panel like the chart */
+.kpi-monthly-table{margin:1.25rem 1.25rem 0}
+.kpi-monthly-table[hidden]{display:none}
+.kpi-monthly-table .kpi-criteria-table-wrap{margin-top:0}
+/* Card order on the KPI pages: KPI Value, KPI Standard, Variance, Achievement Status (set by order so the markup order does not matter) */
+.kpi-summary-grid>.kpi-value-card{order:1}
+.kpi-summary-grid>.kpi-standard-card{order:2}
+.kpi-summary-grid>.kpi-variance-card{order:3}
+.kpi-summary-grid>.kpi-status-card{order:4}
+/* Final card order: Achievement Status, KPI Value, KPI Standard, Variance */
+.kpi-summary-grid>.kpi-status-card{order:1}
+.kpi-summary-grid>.kpi-value-card{order:2}
+.kpi-summary-grid>.kpi-standard-card{order:3}
+.kpi-summary-grid>.kpi-variance-card{order:4}
+/* Bigger gap between the summary cards and the Progress / KPI Formula row */
+.kpi-summary-grid+.kpi-detail-row{margin-top:2.25rem !important}
+/* The scroll area sized to the full dashboard height and spread the rows apart. Let it hug its content instead. */
+.kpi-dashboard{min-height:0 !important}
+.kpi-scroll-area{flex:0 0 auto !important;display:block !important;justify-content:flex-start !important;align-content:flex-start !important}
+.kpi-summary-grid+.kpi-detail-row{margin-top:2.25rem !important;margin-bottom:0 !important}
+.kpi-summary-grid+.kpi-detail-row{margin-top:2.25rem !important}
+/* Scroll area scrolls inside the page again (heading stays above it) and hugs its content when short */
+.kpi-scroll-area{flex:0 1 auto !important;display:block !important;min-height:0 !important;max-height:calc(100vh - 10rem) !important;overflow-y:auto !important}
+/* KPI 02 daily combo chart: complaint and sold bars per date, KPI % line on the right axis */
+.kpi-monthly-chart .daily-bar-complaint{fill:#ef4444}
+.kpi-monthly-chart .daily-bar-sold{fill:#60a5fa}
+.kpi-monthly-chart .daily-kpi-line{fill:none;stroke:#f59e0b;stroke-width:2.5;stroke-linejoin:round}
+.kpi-monthly-chart .daily-kpi-dot{fill:#fff;stroke:#f59e0b;stroke-width:2}
+.kpi-daily-legend{display:flex;gap:1.2rem;justify-content:center;margin-top:.6rem;font:600 .8rem Inter,sans-serif;color:#334155}
+.kpi-daily-legend span{display:inline-flex;align-items:center}
+.kpi-daily-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:.35rem}
+.kpi-daily-legend .is-complaint{background:#ef4444}
+.kpi-daily-legend .is-sold{background:#60a5fa}
+.kpi-daily-legend .is-kpi{background:#f59e0b}
+/* No inner scroll box: the cards, progress, formula and charts all sit in the page flow, and the page itself scrolls */
+.kpi-scroll-area{max-height:none !important;overflow:visible !important;flex:0 0 auto !important}
+/* The page area scrolls again. The main area was set to overflow:hidden, so nothing below the cards could be reached.
+   The dashboard box must not clip either, otherwise the sticky heading cannot stick. */
+.kpi-page .main-content{overflow-y:auto !important;overflow-x:hidden !important}
+.kpi-dashboard{overflow:visible !important}
+.kpi-criteria-table{font-family:Calibri,Carlito,sans-serif;font-size:.95rem}
+.kpi-monthly-chart text{font:600 12px Inter,sans-serif}
+.kpi-monthly-chart .target-label{font:700 13px Inter,sans-serif}
+.kpi-nav-btn.is-disabled{opacity:.45;pointer-events:none}
+.kpi-nav-stack{display:flex;flex-direction:column;align-items:flex-end;gap:.45rem}
+.kpi-nav-icons{display:flex;gap:.4rem}
+.kpi-nav-icon{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid #cfe0f7;color:#1e3a8a;box-shadow:0 2px 6px rgba(37,99,235,.12);text-decoration:none}
+.kpi-nav-icon.is-disabled{opacity:.4;pointer-events:none}
+/* Prev/Next icons float above the Back button, so Back, the month box and Logout stay on one line */
+.kpi-nav-stack{display:block;position:relative}
+.kpi-nav-icons{position:absolute;right:0;bottom:calc(100% + .35rem)}
+.kpi-nav-icons{right:1rem}
+.kpi-nav-icons{right:.375rem}
+/* Prev/Next icon row centred above the Back button */
+.kpi-nav-icons{right:auto;left:50%;transform:translateX(-50%)}
+.kpi-page .main-content::before{content:"";display:block;position:sticky;top:0;flex:0 0 1rem;height:1rem;margin-bottom:-1rem;z-index:60;background:#f1f5f9;pointer-events:none}
+body.dark-mode.kpi-page .main-content::before{background:#0f172a}
+/* KPI 6 tables: wider label column so "Total inspection points" fits */
+.kpi-6 .kpi-criteria-table tbody th,.kpi-6 .kpi-criteria-table thead th:first-child{width:230px;min-width:230px}
+/* KPI section grows and shrinks with its content, so it stays auto height when the charts load */
+.kpi-dashboard{height:auto !important;min-height:0 !important;max-height:none !important;flex:0 0 auto}
+/* KPI section: all four corners rounded */
+.kpi-dashboard{border-radius:18px !important}
+/* KPI section: no drop shadow */
+.kpi-dashboard{box-shadow:none !important}
+/* Heading has square corners so it covers the top edge while the page scrolls (no curve peeking out) */
+.kpi-heading-row{border-radius:0 !important}
+/* Progress scale labels (0%, 50%, 100%) */
+.kpi-progress-scale{font:700 1.05rem Inter,sans-serif}
+.kpi-progress-scale{font:700 .75rem Inter,sans-serif}
+/* Table heading row: light blue with dark text */
+.kpi-criteria-table thead th{background:#dce6f5 !important;color:#0f1f3d !important}
+/* Section heading bars (Progress, Formula, Criteria, Trend) in grey */
+.kpi-progress-panel>h2,.kpi-formula-panel>h2,.kpi-formula-panel>div>h2,.kpi-progress-panel>.kpi-section-bar{background:#0f1f3d !important}
+/* Whole section boxes (Progress, Formula, Criteria, Trend): shadow around the box */
+.kpi-progress-panel,.kpi-formula-panel{box-shadow:0 8px 24px rgba(15,31,61,.22)}
+/* Section boxes: stronger shadow so they stand out from the background */
+.kpi-progress-panel,.kpi-formula-panel{box-shadow:0 14px 34px rgba(15,31,61,.38)}
+.kpi-heading-row{padding:2.6rem 1.5rem 1.5rem !important}
+/* Date column of the day-wise and monthly tables: a little wider */
+.kpi-criteria-table thead th:first-child,.kpi-criteria-table tbody th{width:180px}

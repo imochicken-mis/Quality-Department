@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Water Plant Data - Imo Quality</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/preview-modal.css?v=2" />
+  
+  <link rel="stylesheet" href="../css/sidebar.css?v=3" />
+  <link rel="stylesheet" href="../css/dashboard.css?v=2" />
+  <link rel="stylesheet" href="../css/professional.css?v=23" />
+</head>
+<body class="dashboard-body">
+
+  <div class="dashboard-layout">
+
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+
+  <header class="page-header">
+    <div class="page-header-text">
+      <h1>WATER PLANT DATA</h1>
+      <p>Water Quality Monitoring</p>
+    </div>
+  <div class="header-actions">
+    <label class="switch" title="Theme">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider">
+        <div class="star star_1"></div>
+        <div class="star star_2"></div>
+        <div class="star star_3"></div>
+        <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+          <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path>
+        </svg>
+      </span>
+    </label>
+    <button class="Btn" id="sidebarLogout" type="button">
+      <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+      <div class="text">Logout</div>
+    </button>
+  </div>
+</header>
+
+      <!-- Form Section -->
+      <section class="form-section">
+        <form class="slaughter-form" id="waterForm">
+
+          <!-- Section 01: Basic Info -->
+          <div class="form-section-title">
+            <span class="section-num">01</span>
+            <span>Basic Information</span>
+          </div>
+
+          <div class="form-grid water-date-grid">
+            <div class="form-group">
+              <label for="date">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Date <span class="required">*</span>
+              </label>
+              <input type="date" id="date" name="date" required />
+            </div>
+          </div>
+
+          <!-- Section 02: Water Quality -->
+          <div class="form-section-title">
+            <span class="section-num">02</span>
+            <span>Water Quality</span>
+          </div>
+
+          <div class="form-grid water-quality-grid">
+            <!-- pH -->
+            <div class="form-group">
+              <label for="ph">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                </svg>
+                pH (6.0 - 8.5) <span class="required">*</span>
+              </label>
+              <input type="number" id="ph" name="ph" placeholder="e.g. 7.2" step="0.1" required />
+              <div class="status-badge" id="phStatus"></div>
+            </div>
+
+            <!-- Cl -->
+            <div class="form-group">
+              <label for="cl">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M8 12h8"></path>
+                </svg>
+                Cl (≤ 0.1) <span class="required">*</span>
+              </label>
+              <input type="number" id="cl" name="cl" placeholder="e.g. 0.3" step="0.01" required />
+              <div class="status-badge" id="clStatus"></div>
+            </div>
+
+            <!-- Parabolic Screen Cleanness -->
+            <div class="form-group">
+              <label for="parabolicScreen">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                  <line x1="3" y1="9" x2="21" y2="9"></line>
+                  <line x1="3" y1="15" x2="21" y2="15"></line>
+                  <line x1="9" y1="3" x2="9" y2="21"></line>
+                  <line x1="15" y1="3" x2="15" y2="21"></line>
+                </svg>
+                Parabolic S.Cleanness <span class="required">*</span>
+              </label>
+              <select id="parabolicScreen" name="parabolicScreen" required>
+                <option value="">-- Select --</option>
+                <option value="Yes">✅ Yes</option>
+                <option value="No">❌ No</option>
+              </select>
+            </div>
+
+            <!-- Colour -->
+            <div class="form-group">
+              <label for="colour">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="13.5" cy="6.5" r=".5"></circle>
+                  <circle cx="17.5" cy="10.5" r=".5"></circle>
+                  <circle cx="8.5" cy="7.5" r=".5"></circle>
+                  <circle cx="6.5" cy="12.5" r=".5"></circle>
+                  <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+                </svg>
+                Colour <span class="required">*</span>
+              </label>
+              <select id="colour" name="colour" required>
+                <option value="">-- Select --</option>
+                <option value="Good">✅ Good</option>
+                <option value="1">😑 Light Yellow</option>
+                <option value="2">😕 Yellow</option>
+                <option value="3">😪 Off/Brown</option>
+              </select>
+            </div>
+
+            <!-- Smell -->
+            <div class="form-group">
+              <label for="smell">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 2v4"></path>
+                  <path d="M16 2v4"></path>
+                  <rect x="4" y="6" width="16" height="16" rx="2"></rect>
+                </svg>
+                Smell <span class="required">*</span>
+              </label>
+              <select id="smell" name="smell" required>
+                <option value="">-- Select --</option>
+                <option value="Good">✅ Good</option>
+                <option value="1">😷 Slighlty Off Smell</option>
+                <option value="2">🤕 Off Smell</option>
+                <option value="3">🤢 Badly Smell</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section 03: Operations -->
+          <div class="form-section-title">
+            <span class="section-num">03</span>
+            <span>Operations</span>
+          </div>
+
+          <div class="form-grid">
+            <!-- Solid Waste Bucket -->
+            <div class="form-group">
+              <label for="solidWaste">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Solid Waste Bucket (ps) <span class="required">*</span>
+              </label>
+              <input type="number" id="solidWaste" name="solidWaste" placeholder="e.g. 5" step="1" required />
+            </div>
+
+            <!-- Chemical Adding C/L Dosing -->
+            <div class="form-group">
+              <label for="chemicalDosing">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 3v18"></path>
+                  <path d="M5 3h8"></path>
+                  <path d="M9 8a4 4 0 0 0 4 4"></path>
+                  <path d="M9 14a5 5 0 0 1-5 5"></path>
+                  <path d="M9 14a5 5 0 0 0 5 5"></path>
+                </svg>
+                Chemical Adding C/L Dosing <span class="required">*</span>
+              </label>
+              <select id="chemicalDosing" name="chemicalDosing" required>
+                <option value="">-- Select --</option>
+                <option value="Yes">✅ Yes</option>
+                <option value="No">❌ No</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section 04: Leakage -->
+          <div class="form-section-title">
+            <span class="section-num">04</span>
+            <span>Leakage Check</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="leakageM1">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                </svg>
+                Leakage - M1 <span class="required">*</span>
+              </label>
+              <select id="leakageM1" name="leakageM1" required>
+                <option value="">-- Select --</option>
+                <option value="Yes">✅ Yes</option>
+                <option value="No">❌ No</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="leakageM2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                </svg>
+                Leakage - M2 <span class="required">*</span>
+              </label>
+              <select id="leakageM2" name="leakageM2" required>
+                <option value="">-- Select --</option>
+                <option value="Yes">✅ Yes</option>
+                <option value="No">❌ No</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section 05: Backwash Frequency -->
+          <div class="form-section-title">
+            <span class="section-num">05</span>
+            <span>Backwash Frequency</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="backwashSandBed">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                Operational Sand Bed <span class="required">*</span>
+              </label>
+              <select id="backwashSandBed" name="backwashSandBed" required>
+              <option value="">-- Select --</option>
+              <option value="Yes">✅ Yes</option>
+              <option value="No">❌ No</option>
+            </select>
+            </div>
+
+            <div class="form-group">
+              <label for="backwashClarifier">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                Clarifier Tank <span class="required">*</span>
+              </label>
+              <select id="backwashClarifier" name="backwashClarifier" required>
+            <option value="">-- Select --</option>
+            <option value="Good">✅ Good</option>
+            <option value="Light Yellow">😑 Light Yellow</option>
+            <option value="Yellow">😕 Yellow</option>
+            <option value="Off/Brown">😪 Off/Brown</option>
+          </select>
+            </div>
+          </div>
+
+          <!-- Section 06: Additional Notes -->
+          <div class="form-section-title">
+            <span class="section-num">06</span>
+            <span>Additional Notes</span>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="remarks">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Remarks
+              </label>
+              <textarea id="remarks" name="remarks" placeholder="Enter any additional notes..." rows="2"></textarea>
+            </div>
+
+            <!-- 👇 Image Upload -->
+            <div class="form-group full-width">
+              <label for="imageUpload">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                Attach Image (Optional)
+              </label>
+              
+              <div class="image-upload-wrap">
+                <input type="file" id="imageUpload" accept="image/*" />
+                <div class="image-preview" id="imagePreview"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" id="submitBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Save</span>
+            </button>
+          </div>
+
+        </form>
+
+        <div class="form-message" id="formMessage"></div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="../js/input-feedback.js?v=1"></script>
+  <script src="../js/users.js?v=3"></script>
+  <script src="../js/sidebar.js?v=19"></script>
+  <script src="../js/water.js?v=3"></script>
+  <script src="../js/preview-modal.js?v=3"></script>
+
+</body>
+</html>

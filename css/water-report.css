@@ -1,0 +1,136 @@
+/* ============================================
+   WATER PLANT REPORT PAGE
+   (filter / loading / .report-sheet styles come from bq-report.css)
+   ============================================ */
+
+.wp-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.wp-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-decoration: underline;
+}
+
+.wp-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.8rem;
+  color: #334155;
+}
+
+.wp-table-wrap {
+  overflow-x: auto;
+}
+
+.wp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.74rem;
+  color: #0f172a;
+}
+
+.wp-table th,
+.wp-table td {
+  border: 1px solid #334155;
+  padding: 0.4rem 0.45rem;
+  text-align: center;
+  vertical-align: middle;
+  background: #ffffff;
+}
+
+.wp-table thead th {
+  background: #eef2f7;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: normal;   /* header eka wrap wenna denawa */
+}
+
+/* Remarks (13) ekai Image (14) ekai fixed width.
+   Anith columns walata ithuru ida ekaparanama share wenawa (table eka full width) */
+/* Parabolic Screen Cleanness (4): lines 3kata wrap wenna fixed width */
+.wp-table thead th:nth-child(4)  { width: 95px; min-width: 95px; max-width: 95px; }
+.wp-table thead th:nth-child(13) { width: 140px; min-width: 140px; max-width: 140px; }
+.wp-table thead th:nth-child(14) { width: 150px; min-width: 150px; max-width: 150px; }
+
+/* Values wrap wenne na -> value podi nam column podi, loku nam column loku */
+.wp-table td {
+  white-space: nowrap;
+}
+
+/* Remarks wala deegha text ekak awoth wrap wenna */
+.wp-table td.left {
+  white-space: normal;
+  min-width: 120px;
+}
+
+.wp-table td.left { text-align: left; }
+
+/* Hama row ekatama ekama height ekak (image thiyena / nathi deka ma) */
+.wp-table tbody tr {
+  height: 106px;
+}
+.wp-table td.nowrap { white-space: nowrap; }
+
+.wp-badge {
+  display: inline-block;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.68rem;
+}
+.wp-badge.ok  { background: #d1f2e4; color: #047857; }
+.wp-badge.bad { background: #fde2e2; color: #b91c1c; }
+
+/* Yes / No icons */
+.wp-ic {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+.wp-ic.ok  { color: #047857; }
+.wp-ic.bad { color: #b91c1c; }
+
+/* pH / CL cell colours */
+.wp-table td.wp-ok  { background: #d1f2e4; color: #047857; font-weight: 700; }
+.wp-table td.wp-bad { background: #fde2e2; color: #b91c1c; font-weight: 700; }
+
+.wp-thumb {
+  display: block;
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  margin: 0 auto;
+}
+/* ===== PDF capture mode (Download PDF button) ===== */
+.report-sheet.pdf-mode {
+  width: 1100px;
+}
+
+.pdf-mode .wp-table-wrap {
+  overflow: visible;
+}
+
+.pdf-mode .wp-table {
+  font-size: 9px;
+}
+
+.pdf-mode .wp-table tbody tr {
+  height: 62px;
+}
+
+.pdf-mode .wp-thumb {
+  width: 72px;
+  height: 54px;
+}

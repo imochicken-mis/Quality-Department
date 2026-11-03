@@ -1,0 +1,118 @@
+/* Match the standard admin report heading colours. */
+.report-page .page-header-text h1 { color:#0f172a !important; }
+.report-page .page-header-text p { color:#2563eb !important; }
+/* Admin Operational Inspection report filters match the other report pages. */
+.report-page .filter-section.operational-report-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 16px 20px 22px;
+  border: 1px solid #cbdcff;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgba(23, 48, 83, .08);
+}
+.operational-report-tabs {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0 .25rem .45rem;
+  margin: 0 8px;
+}
+.operational-report-tabs .inspection-tab {
+  padding: .2rem .15rem .45rem;
+  margin-bottom: -.5rem;
+  font-size: .88rem;
+}
+.operational-report-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 20px;
+  margin: 0;
+}
+.operational-report-controls .form-group {
+  flex: 0 1 260px;
+  width: 260px;
+  min-width: 190px;
+  max-width: 100%;
+  margin: 0;
+}
+.operational-report-controls input,
+.operational-report-controls select {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+}
+.report-page .operational-report-controls #loadInspectionReportBtn {
+  appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 42px !important;
+  padding: .65rem 1.4rem !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: #251c5f !important;
+  color: #fff !important;
+  font: inherit !important;
+  font-size: .8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .6px !important;
+  line-height: 1.2 !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  flex-shrink: 0;
+}
+.report-page .operational-report-controls #loadInspectionReportBtn:hover { background: #251c5f !important; }
+.report-page .operational-report-controls #loadInspectionReportBtn:disabled { opacity: .65 !important; cursor: wait !important; }
+.report-page .birds-empty.operational-report-empty { margin: 0; min-height: 100px; box-sizing: border-box; font-size: .88rem; }
+.inspection-report-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  margin-top: 20px;
+  padding: 18px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #cbdcff;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(23, 48, 83, .08);
+}
+.inspection-report-body[hidden] { display: none; }
+.inspection-report-meta { margin: 0 0 12px; color: #475569; font-size: .84rem; }
+.inspection-report-table { font-size: 12px; color: #4f6785; }
+.inspection-report-table th, .inspection-report-table td { padding: 7px 9px; }
+.inspection-report-table td:nth-child(3) { white-space: pre-wrap; }
+.inspection-report-table td:nth-child(4) { text-align: center; font-weight: 700; }
+.inspection-report-table th.report-criteria-col { min-width: 240px; }
+.report-status { display: inline-block; min-width: 90px; padding: 4px 8px; border-radius: 6px; font-size: .88rem; font-weight: 700; }
+.report-status.ok { background: #dcfce7; color: #166534; }
+.report-status.bad { background: #fee2e2; color: #991b1b; }
+.report-status.na { background: #f1f5f9; color: #334155; }
+.inspection-report-table .report-status { min-width: 78px; padding: 3px 6px; font-size: 11px; }
+body.dark-mode .filter-section.operational-report-filter { background: #1e293b; border-color: #475569; }
+body.dark-mode .inspection-report-body { background: #1e293b; border-color: #475569; }
+body.dark-mode .operational-report-tabs { border-color: #475569; }
+body.dark-mode .inspection-report-meta { color: #cbd5e1; }
+@media (max-width: 700px) {
+  .report-page .filter-section.operational-report-filter { padding: 12px; }
+  .operational-report-tabs { justify-content: center; gap: 20px; }
+  .operational-report-controls { gap: 12px; }
+  .operational-report-controls .form-group { flex: 1 1 100%; width: 100%; }
+  .operational-report-controls .btn-report-load { align-self: flex-start; }
+}
+/* The shared report stylesheet gives .birds-empty display:flex; respect its hidden state after loading results. */
+.report-page .birds-empty.operational-report-empty[hidden] { display: none !important; }
+
+.report-page .inspection-report-table th { background:#eaf0f8 !important; color:#0f172a !important; border-color:#d7e2f3 !important; }
+
+/* Report-only table borders and square corners. */
+.report-page .inspection-report-body .inspection-table-wrap { border-radius:0; clip-path:none; }
+.report-page .inspection-report-table th,
+.report-page .inspection-report-table td { border-left:1px solid #d7e2f3; border-right:1px solid #d7e2f3; }

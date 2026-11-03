@@ -1,0 +1,41 @@
+/* ===== Return Summary page ===== */
+.rr-filter select#summaryWeek { min-width: 190px; }
+.rr-table.rs-table { min-width: 0; max-width: 760px; }
+.rs-table thead tr:nth-child(2) th { background: #fde68a; }
+body.dark-mode .rs-table thead tr:nth-child(2) th { background: #854d0e; color: #fef3c7; }
+/* Return Summary: use horizontal row separators only. */
+.report-page .rs-table {
+  border: 1px solid #cbd5e1;
+}
+.report-page .rs-table th,
+.report-page .rs-table td {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+}
+/* Keep vertical dividers only in the summary heading rows. */
+.report-page .rs-table thead th {
+  border-right: 1px solid #cbd5e1 !important;
+}
+.report-page .rs-table thead tr > :last-child {
+  border-right: 0 !important;
+}
+.report-page .rs-table tbody tr:last-child > *,
+.report-page .rs-table tfoot tr:last-child > * {
+  border-bottom: 0 !important;
+}
+body.dark-mode.report-page .rs-table th,
+body.dark-mode.report-page .rs-table td {
+  border-bottom-color: #475569 !important;
+  border-right-color: #475569 !important;
+}
+/* Return Summary: values stay centered; the representative name remains left aligned. */
+.report-page .rs-table :is(th, td) {
+  text-align: center;
+}
+.report-page .rs-table thead tr:first-child > th:first-child,
+.report-page .rs-table tbody td:first-child,
+.report-page .rs-table tfoot :is(th, td):first-child {
+  text-align: left;
+}

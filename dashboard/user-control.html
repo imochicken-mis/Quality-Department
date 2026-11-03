@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Control</title>
+  <link rel="stylesheet" href="../css/sidebar.css?v=3" />
+  <link rel="stylesheet" href="../css/dashboard.css?v=2" />
+  <link rel="stylesheet" href="../css/professional.css?v=16" />
+  <link rel="stylesheet" href="../css/user-control.css" />
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-layout">
+    <div id="sidebar-container"></div>
+    <main class="main-content">
+<header class="page-header">
+  <div class="page-header-text">
+    <h1>User Control</h1>
+    <p>Manage users, passwords, and page access</p>
+  </div>
+  <div class="header-actions">
+    <label class="switch" title="Theme">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider">
+        <div class="star star_1"></div>
+        <div class="star star_2"></div>
+        <div class="star star_3"></div>
+        <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+          <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path>
+        </svg>
+      </span>
+    </label>
+    <button class="Btn" id="sidebarLogout" type="button">
+      <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+      <div class="text">Logout</div>
+    </button>
+  </div>
+</header>
+      <section class="uc-card">
+        <div class="uc-tabs" role="tablist">
+          <button class="uc-tab active" id="usersTabButton" type="button" role="tab" aria-selected="true">Users</button>
+          <button class="uc-tab" id="accessTabButton" type="button" role="tab" aria-selected="false">Access Control</button>
+          <button class="uc-tab" id="activityTabButton" type="button" role="tab" aria-selected="false">Activity Report</button>
+        </div>
+        <div id="ucMessage" class="uc-message" role="status" aria-live="polite"></div>
+        <section id="usersPanel" class="uc-panel">
+          <div class="uc-toolbar"><input id="userSearch" type="search" placeholder="Search username or name" aria-label="Search users" /><button id="addUserButton" class="uc-primary" type="button">+ Add New User</button></div>
+          <div class="uc-table-wrap"><table class="uc-table">
+            <thead><tr><th>User Details</th><th>Username</th><th>Role</th><th>Account Status</th><th>Action</th></tr></thead>
+            <tbody id="usersTableBody"></tbody>
+          </table></div>
+        </section>
+        <section id="accessPanel" class="uc-panel" hidden>
+          <div class="uc-access-head"><label>Select user<select id="accessUser"><option value="">Select user</option></select></label><p>Tick the pages this user can open. Save to apply the changes.</p></div>
+          <div id="permissionList" class="uc-permissions"></div><button id="saveAccessButton" class="uc-primary" type="button" disabled>Save Access</button>
+        </section>
+
+        <section id="activityPanel" class="uc-panel" hidden>
+          <div class="uc-activity-filters">
+            <label>From date<input type="date" id="activityFromDate"></label>
+            <label>To date<input type="date" id="activityToDate"></label>
+            <label>User<select id="activityUserFilter"><option value="">All users</option></select></label>
+            <label>Action
+              <select id="activityActionFilter">
+                <option value="">All actions</option>
+                <option>Data saved</option>
+                <option>Profile changed</option>
+                <option>User added</option>
+                <option>User details changed</option>
+                <option>Password reset</option>
+                <option>User activated</option>
+                <option>User deactivated</option>
+                <option>User access changed</option>
+              </select>
+            </label>
+            <button id="loadActivityButton" class="uc-primary" type="button">Load Report</button>
+          </div>
+          <p id="activityMessage" class="uc-hint">Select filters and click Load Report.</p>
+          <div class="uc-table-wrap">
+            <table class="uc-table">
+              <thead><tr><th>Date / Time</th><th>User</th><th>Action</th><th>Section</th><th>Affected User</th><th>Details</th></tr></thead>
+              <tbody id="activityTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="userModal" class="uc-modal" hidden>
+    <div class="uc-modal-backdrop" data-close-modal></div>
+    <section class="uc-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button id="closeUserModal" class="uc-modal-close" type="button" aria-label="Close">×</button>
+      <div id="modalAvatar" class="uc-profile-avatar"></div>
+      <h2 id="modalTitle">User details</h2><p id="modalSubtitle" class="uc-modal-subtitle"></p>
+      <form id="userForm">
+        <label>Username<input id="userUsername" autocomplete="off" required /></label>
+        <label>Name<input id="userName" autocomplete="name" required /></label>
+        <label>Role<input id="userRole" autocomplete="off" required placeholder="e.g. User1" /></label>
+        <div class="uc-avatar-field"><label>Profile Picture</label><div id="userAvatarChoices" class="uc-avatar-choices"></div></div>
+        <div id="newPasswordField"><label>Initial password<input id="userPassword" type="password" minlength="6" autocomplete="new-password" /></label><small>Password is stored as a secure hash.</small></div>
+        <div class="uc-actions"><button id="saveUserButton" class="uc-primary" type="submit">Save User</button><button id="resetPasswordButton" class="uc-secondary" type="button">Set New Password</button><button id="toggleUserButton" class="uc-danger" type="button">Deactivate</button></div>
+        <div id="resetPasswordField" hidden><label>New password<input id="newPassword" type="password" minlength="6" autocomplete="new-password" /></label><div class="uc-actions"><button id="confirmPasswordButton" class="uc-primary" type="button">Save New Password</button><button id="cancelPasswordButton" class="uc-secondary" type="button">Cancel</button></div></div>
+        <p class="uc-hint">Owner account details cannot be edited here.</p>
+      </form>
+    </section>
+  </div>
+  <script src="../js/users.js"></script><script src="../js/sidebar.js?v=19"></script><script src="../js/user-control.js"></script>
+</body>
+</html>

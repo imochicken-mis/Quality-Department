@@ -1,0 +1,129 @@
+/* Birds Data Report: same look as the other admin reports (horizontal row lines, centred headings,
+   scrolling table with a fixed heading row). */
+/* Same sheet padding as the other report pages (1.5rem), so the table sits at the same gap inside the box */
+.birds-data-report-sheet { padding: 1.5rem; }
+
+.birds-data-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .85rem 1.5rem;
+  padding: 0 0 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: .86rem;
+}
+.birds-data-summary strong { color: #2563eb; font-weight: 700; }
+
+/* Table scrolls inside its own box (both ways); the heading row stays on top */
+.birds-data-table-wrap { overflow: auto; max-height: 70vh; border-radius: 8px; }
+
+/* Same table font and colours as the other admin reports (report-clean.css) */
+.birds-data-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+  color: #334155;
+  font-size: .8rem;
+}
+/* Overall look as the Sales Return report: blue-grey heading band, bold dark heading text,
+   body text #334155 at 0.8rem, roomy cell padding (report-clean.css padding) */
+.birds-data-table tbody td {
+  color: #334155;
+  font-size: .8rem;
+}
+.birds-data-table th,
+.birds-data-table td {
+  padding: .7rem .85rem;
+}
+.birds-data-table thead th {
+  background: #e8edf5;
+  color: #0f172a;
+  font-size: .78rem;
+  font-weight: 700;
+}
+.birds-data-table th,
+.birds-data-table td {
+  padding: .6rem .7rem;
+  text-align: center;
+  white-space: nowrap;
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+}
+.birds-data-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: normal;
+  border-right: 1px solid #cbd5e1 !important;
+}
+.birds-data-table thead th:last-child { border-right: 0 !important; }
+.birds-data-table td:nth-child(4) { text-align: left; }
+.birds-data-table tbody tr:last-child > * { border-bottom: 0 !important; }
+
+.birds-data-qty { color: #2563eb !important; font-weight: 700 !important; }
+.birds-data-empty { color: #94a3b8; }
+
+body.dark-mode .birds-data-summary { border-color: #475569; color: #cbd5e1; }
+body.dark-mode .birds-data-table { color: #e2e8f0; }
+body.dark-mode .birds-data-table th,
+body.dark-mode .birds-data-table td { border-bottom-color: #475569 !important; }
+body.dark-mode .birds-data-table thead th { background: #1e293b; color: #e2e8f0; border-right-color: #475569 !important; }
+
+/* Typography aligned with the shared admin-report table style. */
+.birds-data-table { font-family: Inter, sans-serif; }
+.birds-data-table tbody td { font-weight: 500; }
+.birds-data-table thead th { font-weight: 700; letter-spacing: 0; }
+
+/* Match the compact body typography used by the established report tables. */
+.birds-data-table tbody td {
+  font-size: .7125rem;
+  font-weight: 400;
+  color: #334155;
+}
+.birds-data-table tbody td.birds-data-qty {
+  font-size: .7125rem;
+  font-weight: 400 !important;
+  color: #334155 !important;
+}
+/* Complete thin perimeter around the Birds Data table. */
+.birds-data-table {
+  border: 1px solid #cbd5e1;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+body.dark-mode .birds-data-table { border-color: #475569; }
+/* Match the CCP table's visible square perimeter. */
+.report-page .birds-data-table-wrap,
+.report-page .birds-data-table {
+  border-radius: 0 !important;
+}
+.report-page .birds-data-table {
+  border: 1px solid #94a3b8 !important;
+}
+body.dark-mode.report-page .birds-data-table { border-color: #64748b !important; }
+/* Let the page handle vertical scrolling; keep only horizontal scrolling for wide data. */
+.birds-data-table-wrap {
+  max-height: none;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+/* Restore the table's original internal scroll and sticky header behaviour. */
+.birds-data-table-wrap {
+  max-height: 70vh;
+  overflow: auto;
+}
+/* The table wrapper owns scrolling; do not show a second outer report-card scrollbar. */
+.report-page #birdsReportSheet.birds-data-report-sheet {
+  overflow: visible;
+}
+/* Fit the internal table scroller in the remaining viewport so its bottom stays reachable. */
+.birds-data-table-wrap {
+  max-height: calc(100vh - 255px);
+  min-height: 0;
+}
+@media (max-width: 720px) {
+  .birds-data-table-wrap { max-height: calc(100vh - 220px); }
+}

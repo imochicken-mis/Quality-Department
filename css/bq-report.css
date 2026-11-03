@@ -1,0 +1,954 @@
+/* ============================================
+   BIRDS QUALITY REPORT PAGE
+   ============================================ */
+
+/* ===== Filter ===== */
+.filter-section {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  max-width: none;
+
+  /* box eka ethulata ida (date picker / buttons edge walata laga wenne na) */
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.1rem 1.4rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+/* ===== Download PDF / Save Remarks: filter row eke dakunu pette, podi size ekakin ===== */
+.filter-section {
+  flex-wrap: wrap;
+}
+
+.filter-section .report-print-bar {
+  margin-left: auto;          /* dakunu pettata */
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-section .btn-report-print,
+.filter-section .btn-report-remarks {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.7rem;
+  border-radius: 8px;
+  gap: 0.35rem;
+}
+
+.filter-section .report-print-bar svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* "Generated: ..." text eka meheta epa (id eka JS ekata thiyenawa) */
+.filter-section .report-generated {
+  display: none;
+}
+
+.filter-section .form-group {
+  flex: 1;
+  max-width: 260px;
+}
+
+.btn-report-load {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+
+.btn-report-load:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+}
+
+/* ===== Report area ===== */
+.report-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 0;
+}
+
+/* ===== Report sheet (printable area) ===== */
+.report-sheet {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+body.dark-mode .report-sheet {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+/* ===== Report header (ISO style) ===== */
+.report-head {
+  display: grid;
+  grid-template-columns: 130px 1fr 250px;
+  align-items: stretch;
+  border: 1.5px solid #334155;
+  margin-bottom: 0.8rem;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* ===== Title row — print eke PDF eka wage ===== */
+.report-title-row {
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+.report-head-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-right: 1.5px solid #334155;
+}
+
+.report-logo {
+  width: 84px;
+  height: auto;
+  max-height: 70px;
+  object-fit: contain;
+}
+
+.report-head-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+body.dark-mode .report-head-title { color: #f1f5f9; }
+
+/* Doc code mini table (top right) */
+.report-doc-table {
+  border-collapse: collapse;
+  font-size: 0.62rem;
+  width: 250px;
+}
+
+.report-doc-table td {
+  border: 1px solid #334155;
+  padding: 0.15rem 0.4rem;
+  color: #0f172a;
+}
+
+.report-doc-table td:first-child {
+  width: 42%;
+  background: #f1f5f9;
+  font-weight: 700;
+}
+
+.report-doc-table .doc-standard {
+  text-align: right;
+  font-weight: 600;
+  background: #f1f5f9;
+}
+
+body.dark-mode .report-doc-table td { color: #e2e8f0; }
+body.dark-mode .report-doc-table td:first-child,
+body.dark-mode .report-doc-table .doc-standard { background: #0f172a; }
+
+/* ===== Title row (Date/Batch | title | legend) ===== */
+.report-title-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.7rem;
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+}
+
+.report-date-batch {
+  display: flex;
+  gap: 1.2rem;
+  font-size: 0.82rem;
+  color: #0f172a;
+}
+
+body.dark-mode .report-date-batch { color: #e2e8f0; }
+
+.report-main-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+
+body.dark-mode .report-main-title { color: #f1f5f9; }
+
+.report-legend {
+  justify-self: end;
+  font-size: 0.75rem;
+  color: #0f172a;
+  border: 1px solid #334155;
+  padding: 0.25rem 0.6rem;
+}
+
+body.dark-mode .report-legend { color: #e2e8f0; }
+
+/* ===== Report table ===== */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+  min-width: 1150px;
+}
+
+.report-table th,
+.report-table td {
+  border: 1px solid #334155;
+  padding: 0.45rem 0.4rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.report-table thead th {
+  background: #eef2f7;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
+
+body.dark-mode .report-table thead th {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+.qp-group,
+.mort-group {
+  background: #dbeafe !important;
+}
+
+body.dark-mode .qp-group,
+body.dark-mode .mort-group {
+  background: #1e3a8a !important;
+  color: #ffffff !important;
+}
+
+.an-row th {
+  background: #f1f5f9 !important;
+  font-size: 0.62rem !important;
+  padding: 0.25rem 0.3rem !important;
+}
+
+body.dark-mode .an-row th {
+  background: #172033 !important;
+}
+
+.col-seno { width: 36px; }
+.col-remark { min-width: 130px; }
+
+/* Body rows */
+.report-table tbody td {
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+body.dark-mode .report-table tbody td {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+.report-table tbody tr:nth-child(even) td {
+  background: #f8fafc;
+}
+
+body.dark-mode .report-table tbody tr:nth-child(even) td {
+  background: #172033;
+}
+
+/* A / NA marked cells */
+.report-table td.mark-a {
+  background: rgba(16, 185, 129, 0.18) !important;
+  color: #059669 !important;
+  font-weight: 800;
+}
+
+.report-table td.mark-na {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #dc2626 !important;
+  font-weight: 800;
+}
+
+body.dark-mode .report-table td.mark-a {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #34d399 !important;
+}
+
+body.dark-mode .report-table td.mark-na {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
+}
+
+/* Remark input inside table */
+.remark-input {
+  width: 100%;
+  min-width: 120px;
+  padding: 0.35rem 0.5rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: #0f172a;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.remark-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+body.dark-mode .remark-input {
+  background: #0f172a;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+/* ===== Footer (signatures + ISO block) ===== */
+.report-foot {
+  margin-top: 1.2rem;
+}
+
+.report-foot-signs {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 2.8rem;      /* sign karanna ida: table eka ekka lines walata gap eka */
+  margin-bottom: 0.6rem;
+}
+
+.report-sign-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+body.dark-mode .report-sign-item { color: #cbd5e1; }
+
+.sign-line {
+  width: 180px;
+  height: 1px;
+  background: #94a3b8;
+  margin-bottom: 0.2rem;
+}
+
+.report-page-box {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #0f172a;
+  border: 1px solid #334155;
+  padding: 0.3rem 1rem;
+}
+
+body.dark-mode .report-page-box { color: #e2e8f0; }
+
+/* Footer roles table */
+.report-foot-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.68rem;
+}
+
+.report-foot-table td {
+  border: 1px solid #334155;
+  padding: 0.35rem 0.6rem;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+body.dark-mode .report-foot-table td { color: #e2e8f0; }
+
+.report-foot-table .foot-company {
+  width: 46%;
+  font-weight: 700;
+  background: #f8fafc;
+}
+
+body.dark-mode .report-foot-table .foot-company { background: #0f172a; }
+
+.report-generated {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-right: auto;
+  align-self: center;
+}
+
+/* ===== Action bar ===== */
+.report-print-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+
+.btn-report-print,
+.btn-report-remarks {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-report-print {
+  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+.btn-report-print:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
+}
+
+.btn-report-remarks {
+  color: #ffffff;
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.btn-report-remarks:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+}
+
+/* ===== PDF capture mode (used by Download PDF button) — sample PDF eka wage ===== */
+.report-sheet.pdf-mode {
+  background: #ffffff !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  width: 1000px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* Header box: logo | title | doc table */
+.report-sheet.pdf-mode .report-head {
+  height: 84px;
+  box-sizing: border-box;
+  grid-template-columns: 11.7% 1fr 22.4%;
+  border: 1.5px solid #1e293b !important;
+  margin-bottom: 14px;
+}
+.report-sheet.pdf-mode .report-head-logo { border-right: 1.5px solid #1e293b !important; }
+.report-sheet.pdf-mode .report-logo { width: 72px; height: 60px; object-fit: contain; }
+.report-sheet.pdf-mode .report-head-title { color: #0f172a !important; font-size: 15px; }
+.report-sheet.pdf-mode .report-doc-table {
+  width: 100%; height: 100%; font-size: 9.5px;
+  border-collapse: separate; border-spacing: 0;
+  border-left: 1px solid #1e293b;
+}
+.report-sheet.pdf-mode .report-doc-table td {
+  border: 0 !important;
+  border-bottom: 1px solid #1e293b !important;
+  border-right: 1px solid #1e293b !important;
+  color: #0f172a !important;
+  padding: 0 6px;
+  line-height: 14px;
+}
+.report-sheet.pdf-mode .report-doc-table td:last-child { border-right: 0 !important; }
+.report-sheet.pdf-mode .report-doc-table tr:last-child td { border-bottom: 0 !important; }
+.report-sheet.pdf-mode .report-doc-table td:first-child,
+.report-sheet.pdf-mode .report-doc-table .doc-standard { background: #f1f5f9 !important; }
+
+/* Date / Batch | Title | Legend */
+.report-sheet.pdf-mode .report-title-row { height: 30px; margin-bottom: 12px; }
+.report-sheet.pdf-mode .report-date-batch,
+.report-sheet.pdf-mode .report-main-title,
+.report-sheet.pdf-mode .report-legend { color: #0f172a !important; }
+.report-sheet.pdf-mode .report-legend { border: 1px solid #1e293b !important; }
+
+/* Main table */
+.report-sheet.pdf-mode .report-table {
+  min-width: 0 !important;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top: 1px solid #1e293b;
+  border-left: 1px solid #1e293b;
+  font-size: 10.5px;
+}
+.report-sheet.pdf-mode .report-table th,
+.report-sheet.pdf-mode .report-table td {
+  border: 0 !important;
+  border-right: 1px solid #1e293b !important;
+  border-bottom: 1px solid #1e293b !important;
+  color: #0f172a !important;
+  background: #ffffff !important;
+  padding: 5px 4px !important;
+  line-height: 14px;
+  word-wrap: break-word;
+}
+.report-sheet.pdf-mode .report-table thead th {
+  background: #eef2f7 !important;
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.report-sheet.pdf-mode .qp-group,
+.report-sheet.pdf-mode .mort-group { background: #eef2f7 !important; color: #0f172a !important; }
+
+.report-sheet.pdf-mode .report-table tbody td {
+  height: 40px;
+  font-size: 10.5px;
+  font-weight: 500;
+  background: #ffffff !important;
+}
+.report-sheet.pdf-mode .report-table td.mark-a {
+  background: #c9f0de !important;
+  color: #047857 !important;
+  font-weight: 800;
+}
+.report-sheet.pdf-mode .report-table td.mark-na {
+  background: #fbdada !important;
+  color: #b91c1c !important;
+  font-weight: 800;
+}
+.report-sheet.pdf-mode .remark-text {
+  display: block;
+  text-align: left;
+  font-size: 10px;
+  color: #0f172a;
+  padding-left: 4px;
+}
+
+/* Footer */
+.report-sheet.pdf-mode .report-foot { margin-top: 18px; }
+.report-sheet.pdf-mode .sign-line { background: #94a3b8; }
+.report-sheet.pdf-mode .report-sign-item,
+.report-sheet.pdf-mode .report-page-box { color: #0f172a !important; }
+.report-sheet.pdf-mode .report-page-box { border: 1px solid #1e293b !important; }
+.report-sheet.pdf-mode .report-foot-table {
+  border-collapse: separate; border-spacing: 0;
+  border-top: 1px solid #1e293b;
+  border-left: 1px solid #1e293b;
+}
+.report-sheet.pdf-mode .report-foot-table td {
+  border: 0 !important;
+  border-right: 1px solid #1e293b !important;
+  border-bottom: 1px solid #1e293b !important;
+  color: #0f172a !important;
+  line-height: 14px;
+}
+.report-sheet.pdf-mode .report-foot-table .foot-company { background: #f8fafc !important; }
+
+/* ============================================
+   PRINT — A4 LANDSCAPE
+   ============================================ */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 6mm;
+  }
+
+  body.dashboard-body {
+    background: #ffffff !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .dashboard-layout {
+    display: block !important;
+  }
+
+  /* Hide everything except the report sheet */
+  .sidebar,
+  .sidebar-toggle,
+  .sidebar-overlay,
+  .sidebar-toggle-arrow,
+  .page-header,
+  .filter-section,
+  .report-print-bar,
+  .no-print,
+  #reportEmpty,
+  #reportLoading {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .report-area {
+    display: block !important;
+  }
+
+  .report-sheet {
+    width: 1000px !important;
+    margin: 0 auto !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Table heading eka dewani page ekata repeat wenna epa */
+  .report-table thead {
+    display: table-row-group;
+  }
+
+  .report-head {
+    border-color: #000 !important;
+  }
+
+  .report-head-title,
+  .report-doc-table td,
+  .report-date-batch,
+  .report-main-title,
+  .report-legend,
+  .report-sign-item,
+  .report-page-box,
+  .report-foot-table td {
+    color: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report-doc-table td:first-child,
+  .report-doc-table .doc-standard {
+    background: #f1f5f9 !important;
+  }
+
+  .report-foot-table .foot-company {
+    background: #f8fafc !important;
+  }
+
+  .report-table {
+    min-width: 0 !important;
+    width: 100% !important;
+    font-size: 9px !important;
+  }
+
+  .report-table th,
+  .report-table td {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    background: #ffffff !important;
+    padding: 3px 4px !important;
+    line-height: 1.25 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report-table thead th {
+    background: #eef2f7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .qp-group,
+  .mort-group {
+    background: #dbeafe !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report-table td.mark-a {
+    background: rgba(16, 185, 129, 0.25) !important;
+    color: #047857 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report-table td.mark-na {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #b91c1c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .remark-input {
+    border: none !important;
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    resize: none;
+  }
+
+  .report-foot {
+    margin-top: 0.8rem !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .report-head {
+    margin-bottom: 0.6rem !important;
+  }
+
+  /* Print weddi "Remark..." placeholder eka pennanna epa */
+  .remark-input::placeholder {
+    color: transparent !important;
+  }
+
+  .report-logo {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+/* ===== Loading: same look on every report page ===== */
+.birds-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  background: #ffffff;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
+}
+.birds-loading p { margin: 0; font-size: 0.9rem; }
+
+.loading-spinner {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0.8rem;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: rpSpin 0.8s linear infinite;
+}
+@keyframes rpSpin { to { transform: rotate(360deg); } }
+
+body.dark-mode .birds-loading {
+  background: #1e293b;
+  border-color: #334155;
+  color: #94a3b8;
+}
+body.dark-mode .loading-spinner {
+  border-color: #334155;
+  border-top-color: #2563eb;
+}
+/* ===== Empty state: same look on every report page ===== */
+.birds-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  background: #ffffff;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
+}
+.birds-empty p { margin: 0; font-size: 0.9rem; color: inherit; }
+.birds-empty svg { display: none; }   /* anith reports walata icon eka na */
+
+body.dark-mode .birds-empty {
+  background: #1e293b;
+  border-color: #334155;
+  color: #94a3b8;
+}
+.report-remark-text {
+  display: inline-block;
+  min-height: 1.2em;
+  color: #475569;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+body.dark-mode .report-remark-text { color: #cbd5e1; }
+
+
+/* Keep the page count readable inside its badge */
+.report-page-box {
+  min-width: 90px;
+  box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Export icon preview: action wiring will be added with the shared export menu */
+.report-export-trigger {
+  margin-left: auto;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid #cbdaf0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #1e3a8a;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+.report-export-trigger:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+  transform: translateY(-1px);
+}
+.report-export-trigger:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .18);
+  outline-offset: 2px;
+}
+body.dark-mode .report-export-trigger {
+  border-color: #475569;
+  background: #172235;
+  color: #93c5fd;
+}
+body.dark-mode .report-export-trigger:hover { background: #22304a; }
+@media (max-width: 720px) {
+  .report-export-trigger { margin-left: 0; }
+}
+
+.report-export-wrap {
+  position: relative;
+  margin-left: auto;
+}
+.report-export-wrap .report-export-trigger { margin-left: 0; }
+.report-export-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  width: 172px;
+  padding: 6px;
+  border: 1px solid #d7e2f3;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(15, 35, 70, .16);
+}
+.report-export-menu[hidden] { display: none; }
+.report-export-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #334155;
+  font: inherit;
+  font-size: .78rem;
+  text-align: left;
+  cursor: pointer;
+}
+.report-export-option:hover { background: #eff6ff; color: #1e3a8a; }
+body.dark-mode .report-export-menu { background: #172235; border-color: #475569; }
+body.dark-mode .report-export-option { color: #e2e8f0; }
+body.dark-mode .report-export-option:hover { background: #22304a; color: #bfdbfe; }
+@media (max-width: 720px) {
+  .report-export-wrap { margin-left: 0; }
+  .report-export-wrap .report-export-trigger { width: 36px; min-width: 36px; }
+}
+
+/* Keep the export menu above the report sheet */
+.report-page .filter-section {
+  position: relative;
+  z-index: 10;
+  overflow: visible;
+}
+.report-page .report-area {
+  position: relative;
+  z-index: 1;
+}
+/* Compact export button using the Load Report palette */
+.report-export-trigger {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, .28);
+}
+.report-export-trigger:hover {
+  border-color: transparent;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+body.dark-mode .report-export-trigger {
+  border-color: transparent;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+}
+body.dark-mode .report-export-trigger:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+@media (max-width: 720px) {
+  .report-export-wrap .report-export-trigger {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+  }
+}
+/* Match the final Load Report button colour */
+.report-export-trigger,
+body.dark-mode .report-export-trigger {
+  background: #251c5f;
+  color: #ffffff;
+  box-shadow: none;
+}
+.report-export-trigger:hover,
+body.dark-mode .report-export-trigger:hover {
+  background: #251c5f;
+  border-color: transparent;
+  box-shadow: none;
+}

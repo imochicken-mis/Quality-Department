@@ -1,0 +1,96 @@
+/* REJECTION DATA INPUT */
+#rejDate {
+  max-width: 220px;
+}
+.rej-head, .rej-row {
+  display: grid;
+  grid-template-columns: 36px minmax(220px, 2.2fr) minmax(110px, 0.8fr) minmax(180px, 2fr) 40px;
+  gap: 0.6rem;
+  align-items: center;
+}
+.rej-head {
+  padding: 0 0.2rem 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.rej-row { margin-bottom: 0.6rem; }
+.rej-row .rej-no { font-weight: 700; color: #64748b; text-align: center; }
+.rej-row input {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #0f172a;
+  background: #fff;
+}
+.rej-row input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+.rej-row input.rej-bad { border-color: #ef4444; background: #fef2f2; }
+
+.rej-del {
+  width: 32px; height: 32px;
+  border: 1.5px solid #fecaca; border-radius: 50%;
+  background: #fee2e2; color: #b91c1c;
+  font-size: 1.1rem; font-weight: 700; line-height: 1;
+  cursor: pointer; padding: 0;
+}
+.rej-del:hover { background: #fecaca; }
+.rej-del:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.rej-add-row {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  margin-top: 0.4rem; padding: 0.55rem 1.1rem;
+  width: fit-content;
+  border: 1.5px dashed #2563eb; border-radius: 10px;
+  background: #eff6ff; color: #2563eb;
+  font-size: 0.85rem; font-weight: 700; font-family: inherit; cursor: pointer;
+}
+.rej-add-row:hover { background: #2563eb; color: #fff; }
+.rej-plus {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #2563eb; color: #fff; font-size: 1rem; line-height: 1;
+}
+.rej-add-row:hover .rej-plus { background: #fff; color: #2563eb; }
+
+.rej-total { margin: 1rem 0 0; font-size: 0.9rem; font-weight: 600; color: #334155; text-align: right; }
+
+body.dark-mode .rej-head, body.dark-mode .rej-total { color: #cbd5e1; }
+body.dark-mode .rej-row input { background: #1e293b; color: #e2e8f0; border-color: #475569; }
+body.dark-mode .rej-row input.rej-bad { background: #450a0a; border-color: #ef4444; }
+body.dark-mode .rej-add-row { background: #1e3a8a; color: #bfdbfe; border-color: #3b82f6; }
+
+@media (max-width: 768px) {
+  .rej-head { display: none; }
+  .rej-row { grid-template-columns: 30px 1fr 90px 36px; }
+  .rej-row .rej-remark { grid-column: 2 / 4; }
+}
+
+/* Item dropdown (select) - same look as the inputs */
+.rej-row select {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #0f172a;
+  background: #fff;
+  cursor: pointer;
+}
+.rej-row select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+.rej-row select.rej-bad { border-color: #ef4444; background: #fef2f2; }
+body.dark-mode .rej-row select { background: #1e293b; color: #e2e8f0; border-color: #475569; }
+body.dark-mode .rej-row select.rej-bad { background: #450a0a; border-color: #ef4444; }

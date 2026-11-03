@@ -1,0 +1,180 @@
+#reportTableWrap {
+  display: block;
+  overflow-x: auto;
+  margin-top: 20px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #d8e1ee;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(20, 40, 70, 0.08);
+}
+
+.customer-complaint-report-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #172033;
+  font-size: 13px;
+}
+
+.customer-complaint-report-table th,
+.customer-complaint-report-table td {
+  padding: 8px 7px;
+  border: 1px solid #7f8790;
+  text-align: center;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+.customer-complaint-report-table th {
+  background: #f6cfb5;
+  color: #111827;
+  font-weight: 700;
+}
+
+.customer-complaint-report-table th:nth-child(1),
+.customer-complaint-report-table td:nth-child(1) {
+  width: 52px;
+}
+
+.customer-complaint-report-table th:nth-child(2),
+.customer-complaint-report-table td:nth-child(2),
+.customer-complaint-report-table th:nth-child(3),
+.customer-complaint-report-table td:nth-child(3) {
+  width: 88px;
+}
+
+.customer-complaint-report-table th:nth-child(4),
+.customer-complaint-report-table td:nth-child(4) {
+  width: 145px;
+}
+
+.customer-complaint-report-table th:nth-child(5),
+.customer-complaint-report-table td:nth-child(5) {
+  width: 105px;
+}
+
+.customer-complaint-report-table th:nth-child(6),
+.customer-complaint-report-table td:nth-child(6) {
+  width: 160px;
+}
+
+.customer-complaint-report-table th:nth-child(7),
+.customer-complaint-report-table td:nth-child(7) {
+  width: 360px;
+  text-align: left;
+}
+
+.customer-complaint-report-table th:nth-child(8),
+.customer-complaint-report-table td:nth-child(8) {
+  width: 90px;
+}
+
+.customer-complaint-report-table th:nth-child(9),
+.customer-complaint-report-table td:nth-child(9),
+.customer-complaint-report-table th:nth-child(10),
+.customer-complaint-report-table td:nth-child(10),
+.customer-complaint-report-table th:nth-child(11),
+.customer-complaint-report-table td:nth-child(11) {
+  width: 90px;
+}
+
+.complaint-status {
+  display: inline-flex;
+  min-width: 24px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.complaint-status.correct {
+  color: #15803d;
+  background: #dcfce7;
+}
+
+.complaint-status.wrong {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+body.dark-mode #reportTableWrap {
+  background: #1e293b;
+  border-color: #475569;
+}
+
+body.dark-mode .customer-complaint-report-table {
+  color: #e2e8f0;
+}
+
+body.dark-mode .customer-complaint-report-table th {
+  background: #563c31;
+  color: #fff;
+}
+
+body.dark-mode .customer-complaint-report-table td {
+  border-color: #64748b;
+}
+
+@media (max-width: 700px) {
+  #reportTableWrap {
+    padding: 6px;
+  }
+}
+.customer-complaint-report-table th {
+  text-align: center !important;
+  vertical-align: middle;
+}
+
+.customer-complaint-report-table td:nth-child(5),
+.customer-complaint-report-table td:nth-child(6) {
+  text-align: left;
+}
+.customer-complaint-report-table td:nth-child(5) {
+  text-align: center;
+}
+.category-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.category-filter-icon {
+  position: relative;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.category-filter-icon svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.category-filter-icon select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.category-filter-icon select,
+.category-filter-icon select option {
+  font-family: Inter, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #172033;
+}
+
+.category-filter-icon select option {
+  background-color: #fff;
+}

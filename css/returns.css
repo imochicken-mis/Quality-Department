@@ -1,0 +1,145 @@
+/* SALES RETURNS - extends birds.css */
+.filter-section.returns-filter { max-width: 560px; display: flex; gap: 1rem; flex-wrap: wrap; }
+.returns-filter .form-group { flex: 1; min-width: 180px; }
+.returns-filter select {
+  width: 100%; padding: 0.6rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px;
+  font-size: 0.9rem; font-weight: 500; font-family: inherit; color: #0f172a; background: #fff;
+}
+.returns-table td, .returns-table th { text-align: center; }
+.returns-table td:nth-child(3) { text-align: left; }
+.ret-input {
+  width: 90px; padding: 0.4rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 8px;
+  font-size: 0.85rem; font-family: inherit; text-align: left; background: #fff; color: #0f172a;
+}
+.ret-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+.ret-bal.ok { color: #15803d; font-weight: 700; }
+.ret-bal.bad { color: #b91c1c; font-weight: 700; }
+.returns-table tfoot td { font-weight: 700; font-size: 0.80rem; background: #e8edf5; padding: 1rem 0.75rem; height: 56px; }
+.returns-extra { display: flex; gap: 1rem; flex-wrap: wrap; margin: 0 0 0.9rem; flex-shrink: 0; }
+.returns-extra .form-group { flex: 1; min-width: 150px; }
+.returns-extra label { font-size: 0.72rem; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: .3rem; }
+.returns-extra input {
+  width: 100%; padding: 0.75rem 1rem; border: 2px solid #94a3b8; border-radius: 10px;
+  font-size: 1rem; font-weight: 600; font-family: inherit; color: #0f172a; background: #f8fafc;
+}
+.returns-extra input::placeholder { color: #64748b; font-weight: 500; }
+.returns-extra input:focus { outline: none; border-color: #2563eb; background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,.18); }
+.returns-extra label { color: #1e293b; }
+body.dark-mode .ret-input, body.dark-mode .returns-extra input, body.dark-mode .returns-filter select { background: #1e293b; color: #e2e8f0; border-color: #475569; }
+body.dark-mode .returns-table tfoot td { background: #0f172a; }
+.ret-select { width: 220px; text-align: left; cursor: pointer; }
+/* Already saved (gray) */
+.returns-table tr.ret-saved .ret-input,
+.returns-extra.ret-saved input {
+  background: #e5e7eb; color: #64748b; border-color: #cbd5e1;
+}
+body.dark-mode .returns-table tr.ret-saved .ret-input,
+body.dark-mode .returns-extra.ret-saved input {
+  background: #334155; color: #94a3b8; border-color: #475569;
+}
+.ret-saved-note {
+  display: none; flex-shrink: 0; margin: 0.75rem 0 0; text-align: left;
+  font-size: 0.78rem; font-weight: 600; color: #15803d;
+}
+body.dark-mode .ret-saved-note { color: #4ade80; }
+/* Rework lines: one returned item -> several new items */
+.rw-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 40px;
+}
+.rw-line + .rw-line { margin-top: 0.4rem; }
+.rw-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  line-height: 1;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.rw-add {
+  border: 1.5px solid #2563eb;
+  background: #eff6ff;
+  color: #2563eb;
+}
+.rw-add:hover { background: #2563eb; color: #fff; }
+.rw-del {
+  border: 1.5px solid #fecaca;
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.rw-del:hover { background: #fecaca; }
+body.dark-mode .rw-add { background: #1e3a8a; color: #bfdbfe; border-color: #3b82f6; }
+body.dark-mode .rw-del { background: #7f1d1d; color: #fecaca; border-color: #991b1b; }
+/* locked (already saved) */
+.ret-input:disabled, .returns-extra input:disabled, .rw-btn:disabled { cursor: not-allowed; }
+.rw-btn:disabled { opacity: 0.35; }
+/* Align the return header fields to one clean three-column grid. */
+.returns-extra {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+.returns-extra .form-group { min-width: 0; }
+.returns-extra input { box-sizing: border-box; }
+@media (max-width: 760px) {
+  .returns-extra { grid-template-columns: 1fr; gap: 10px; }
+}
+/* Keep the decision columns wide enough for their controls and header text. */
+.returns-table { table-layout: fixed; min-width: 1320px; }
+.birds-table-scroll { overflow-x: auto; }
+.returns-table .rw-cell { overflow: visible; }
+/* Explicit column map: each header and control shares one fixed column. */
+.returns-table col.ret-col-number { width: 3%; }
+.returns-table col.ret-col-batch { width: 8%; }
+.returns-table col.ret-col-item { width: 11%; }
+.returns-table col.ret-col-qty { width: 8%; }
+.returns-table col.ret-col-cool { width: 11%; }
+.returns-table col.ret-col-rework { width: 11%; }
+.returns-table col.ret-col-rework-item { width: 26%; }
+.returns-table col.ret-col-rejection { width: 11%; }
+.returns-table col.ret-col-balance { width: 11%; }
+.returns-table td:nth-child(6) .rw-line,
+.returns-table td:nth-child(7) .rw-line { width: 100%; justify-content: center; }
+.returns-table td:nth-child(7) .ret-select { width: min(220px, calc(100% - 34px)); }
+/* Headings centred over their columns, so the boxes below line up under them */
+/* Batch No, Qty and Balance values centred in their columns */
+.returns-table td:nth-child(2),
+.returns-table td:nth-child(2) > *,
+.returns-table td:nth-child(4),
+.returns-table td:nth-child(4) > *,
+.returns-table td:nth-child(9),
+.returns-table td:nth-child(9) > * {
+  text-align: center !important;
+  justify-content: center;
+}
+.returns-table thead th,
+.returns-table thead th > * {
+  text-align: center !important;
+  justify-content: center;
+}
+/* Same box size for the quantity boxes (Cool Room, Rework, Rejection) so the row looks even */
+.returns-table td:nth-child(5) .ret-input,
+.returns-table td:nth-child(6) .ret-input,
+.returns-table td:nth-child(8) .ret-input {
+  width: calc(100% - 12px);
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+}
+/* Item To Be Rework box: a bit narrower than the column, same height as the quantity boxes */
+.returns-table td:nth-child(7) .ret-select {
+  height: 40px;
+  padding: 6px 8px;
+  width: calc(100% - 12px);
+}

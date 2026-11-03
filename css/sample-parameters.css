@@ -1,0 +1,131 @@
+.sample-parameter-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  border: 1px solid #d8e1ee;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(20, 40, 70, 0.08);
+}
+
+.sample-parameter-table {
+  width: max-content; 
+  min-width: 1050px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #172033;
+  font-size: 13px;
+}
+
+.sample-parameter-table th,
+.sample-parameter-table td {
+  padding: 6px 8px;
+  border: 1px solid #d4deeb;
+  vertical-align: middle;
+}
+
+.sample-parameter-table th {
+  background: #eaf0f7;
+  color: #172033;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.sample-parameter-table td {
+  text-align: center;
+}
+
+.sample-parameter-table th:first-child,
+.sample-parameter-table td:first-child {
+  width: 260px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.sample-parameter-table th:nth-child(2),
+.sample-parameter-table td:nth-child(2),
+.sample-parameter-table th:nth-child(3),
+.sample-parameter-table td:nth-child(3),
+.sample-parameter-table th:nth-child(4),
+.sample-parameter-table td:nth-child(4) {
+  width: 190px;
+}
+
+.sample-parameter-table input[type="number"] {
+  box-sizing: border-box;
+  width: 90px;
+  max-width: 100%;
+  min-height: 32px;
+  padding: 8px 10px;
+  border: 1px solid #d4deeb;
+  border-radius: 9px;
+  background: #fff;
+  color: #172033;
+  font: inherit;
+  text-align: center;
+}
+
+.sample-parameter-table input[type="number"]:focus {
+  outline: none;
+  border-color: #3978f6;
+  box-shadow: 0 0 0 3px rgba(57, 120, 246, 0.12);
+}
+
+.sample-parameter-table output {
+  display: inline-block;
+  min-width: 44px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #172033;
+  font-weight: 700;
+}
+
+#sampleParametersMessage {
+  margin-top: 16px;
+}
+
+body.dark-mode .sample-parameter-table-wrap {
+  background: #1e293b;
+  border-color: #475569;
+}
+
+body.dark-mode .sample-parameter-table {
+  color: #e2e8f0;
+}
+
+body.dark-mode .sample-parameter-table th {
+  background: #334155;
+  color: #f8fafc;
+}
+
+body.dark-mode .sample-parameter-table td {
+  border-color: #475569;
+}
+
+body.dark-mode .sample-parameter-table input[type="number"] {
+  background: #0f172a;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+body.dark-mode .sample-parameter-table output {
+  background: #334155;
+  color: #f8fafc;
+}
+#sampleMonth {
+  width: 240px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+/* On the input page, keep the table directly on the page background. */
+.dashboard-body:not(.report-page) .sample-parameter-table-wrap {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body.dark-mode.dashboard-body:not(.report-page) .sample-parameter-table-wrap {
+  background: transparent;
+}

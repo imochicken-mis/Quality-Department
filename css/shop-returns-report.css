@@ -1,0 +1,38 @@
+/* SHOP RETURNS REPORT - filter/loading/.report-sheet styles come from bq-report.css */
+.filter-section.rr-filter { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1rem; }
+.rr-filter select {
+  padding: 0.6rem 0.9rem; border: 1.5px solid #e2e8f0; border-radius: 10px; min-width: 200px;
+  font-size: 0.9rem; font-weight: 500; font-family: inherit; color: #0f172a; background: #fff;
+}
+
+.rr-summary { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 0 0 0.75rem; padding: 0.7rem 1rem;
+  background: #e8edf5; border-radius: 10px; font-size: 0.82rem; color: #334155; }
+.rr-summary b { margin-left: 0.25rem; color: #0f172a; }
+.rr-summary b.bad { color: #b91c1c; }
+.rr-summary b.ok { color: #15803d; }
+
+.rr-table-wrap { overflow-x: auto; }
+.rr-table { border-collapse: collapse; font-size: 0.74rem; color: #0f172a; width: 100%; min-width: 1700px; }
+.rr-table th, .rr-table td {
+  border: 1px solid #334155; padding: 0.35rem 0.5rem; text-align: center; vertical-align: middle;
+  background: #fff; white-space: nowrap;
+}
+.rr-table thead th { background: #eef2f7; font-weight: 700; white-space: normal; }
+.rr-table td.rr-left { text-align: left; }
+.rr-table td.rr-num { text-align: right; }
+.rr-table td.rr-date { font-weight: 700; }
+.rr-table .rr-no { color: #94a3b8; }
+.rr-table td.rr-bad { background: #ef4444 !important; color: #fff !important; font-weight: 800; }
+.rr-table td.rr-ok { color: #15803d; font-weight: 700; }
+.rr-table tfoot td { background: #dbe4f0; font-weight: 800; }
+
+body.dark-mode .rr-filter select { background: #0f172a; color: #e2e8f0; border-color: #475569; }
+body.dark-mode .rr-summary { background: #0f172a; color: #cbd5e1; }
+body.dark-mode .rr-summary b { color: #e2e8f0; }
+body.dark-mode .rr-table th, body.dark-mode .rr-table td { background: #1e293b; color: #e2e8f0; border-color: #475569; }
+body.dark-mode .rr-table thead th, body.dark-mode .rr-table tfoot td { background: #0f172a; }
+body.dark-mode .rr-table td.rr-ok { color: #4ade80; }
+
+.rr-table thead th.rr-group { background: #dbe4f0; }
+body.dark-mode .rr-table thead th.rr-group { background: #1e293b; }
+.rr-table td.rr-wrap { white-space: normal; text-align: left; min-width: 180px; }
