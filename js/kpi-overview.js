@@ -1,8 +1,12 @@
 // Shows the selected month's KPI value, standard and criteria figures on each overview tile
 (function () {
-  const monthInput = document.getElementById('overviewMonth');
-  const now = new Date();
-  monthInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+const monthInput = document.getElementById('overviewMonth');
+const now = new Date();
+const currentMonth =
+  `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+monthInput.value =
+  localStorage.getItem('kpiOverviewMonth') || currentMonth;
 
   // Name of each KPI's two figures, and the field names each route returns for them
   const FIGURES = {
@@ -49,16 +53,22 @@
       if (!value || card.querySelector('.kpi-mini-donut')) return;
       const n = value.dataset.kpi;
       if (!DAILY_ACTIONS[n]) return;
-      const donut = document.createElement('span');
-      donut.className = 'kpi-mini-donut';
+      const donut = document.createElement('div');
+      donut.className = 'kpi-passfail-bar';
       donut.dataset.kpiDonut = n;
-      donut.innerHTML = '<strong>–</strong><small>Pass / Fail</small>';
+      donut.innerHTML = `
+        <strong>–</strong>
+        <div class="kpi-passfail-track">
+          <i class="pass"></i>
+          <i class="fail"></i>
+        </div>
+      `;
       card.appendChild(donut);
     });
   }
 
   async function updateMiniDonut(n, month) {
-    const donut = document.querySelector(`.kpi-mini-donut[data-kpi-donut="${n}"]`);
+    const donut = document.querySelector(`.kpi-passfail-bar[data-kpi-donut="${n}"]`);
     if (!donut) return;
     try {
       const response = await fetch(`${API_URL}?action=${DAILY_ACTIONS[n]}&month=${month}&_r=${Date.now()}`, { cache: 'no-store' });
@@ -73,10 +83,21 @@
       });
       const total = pass + fail;
       const pct = total ? pass / total * 100 : 0;
-      donut.style.setProperty('--kpi-donut-pct', pct + '%');
-      donut.innerHTML = total
-        ? `<strong>${pass}</strong><small>Pass / ${fail} Fail</small>`
-        : '<strong>–</strong><small>No day data</small>';
+      donut.style.setProperty('--kpi-pass-pct', pct + '%');
+
+      donut.dataset.tooltip = total
+        ? `Pass Dates: ${pass}   |   Fail Dates: ${fail}`
+        : 'No day data';
+
+donut.innerHTML = total
+  ? `
+    <strong>${total}</strong>
+    <div class="kpi-passfail-track">
+      <i class="pass"></i>
+      <i class="fail"></i>
+    </div>
+  `
+  : `<strong>–</strong>`;
     } catch (_) {
       donut.innerHTML = '<strong>–</strong><small>No day data</small>';
       donut.style.setProperty('--kpi-donut-pct', '0%');
@@ -147,6 +168,17 @@ if (detail) {
     });
   }
 
-  monthInput.addEventListener('change', loadValues);
+  monthInput.addEventListener('change', () => {
+  localStorage.setItem('kpiOverviewMonth', monthInput.value);
+  loadValues();
+});
   loadValues();
 })();
+const focusBtn = document.getElementById('kpiFocusBtn');
+
+focusBtn?.addEventListener('click', () => {
+  document.body.classList.toggle('kpi-focus-mode');
+
+  focusBtn.textContent =
+    document.body.classList.contains('kpi-focus-mode') ? '⛶' : '⛶';
+});

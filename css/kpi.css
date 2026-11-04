@@ -378,37 +378,88 @@ padding:2rem 1rem 1rem;position:relative;padding:1.25rem}.kpi-detail-page #kpi1C
   100%{opacity:.45}
 }
 
-/* Pass/Fail date donut shown inside KPI Overview cards (KPI 02–06). */
 .kpi-mini-donut{
   position:relative;
   order:0;
-  width:72px;
-  height:72px;
+  width:96px;
+  height:96px;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:1px;
-  margin-top:.35rem;
+  margin:1rem auto .5rem;
+  border:4px solid rgba(255,255,255,.9);
   border-radius:50%;
-  background:conic-gradient(#16a34a var(--kpi-donut-pct,0%),#ef4444 0);
-  box-shadow:0 5px 14px rgba(15,23,42,.14);
+  background:
+    conic-gradient(
+      #16a34a var(--kpi-donut-pct,0%),
+      #ef4444 0
+    );
+  box-shadow:
+    0 8px 18px rgba(15,23,42,.18),
+    0 0 0 5px rgba(37,99,235,.08);
 }
+
 .kpi-mini-donut::after{
   content:'';
   position:absolute;
-  width:50px;
-  height:50px;
+  width:68px;
+  height:68px;
   border-radius:50%;
   background:#fff;
+  box-shadow:inset 0 2px 5px rgba(15,23,42,.08);
 }
-.kpi-mini-donut strong,.kpi-mini-donut small{position:relative;z-index:1}
-.kpi-mini-donut strong{color:#0f2f66;font:800 .8rem Inter,sans-serif}
+
+.kpi-mini-donut strong{
+  position:relative;
+  z-index:1;
+  color:#0f2f66;
+  font:900 1.15rem Inter,sans-serif;
+  text-shadow:0 1px 1px rgba(15,23,42,.08);
+}
 .kpi-mini-donut small{max-width:64px;color:#64748b;font:700 .48rem Inter,sans-serif;text-align:center;white-space:nowrap}
 .kpi-tile.is-loading .kpi-mini-donut{visibility:hidden}
-body.dark-mode .kpi-mini-donut::after{background:#1e293b}
+body.dark-mode .kpi-mini-donut::after{
+  background:#172033;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.25);
+}
 body.dark-mode .kpi-mini-donut strong{color:#dbeafe}
 body.dark-mode .kpi-mini-donut small{color:#94a3b8}
+
+.kpi-mini-donut::before{
+  content:attr(data-tooltip);
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 12px);
+  z-index:20;
+  min-width:150px;
+  padding:10px 13px;
+  border:1px solid rgba(255,255,255,.45);
+  border-radius:12px;
+  background:rgba(255,255,255,.72);
+  box-shadow:0 10px 28px rgba(15,23,42,.2);
+  backdrop-filter:blur(14px);
+  color:#0f2f66;
+  font:700 .68rem Inter,sans-serif;
+  text-align:center;
+  white-space:nowrap;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translate(-50%,8px);
+  transition:opacity .2s ease, transform .2s ease;
+}
+
+.kpi-mini-donut:hover::before{
+  opacity:1;
+  visibility:visible;
+  transform:translate(-50%,0);
+}
+
+body.dark-mode .kpi-mini-donut::before{
+  background:rgba(15,23,42,.78);
+  border-color:rgba(148,163,184,.3);
+  color:#dbeafe;
+}
 
 /* Keep the whole overview tile in skeleton state until its KPI request finishes. */
 .kpi-tile.is-loading{
@@ -447,5 +498,139 @@ body.dark-mode .kpi-mini-donut small{color:#94a3b8}
   background:#e2e8f0;
   box-shadow:0 122px 0 -18px #e2e8f0,0 190px 0 -28px #e2e8f0;
   animation:kpiSkeleton 1.2s ease-in-out infinite;
+}
+.kpi-passfail-bar{
+  width:calc(100% - 2rem);
+  margin:1rem auto .5rem;
+  text-align:center;
+}
+
+.kpi-passfail-bar strong{
+  display:block;
+  margin-bottom:.55rem;
+  color:#0f2f66;
+  font:900 1.25rem Inter,sans-serif;
+}
+
+.kpi-passfail-track{
+  display:flex;
+  width:100%;
+  height:10px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#fee2e2;
+  box-shadow:inset 0 1px 3px rgba(15,23,42,.15);
+}
+
+.kpi-passfail-track .pass{
+  width:var(--kpi-pass-pct,0%);
+  background:linear-gradient(90deg,#16a34a,#4ade80);
+}
+
+.kpi-passfail-track .fail{
+  flex:1;
+  background:linear-gradient(90deg,#f87171,#dc2626);
+}
+
+.kpi-passfail-bar:hover .kpi-passfail-track{
+  box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+
+body.dark-mode .kpi-passfail-bar strong{
+  color:#dbeafe;
+}
+.kpi-focus-btn{
+  margin-left:auto;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:10px;
+  background:#00245e;
+  color:#faf9f9;
+  font-size:20px;
+  cursor:pointer;
+  box-shadow:0 5px 14px rgba(37,99,235,.25);
+}
+
+body.kpi-focus-mode .sidebar,
+body.kpi-focus-mode .kpi-tile-detail,
+body.kpi-focus-mode .kpi-tile-status,
+body.kpi-focus-mode .kpi-overview-subtitle{
+  display:none !important;
+}
+
+body.kpi-focus-mode .main-content{
+  margin-left:0 !important;
+  width:100% !important;
+}
+
+body.kpi-focus-mode .kpi-overview-page{
+  width:100% !important;
+  max-width:none !important;
+  padding:18px 24px !important;
+}
+
+body.kpi-focus-mode .kpi-overview-grid{
+  grid-template-columns:repeat(4, minmax(0,1fr)) !important;
+  gap:18px !important;
+}
+
+body.kpi-focus-mode .kpi-tile{
+  min-height:260px;
+}
+
+/* Overview card titles stay readable in dark mode. */
+body.dark-mode .kpi-tile > span{
+  color:#0f172a !important;
+}
+
+/* Focus mode keeps the achievement pill, but removes the pass/fail bar. */
+body.kpi-focus-mode .kpi-tile-status:not(:empty){
+  display:inline-flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+body.kpi-focus-mode .kpi-passfail-bar{
+  display:none !important;
+}
+
+body.dark-mode .kpi-passfail-bar strong{
+  color:#0f172a !important;
+}
+
+/* Decorative falling stars; does not affect picker bar dimensions. */
+.kpi-month-bar{position:relative}
+.kpi-month-bar::after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:100px;
+  width:110px;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
+  opacity:.9;
+  background:
+    radial-gradient(circle at 12px -4px,#fff 0 1.5px,transparent 2px),
+    radial-gradient(circle at 42px 8px,#fff 0 1px,transparent 1.8px),
+    radial-gradient(circle at 78px -12px,#fff 0 1.4px,transparent 2px),
+    radial-gradient(circle at 92px 22px,#fff 0 1px,transparent 1.8px);
+  background-size:110px 58px;
+  animation:kpiStarsFall 3.2s linear infinite;
+}
+.kpi-month-bar > *{position:relative;z-index:1}
+@keyframes kpiStarsFall{
+  from{background-position:0 -58px}
+  to{background-position:0 58px}
+}
+
+body.dark-mode .kpi-tile:has(.kpi-tile-status.is-no-data){
+  background:#e5e7eb !important;
+  border-color:#cbd5e1 !important;
+  color:#334155 !important;
+}
+body.dark-mode .kpi-tile:has(.kpi-tile-status.is-no-data) .kpi-tile-value,
+body.dark-mode .kpi-tile:has(.kpi-tile-status.is-no-data) > span{
+  color:#334155 !important;
 }
 
