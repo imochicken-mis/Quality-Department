@@ -133,3 +133,13 @@ body.dark-mode.report-page .sample-report-table-wrap,
 body.dark-mode.report-page .sample-parameters-report-table {
   border-color: #475569 !important;
 }
+
+/* Match Sample Parameters table typography with other reports */
+.report-page .sample-parameters-report-table {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-size: .80rem !important;
+}
+
+.report-page .sample-parameters-report-table td:first-child {
+  font-weight: 300 !important;
+}

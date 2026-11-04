@@ -1,4 +1,4 @@
-﻿.kpi-blank-main{gap:0;padding:.45rem 0 1rem}
+.kpi-blank-main{gap:0;padding:.45rem 0 1rem}
 .kpi-dashboard{width:100%;box-sizing:border-box;padding:1.45rem 1.5rem 1.15rem;background:#fff;border:1px solid #dbe5f1;border-radius:18px;box-shadow:0 8px 28px rgba(15,23,42,.08)}
 .kpi-heading-row{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:.1rem 0 1.25rem;border-bottom:1px solid #edf2f7}
 .kpi-heading-copy{display:flex;align-items:center;gap:1.15rem;min-width:0}
@@ -760,6 +760,47 @@ body.dark-mode.kpi-detail-page .kpi-monthly-chart text{
 .kpi-summary-grid>.kpi-value-card{order:2}
 .kpi-summary-grid>.kpi-standard-card{order:3}
 .kpi-summary-grid>.kpi-variance-card{order:4}
+
+/* Full-card skeleton while an individual KPI summary is loading. */
+.kpi-summary-card.kpi-loading{
+  position:relative !important;
+  background:#f8fafc !important;
+  border-color:#dbe5f1 !important;
+  box-shadow:0 2px 0 rgba(148,163,184,.16),0 10px 22px rgba(15,23,42,.06) !important;
+  pointer-events:none;
+  overflow:hidden;
+}
+.kpi-summary-card.kpi-loading > *{visibility:hidden !important}
+.kpi-summary-card.kpi-loading::before{
+  content:'';
+  position:absolute;
+  left:1.1rem;
+  top:50%;
+  width:58px;
+  height:58px;
+  transform:translateY(-50%);
+  border-radius:50%;
+  background:#e2e8f0;
+  animation:kpiSummarySkeleton 1.2s ease-in-out infinite;
+}
+.kpi-summary-card.kpi-loading::after{
+  content:'';
+  position:absolute;
+  left:calc(1.1rem + 58px + .9rem + .85rem);
+  top:50%;
+  width:130px;
+  height:14px;
+  transform:translateY(-50%);
+  border-radius:6px;
+  background:#e2e8f0;
+  box-shadow:0 28px 0 #e2e8f0,0 56px 0 -2px #e2e8f0;
+  animation:kpiSummarySkeleton 1.2s ease-in-out infinite;
+}
+@keyframes kpiSummarySkeleton{
+  0%{opacity:.45}
+  50%{opacity:1}
+  100%{opacity:.45}
+}
 /* Bigger gap between the summary cards and the Progress / KPI Formula row */
 .kpi-summary-grid+.kpi-detail-row{margin-top:2.25rem !important}
 /* The scroll area sized to the full dashboard height and spread the rows apart. Let it hug its content instead. */

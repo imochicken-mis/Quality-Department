@@ -43,6 +43,7 @@
     const month = byId('Month');
     if (!month) return;
 
+
     const el = {
       rate: byId('Rate'),
       variance: byId('Variance'),
@@ -72,6 +73,7 @@
     const fmtNum = (value) => value == null || value === '' || !Number.isFinite(Number(value)) ? '-' : String(Math.round(Number(value) * 100) / 100);
     const isAchieved = (value) => cfg.better === 'lower' ? value <= cfg.target : value >= cfg.target;
     const parseKpi = (data) => Number(String(data.kpi || '').replace('%', '').trim());
+
 
     // Target marker sits on the standard position of the 0 .. scaleMax track
     const targetMarker = document.querySelector('.kpi-target-marker');
