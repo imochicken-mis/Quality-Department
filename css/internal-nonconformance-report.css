@@ -1,0 +1,78 @@
+.inc-filter-bar{display:flex;align-items:end;gap:.8rem;margin:1rem 0;padding:1rem 1.2rem;background:#fff;border:1px solid #dbe5f1;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.06)}
+.inc-filter-bar label{display:flex;flex-direction:column;gap:.35rem;color:#334155;font-size:.72rem;font-weight:700;text-transform:uppercase}.inc-filter-bar input{height:40px;padding:0 .8rem;border:1px solid #cbd5e1;border-radius:9px;color:#0f172a;background:#fff;font:600 .85rem Inter,sans-serif}.inc-filter-bar button{height:40px;padding:0 1.2rem;border:0;border-radius:9px;background:#2563eb;color:#fff;font:700 .8rem Inter,sans-serif;cursor:pointer}
+.inc-message{padding:2rem;text-align:center;color:#64748b;background:#fff;border:1px solid #dbe5f1;border-radius:14px}.inc-sheet{padding:1rem;background:#fff;border:1px solid #dbe5f1;border-radius:14px;box-shadow:0 8px 20px rgba(15,23,42,.07)}.inc-summary{display:flex;gap:.4rem;margin-bottom:.8rem;color:#334155;font-size:.85rem}.inc-summary span:last-child{margin-left:auto;color:#64748b}.inc-table-wrap{overflow:auto;max-height:calc(100vh - 245px)}.inc-table{width:max-content;min-width:100%;border-collapse:collapse;color:#0f172a;font:500 .76rem Inter,sans-serif}.inc-table th,.inc-table td{padding:.6rem .75rem;border:1px solid #cbd5e1;white-space:nowrap;text-align:center}.inc-table th{position:sticky;top:0;z-index:2;background:#e8edf5;font-weight:700}.inc-table td:first-child{text-align:left}body.dark-mode .inc-filter-bar,body.dark-mode .inc-sheet,body.dark-mode .inc-message{background:#1e293b;border-color:#334155}.dark-mode .inc-filter-bar label,.dark-mode .inc-summary{color:#e2e8f0}.dark-mode .inc-table{color:#e2e8f0}.dark-mode .inc-table th{background:#0f172a;color:#e2e8f0}.dark-mode .inc-table td{border-color:#475569}
+.inc-filter-bar{align-items:flex-end;gap:1rem;margin:0 0 1rem;padding:1.1rem 1.4rem;background:#fff;border:0;border-radius:14px;box-shadow:0 2px 12px rgba(15,23,42,.05)}
+.inc-message#incLoading{display:flex;flex-direction:column;align-items:center;justify-content:center;width:max-content;min-width:220px;margin:1rem auto;padding:1rem 1.5rem;border:1px solid #dbe5f1;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(15,23,42,.08);font-size:.8rem}
+.inc-message#incLoading[hidden]{display:none !important}
+.inc-message#incLoading::before{content:"";width:34px;height:34px;margin-bottom:.6rem;border:4px solid #dbe5f1;border-top-color:#2563eb;border-radius:50%;animation:incSpin .8s linear infinite}
+@keyframes incSpin{to{transform:rotate(360deg)}}
+#reportLoading.birds-loading{display:flex !important;flex-direction:column;align-items:center;justify-content:center;width:220px !important;min-height:0 !important;margin:1rem auto !important;padding:1rem 1.5rem !important;border:1px solid #dbe5f1;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(15,23,42,.08);box-sizing:border-box}
+#reportLoading.birds-loading[style*="display: none"]{display:none !important}
+#reportLoading .loading-spinner{width:34px;height:34px;margin:0 0 .6rem;border:4px solid #dbe5f1;border-top-color:#2563eb;border-radius:50%;animation:incSpin .8s linear infinite}
+body.dark-mode #reportLoading.birds-loading{background:#1e293b;border-color:#475569}
+#reportLoading.birds-loading{width:100% !important;min-height:135px !important;margin:0 !important;padding:1.5rem !important;border:1px dashed #bfd6fb;border-radius:14px;background:#fff;box-sizing:border-box}
+.inc-filter-bar label{max-width:260px;flex:1;font-size:.75rem;letter-spacing:.4px}.inc-filter-bar input{height:42px;width:220px;border-color:#d5e0f5;border-radius:9px;font-size:.9rem}.inc-filter-bar button{text-transform:uppercase;letter-spacing:.6px;background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 4px 12px rgba(37,99,235,.35)}
+.inc-sheet{padding:1.5rem;background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 2px 15px rgba(0,0,0,.05);overflow-x:auto}.inc-summary{padding:.7rem 1rem;margin:-.3rem 0 1rem;background:#eef2f7;border:1px solid #dbe5f1;font-size:.78rem;font-weight:600}.inc-table{min-width:1500px;font-size:.72rem}.inc-table th,.inc-table td{padding:.45rem .55rem;border:1px solid #cbd5e1}.inc-table th{background:#eef2f7;letter-spacing:.2px}.inc-table tbody td{background:#fff}.inc-table tr:nth-child(even) td{background:#f8fafc}body.dark-mode .inc-sheet{background:#1e293b;border-color:#334155}.dark-mode .inc-summary{background:#0f172a;border-color:#475569}.dark-mode .inc-table th{background:#0f172a}.dark-mode .inc-table tbody td,.dark-mode .inc-table tr:nth-child(even) td{background:#1e293b}
+#reportLoading.birds-loading{
+  height:135px !important;
+  min-height:135px !important;
+  max-height:135px !important;
+  box-sizing:border-box;
+}
+.inc-report-page .report-table-wrap{overflow:auto;max-height:calc(100vh - 245px)}
+.inc-report-page .report-table{width:max-content;min-width:100%;border-collapse:separate;border-spacing:0}
+.inc-report-page .report-table thead th{position:sticky !important;top:0 !important;z-index:20 !important;background:#e8edf5 !important;color:#0f172a !important;box-shadow:inset 0 -1px 0 #cbd5e1}
+body.dark-mode .inc-report-page .report-table thead th{background:#0f172a !important;color:#e2e8f0 !important}
+.inc-report-page .report-table{
+  table-layout:fixed;
+  min-width:0 !important;
+  width:100% !important;
+}
+
+.inc-report-page .report-table th,
+.inc-report-page .report-table td{
+  width:150px;
+  min-width:150px;
+  max-width:150px;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:normal;
+  vertical-align:middle;
+  line-height:1.25;
+}
+.inc-report-page .inc-group-row th{
+  background:#dbe4f0 !important;
+  color:#0f172a !important;
+  font-weight:800;
+  text-align:center;
+  white-space:normal;
+  vertical-align:middle;
+}
+
+body.dark-mode .inc-report-page .inc-group-row th{
+  background:#0f172a !important;
+  color:#e2e8f0 !important;
+}
+
+/* INC has four visual sections, so each section gets its own column width. */
+.inc-report-page .report-table-wrap{overflow-x:auto !important}
+.inc-report-page .report-table{
+  width:max-content !important;
+  min-width:100% !important;
+  table-layout:fixed !important;
+}
+.inc-report-page .report-table th,
+.inc-report-page .report-table td{
+  white-space:normal !important;
+  overflow-wrap:normal !important;
+  word-break:normal !important;
+  line-height:1.25;
+}
+/* Date */
+.inc-report-page .report-table tr > :nth-child(1){width:110px !important;min-width:110px !important;max-width:110px !important}
+/* Food Safety & Quality Control Criteria (columns 2–10) */
+.inc-report-page .report-table tr > :nth-child(n+2):nth-child(-n+10){width:90px !important;min-width:90px !important;max-width:90px !important}
+/* Operational & GMP Control Criteria (columns 11–12) */
+.inc-report-page .report-table tr > :nth-child(n+11):nth-child(-n+12){width:120px !important;min-width:120px !important;max-width:120px !important}
+/* Environmental & Utility Control Criteria (columns 13–23) */
+.inc-report-page .report-table tr > :nth-child(n+13):nth-child(-n+23){width:95px !important;min-width:95px !important;max-width:95px !important}

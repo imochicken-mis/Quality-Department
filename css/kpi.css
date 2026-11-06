@@ -499,46 +499,6 @@ body.dark-mode .kpi-mini-donut::before{
   box-shadow:0 122px 0 -18px #e2e8f0,0 190px 0 -28px #e2e8f0;
   animation:kpiSkeleton 1.2s ease-in-out infinite;
 }
-.kpi-passfail-bar{
-  width:calc(100% - 2rem);
-  margin:1rem auto .5rem;
-  text-align:center;
-}
-
-.kpi-passfail-bar strong{
-  display:block;
-  margin-bottom:.55rem;
-  color:#0f2f66;
-  font:900 1.25rem Inter,sans-serif;
-}
-
-.kpi-passfail-track{
-  display:flex;
-  width:100%;
-  height:10px;
-  overflow:hidden;
-  border-radius:999px;
-  background:#fee2e2;
-  box-shadow:inset 0 1px 3px rgba(15,23,42,.15);
-}
-
-.kpi-passfail-track .pass{
-  width:var(--kpi-pass-pct,0%);
-  background:linear-gradient(90deg,#16a34a,#4ade80);
-}
-
-.kpi-passfail-track .fail{
-  flex:1;
-  background:linear-gradient(90deg,#f87171,#dc2626);
-}
-
-.kpi-passfail-bar:hover .kpi-passfail-track{
-  box-shadow:0 0 0 4px rgba(37,99,235,.1);
-}
-
-body.dark-mode .kpi-passfail-bar strong{
-  color:#dbeafe;
-}
 .kpi-focus-btn{
   margin-left:auto;
   width:38px;
@@ -576,7 +536,7 @@ body.kpi-focus-mode .kpi-overview-grid{
 }
 
 body.kpi-focus-mode .kpi-tile{
-  min-height:260px;
+  min-height:180px;
 }
 
 /* Overview card titles stay readable in dark mode. */
@@ -590,13 +550,7 @@ body.kpi-focus-mode .kpi-tile-status:not(:empty){
   visibility:visible !important;
   opacity:1 !important;
 }
-body.kpi-focus-mode .kpi-passfail-bar{
-  display:none !important;
-}
 
-body.dark-mode .kpi-passfail-bar strong{
-  color:#0f172a !important;
-}
 
 /* Decorative falling stars; does not affect picker bar dimensions. */
 .kpi-month-bar{position:relative}
@@ -634,3 +588,104 @@ body.dark-mode .kpi-tile:has(.kpi-tile-status.is-no-data) > span{
   color:#334155 !important;
 }
 
+
+/* ===== Overview donut chart (replaces the pass/fail progress bar) ===== */
+.kpi-donut{position:relative;width:130px;height:130px;margin:1rem auto .5rem;flex:0 0 auto}
+.kpi-donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.kpi-donut circle{fill:none;stroke-width:12}
+.kpi-donut-track{stroke:#e2e8f0}
+.kpi-donut-fill{stroke:#94a3b8;stroke-linecap:round;transition:stroke-dasharray .8s ease,stroke .3s}
+.kpi-donut.is-achieved .kpi-donut-fill{stroke:#16a34a}
+.kpi-donut.is-below-target .kpi-donut-fill{stroke:#dc2626}
+.kpi-donut.is-no-data .kpi-donut-fill{stroke:transparent}
+.kpi-donut-value{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font:800 1.3rem Inter,sans-serif;color:#1e3a8a}
+.kpi-donut.is-achieved .kpi-donut-value{color:#13a147}
+.kpi-donut.is-below-target .kpi-donut-value{color:#dc2626}
+.kpi-donut.is-no-data .kpi-donut-value{color:#94a3b8}
+
+body.kpi-focus-mode .kpi-donut{width:110px;height:110px}
+
+/* Achieved days vs Not Achieved days donut (KPI 2-7) */
+.kpi-donut-ach,.kpi-donut-not{stroke-linecap:butt;opacity:0}
+.kpi-donut-ach{stroke:#16a34a}
+.kpi-donut-not{stroke:#dc2626}
+.kpi-donut.is-days .kpi-donut-ach,.kpi-donut.is-days .kpi-donut-not{opacity:1}
+.kpi-donut.is-days .kpi-donut-fill{stroke:transparent}
+.kpi-donut.is-days .kpi-donut-track{stroke:transparent}
+.kpi-donut.is-days .kpi-donut-value{flex-direction:column;color:#1e3a8a;line-height:1.1}
+.kpi-donut-value .d-num{font:800 1.5rem Inter,sans-serif}
+.kpi-donut-value .d-lbl{font:700 .65rem Inter,sans-serif;color:#64748b;text-transform:uppercase}
+.kpi-donut-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:.25rem .8rem;margin:.2rem 0 .6rem;
+  font:600 .72rem Inter,sans-serif;color:#475569}
+.kpi-donut-legend .lg{display:inline-flex;align-items:center;gap:.3rem}
+.kpi-donut-legend i{width:.6rem;height:.6rem;border-radius:50%;display:inline-block}
+.kpi-donut-legend .lg-ach i{background:#16a34a}
+.kpi-donut-legend .lg-not i{background:#dc2626}
+
+/* Fullscreen (focus) mode: show title, value, status and standard; hide the figures and donut */
+body.kpi-focus-mode .kpi-tile-detail,
+body.kpi-focus-mode .kpi-donut,
+body.kpi-focus-mode .kpi-donut-legend{
+  display:none !important;
+}
+/* Dark mode: the overview cards stay light, so the donut text must stay dark */
+body.dark-mode .kpi-donut-track{stroke:#e2e8f0}
+body.dark-mode .kpi-donut.is-days .kpi-donut-value,
+body.dark-mode .kpi-donut.is-days .kpi-donut-value .d-num{color:#1e3a8a !important}
+body.dark-mode .kpi-donut-value .d-lbl{color:#64748b !important}
+body.dark-mode .kpi-donut:not(.is-days):not(.is-no-data):not(.is-achieved):not(.is-below-target) .kpi-donut-value{color:#1e3a8a !important}
+body.dark-mode .kpi-donut.is-achieved .kpi-donut-value{color:#13a147 !important}
+body.dark-mode .kpi-donut.is-below-target .kpi-donut-value{color:#dc2626 !important}
+body.dark-mode .kpi-donut.is-no-data .kpi-donut-value{color:#94a3b8 !important}
+body.dark-mode .kpi-donut-legend,
+body.dark-mode .kpi-donut-legend .lg,
+body.dark-mode .kpi-donut-legend b{color:#475569 !important}
+/* ===== Professional donut look ===== */
+.kpi-donut{
+  width:150px;height:150px;
+  margin:1.1rem auto .6rem;
+  filter:drop-shadow(0 6px 10px rgba(15,23,42,.10));
+}
+.kpi-donut::before{
+  content:'';position:absolute;inset:20px;border-radius:50%;
+  background:linear-gradient(145deg,#ffffff,#f1f5f9);
+  box-shadow:inset 0 2px 6px rgba(15,23,42,.08);
+}
+.kpi-donut circle{stroke-width:10}
+.kpi-donut-track{stroke:#eef2f7}
+.kpi-donut-fill,
+.kpi-donut-ach,
+.kpi-donut-not{
+  transition:stroke-dasharray .9s cubic-bezier(.4,0,.2,1),
+             stroke-dashoffset .9s cubic-bezier(.4,0,.2,1),
+             stroke .3s;
+}
+.kpi-donut-value{z-index:1}
+.kpi-donut-value .d-num{font:800 1.6rem Inter,sans-serif;letter-spacing:-.02em}
+.kpi-donut-value .d-lbl{font:700 .62rem Inter,sans-serif;letter-spacing:.1em;color:#94a3b8}
+
+.kpi-donut-legend{gap:.4rem .5rem;margin:.3rem 0 .8rem}
+.kpi-donut-legend .lg{
+  padding:.22rem .6rem;
+  background:#f1f5f9;
+  border-radius:999px;
+  font:600 .7rem Inter,sans-serif;
+  color:#475569;
+}
+.kpi-donut-legend .lg b{color:#0f172a;font-weight:800}
+.kpi-donut-legend i{width:.5rem;height:.5rem}
+
+/* ===== Active / Inactive toggle (top-right corner of each overview card) ===== */
+.kpi-switch{
+  position:absolute;top:12px;right:12px;z-index:3;
+  width:38px;height:22px;padding:0;border:0;border-radius:999px;
+  background:#cbd5e1;cursor:pointer;transition:background .2s;
+}
+.kpi-switch[aria-checked="true"]{background:#16a34a}
+.kpi-switch-knob{
+  position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s;
+}
+.kpi-switch[aria-checked="true"] .kpi-switch-knob{transform:translateX(16px)}
+.kpi-switch:disabled{opacity:.6;cursor:wait}

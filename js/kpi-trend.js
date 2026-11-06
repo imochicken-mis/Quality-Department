@@ -103,9 +103,37 @@
     var yT = y(opt.target);
 
     var valid = rows.filter(function (r) { return r.value !== null; });
+
+    // Smooth curve through the points (monotone cubic: no overshoot above/below the data)
+    var smoothPath = function (p) {
+      var n = p.length;
+      if (!n) return '';
+      if (n === 1) return 'M' + p[0].x + ',' + p[0].y;
+      var dx = [], m = [], t = [];
+      for (var i = 0; i < n - 1; i++) {
+        dx[i] = p[i + 1].x - p[i].x;
+        m[i] = (p[i + 1].y - p[i].y) / (dx[i] || 1);
+      }
+      t[0] = m[0];
+      t[n - 1] = m[n - 2];
+      for (i = 1; i < n - 1; i++) t[i] = m[i - 1] * m[i] <= 0 ? 0 : (m[i - 1] + m[i]) / 2;
+      for (i = 0; i < n - 1; i++) {
+        if (m[i] === 0) { t[i] = 0; t[i + 1] = 0; continue; }
+        var a = t[i] / m[i], b = t[i + 1] / m[i], s = a * a + b * b;
+        if (s > 9) { var k = 3 / Math.sqrt(s); t[i] = k * a * m[i]; t[i + 1] = k * b * m[i]; }
+      }
+      var d = 'M' + p[0].x + ',' + p[0].y;
+      for (i = 0; i < n - 1; i++) {
+        var h = dx[i] / 3;
+        d += ' C' + (p[i].x + h) + ',' + (p[i].y + t[i] * h) + ' ' +
+          (p[i + 1].x - h) + ',' + (p[i + 1].y - t[i + 1] * h) + ' ' + p[i + 1].x + ',' + p[i + 1].y;
+      }
+      return d;
+    };
+    var curve = smoothPath(valid.map(function (r) { return { x: x(r.index), y: y(r.value) }; }));
     var pts = valid.map(function (r) { return x(r.index) + ',' + y(r.value); }).join(' ');
     var area = valid.length
-      ? pts + ' ' + x(valid[valid.length - 1].index) + ',' + (top + ch) + ' ' + x(valid[0].index) + ',' + (top + ch)
+      ? curve + ' L' + x(valid[valid.length - 1].index) + ',' + (top + ch) + ' L' + x(valid[0].index) + ',' + (top + ch) + ' Z'
       : '';
 
     // zones: green = good side of the standard line, red = bad side
@@ -135,8 +163,8 @@
       '<rect class="' + downClass + '" x="' + left + '" y="' + yT + '" width="' + cw + '" height="' + (top + ch - yT) + '"></rect>' +
       grid +
       '<line class="target-line" x1="' + left + '" x2="' + (width - right) + '" y1="' + yT + '" y2="' + yT + '"></line>' +
-      '<polygon class="trend-area" points="' + area + '"></polygon>' +
-      '<polyline class="trend-line" points="' + pts + '"></polyline>' +
+      '<path class="trend-area" d="' + area + '"></path>' +
+      '<path class="trend-line" d="' + curve + '"></path>' +
       '<text class="target-label" x="' + (width - right) + '" y="' + (yT - 8) + '" text-anchor="end">' + (opt.standardLabel || '') + '</text>' +
       dots + labels + '</svg>';
 
@@ -168,20 +196,35 @@
     var table = el('table', 'kpi-criteria-table');
     table.style.minWidth = (170 + rows.length * 70) + 'px';
 
+    var isDaily = (opt.cornerLabel || '') === 'Date';
+    function weekendClass(r) {
+      if (!isDaily || !r.title) return '';
+      var day = new Date(r.title + 'T00:00:00').getDay();
+      return day === 6 ? 'is-saturday' : day === 0 ? 'is-sunday' : '';
+    }
+    function markWeekend(cell, r) {
+      var cls = weekendClass(r);
+      if (cls) cell.classList.add(cls);
+      return cell;
+    }
+
     var head = table.createTHead().insertRow();
     head.appendChild(el('th', '', opt.cornerLabel || ''));
-    rows.forEach(function (r) { head.appendChild(el('th', '', r.label)); });
+    rows.forEach(function (r) { head.appendChild(markWeekend(el('th', '', r.label), r)); });
 
     var body = table.createTBody();
     (opt.details || []).forEach(function (d) {
       var tr = body.insertRow();
       tr.appendChild(el('th', '', d.label));
-      rows.forEach(function (r) { tr.insertCell().textContent = fmtNum(d.get(r), opt.detailDecimals); });
+      rows.forEach(function (r) {
+        var cell = markWeekend(tr.insertCell(), r);
+        cell.textContent = fmtNum(d.get(r), opt.detailDecimals);
+      });
     });
     var kr = body.insertRow();
     kr.appendChild(el('th', '', opt.kpiLabel || 'KPI (%)'));
     rows.forEach(function (r) {
-      var c = kr.insertCell();
+      var c = markWeekend(kr.insertCell(), r);
       if (r.value === null) { c.textContent = '-'; return; }
       c.textContent = S.pct(r.value);
       c.className = S.ok(r.value) ? 'is-achieved' : 'is-below-target';

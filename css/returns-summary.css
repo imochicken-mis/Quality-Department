@@ -1,9 +1,9 @@
-/* ===== Return Summary page ===== */
+/* ===== Sales Return Summary page ===== */
 .rr-filter select#summaryWeek { min-width: 190px; }
 .rr-table.rs-table { min-width: 0; max-width: 760px; }
 .rs-table thead tr:nth-child(2) th { background: #fde68a; }
 body.dark-mode .rs-table thead tr:nth-child(2) th { background: #854d0e; color: #fef3c7; }
-/* Return Summary: use horizontal row separators only. */
+/* Sales Return Summary: use horizontal row separators only. */
 .report-page .rs-table {
   border: 1px solid #cbd5e1;
 }
@@ -30,7 +30,7 @@ body.dark-mode.report-page .rs-table td {
   border-bottom-color: #475569 !important;
   border-right-color: #475569 !important;
 }
-/* Return Summary: values stay centered; the representative name remains left aligned. */
+/* Sales Return Summary: values stay centered; the representative name remains left aligned. */
 .report-page .rs-table :is(th, td) {
   text-align: center;
 }

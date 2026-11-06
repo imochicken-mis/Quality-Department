@@ -134,3 +134,12 @@
   width: 72px;
   height: 54px;
 }
+/* Backwash Sand Bed / Backwash Clarifier: wide enough so the header wraps by word, not by letter */
+.wp-table thead th:nth-child(11),
+.wp-table thead th:nth-child(12) { width: 82px; min-width: 82px; max-width: 82px; }
+.wp-table td:nth-child(11),
+.wp-table td:nth-child(12) { white-space: normal; }
+.wp-table thead th:nth-child(11),
+.wp-table thead th:nth-child(12),
+.wp-table td:nth-child(11),
+.wp-table td:nth-child(12) { overflow-wrap: normal; word-break: normal; padding-left: 4px; padding-right: 4px; }

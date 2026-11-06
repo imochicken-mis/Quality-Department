@@ -48,6 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const printBtn = document.getElementById('printBtn');
   printBtn && printBtn.addEventListener('click', downloadPdf);
+
+  // The Export menu's "Export PDF" must use this page's water PDF (same as DOWNLOAD PDF),
+  // not the generic table export. Capture phase so it runs before the shared handler.
+  const exportWrap = document.querySelector('.report-export-wrap');
+  if (exportWrap) {
+    exportWrap.addEventListener('click', (event) => {
+      const option = event.target.closest('.report-export-option');
+      if (!option || !option.textContent.includes('Export PDF')) return;
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      const menu = exportWrap.querySelector('.report-export-menu');
+      if (menu) menu.hidden = true;
+      exportWrap.querySelector('.report-export-trigger')?.setAttribute('aria-expanded', 'false');
+      downloadPdf();
+    }, true);
+  }
   monthInput.addEventListener('change', loadReport);
 
   // ===== PDF libraries: HTML eke tags nathnam JS eken load karanawa =====
@@ -76,11 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ===== PDF builder (jsPDF + autoTable) =====
-  function buildWaterPdf(records, images, month) {
+  function buildWaterPdf(records, images, month, logo) {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-    const pageW = doc.internal.pageSize.getWidth();
-    const M = 8;                                   // page margin (mm)
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    const RP = window.ReportPdf;
+    const MM = 72 / 25.4;                          // widths below are written in mm, the document is in points
+    const M = RP.STD_LEFT;
 
     const GREEN = { fill: [209, 242, 228], text: [4, 120, 87] };
     const RED   = { fill: [253, 226, 226], text: [185, 28, 28] };
@@ -131,67 +148,37 @@ document.addEventListener('DOMContentLoaded', () => {
       imgCell(r.imageUrl)
     ]);
 
-    // ---- Title block (page 1) ----
-    doc.setTextColor(15, 23, 42);
-    doc.setFontSize(9);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Month:', M, 13);
-    const w1 = doc.getTextWidth('Month: ');
-    doc.setFont('helvetica', 'normal');
-    doc.text(formatMonth(month), M + w1, 13);
-    const x2 = M + w1 + doc.getTextWidth(formatMonth(month)) + 8;
-    doc.setFont('helvetica', 'bold');
-    doc.text('Records:', x2, 13);
-    const w2 = doc.getTextWidth('Records: ');
-    doc.setFont('helvetica', 'normal');
-    doc.text(String(records.length), x2 + w2, 13);
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
+    const period = `Month: ${formatMonth(month)}   Records: ${records.length}`;
     const title = 'Water Plant Report';
-    const tw = doc.getTextWidth(title);
-    doc.text(title, pageW / 2, 13, { align: 'center' });
-    doc.setLineWidth(0.4);
-    doc.setDrawColor(15, 23, 42);
-    doc.line(pageW / 2 - tw / 2, 14.6, pageW / 2 + tw / 2, 14.6);
+    const widthsMm = [20, 15, 14, 32, 22, 24, 18, 17, 16, 16, 19, 20, 28, 22];
+    const columnStyles = {};
+    widthsMm.forEach((w, i) => { columnStyles[i] = { cellWidth: w * MM }; });
 
-    // ---- Table ----
     doc.autoTable({
       head: head,
       body: body,
-      startY: 19,
-      margin: { top: 10, left: M, right: M, bottom: 14 },
+      startY: RP.STD_TABLE_TOP,
+      margin: { top: RP.STD_TABLE_TOP_LATER, left: M, right: M, bottom: RP.STD_FOOTER_SPACE },
       theme: 'grid',
       tableWidth: 'auto',
       styles: {
-        font: 'helvetica', fontSize: 8, cellPadding: 1.4,
+        font: 'helvetica', fontSize: 8, cellPadding: 1.4 * MM,
         halign: 'center', valign: 'middle',
-        lineColor: [51, 65, 85], lineWidth: 0.2,
+        lineColor: [30, 41, 59], lineWidth: 0.25,
         textColor: [15, 23, 42], fillColor: [255, 255, 255],
-        minCellHeight: 15
+        minCellHeight: 15 * MM
       },
       headStyles: {
-        fillColor: [238, 242, 247], textColor: [15, 23, 42],
-        fontStyle: 'bold', fontSize: 7, minCellHeight: 12
+        fillColor: [234, 240, 248], textColor: [15, 23, 42],
+        fontStyle: 'bold', fontSize: 7, minCellHeight: 12 * MM
       },
       alternateRowStyles: { fillColor: [241, 245, 249] },
-      columnStyles: {
-        0:  { cellWidth: 20 },   // Date
-        1:  { cellWidth: 15 },   // pH
-        2:  { cellWidth: 14 },   // CL
-        3:  { cellWidth: 22 },   // Parabolic
-        4:  { cellWidth: 22 },   // Colour
-        5:  { cellWidth: 28 },   // Smell
-        6:  { cellWidth: 18 },   // Solid waste
-        7:  { cellWidth: 17 },   // Chemical dosing
-        8:  { cellWidth: 16 },   // Leakage M1
-        9:  { cellWidth: 16 },   // Leakage M2
-        10: { cellWidth: 19 },   // Backwash sand bed
-        11: { cellWidth: 20 },   // Backwash clarifier
-        12: { cellWidth: 32 },   // Remarks
-        13: { cellWidth: 22 }    // Image
-      },
+      columnStyles: columnStyles,
       rowPageBreak: 'avoid',
+      didDrawPage: function (data) {
+        RP.drawPlainHeader(doc, logo);
+        if (data.pageNumber === 1) RP.drawPlainTitle(doc, period, title);
+      },
       didDrawCell: function (d) {
         if (d.section !== 'body') return;
         const raw = d.cell.raw;
@@ -206,14 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
           const bg  = ok ? GREEN.fill : RED.fill;
           doc.setFillColor(bg[0], bg[1], bg[2]);
           doc.setDrawColor(col[0], col[1], col[2]);
-          doc.setLineWidth(0.4);
-          doc.circle(cx, cy, 2.6, 'FD');
+          doc.setLineWidth(1.1);
+          doc.circle(cx, cy, 7.4, 'FD');
           if (ok) {
-            doc.line(cx - 1.3, cy + 0.1, cx - 0.3, cy + 1.1);
-            doc.line(cx - 0.3, cy + 1.1, cx + 1.4, cy - 0.9);
+            doc.line(cx - 3.7, cy + 0.3, cx - 0.9, cy + 3.1);
+            doc.line(cx - 0.9, cy + 3.1, cx + 4.0, cy - 2.6);
           } else {
-            doc.line(cx - 1.2, cy - 1.2, cx + 1.2, cy + 1.2);
-            doc.line(cx + 1.2, cy - 1.2, cx - 1.2, cy + 1.2);
+            doc.line(cx - 3.4, cy - 3.4, cx + 3.4, cy + 3.4);
+            doc.line(cx + 3.4, cy - 3.4, cx - 3.4, cy + 3.4);
           }
         }
 
@@ -223,28 +210,53 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = images[raw.imgId];
             const fmt = /^data:image\/png/i.test(data) ? 'PNG' : 'JPEG';
             const p = doc.getImageProperties(data);
-            const maxW = d.cell.width - 3, maxH = d.cell.height - 3;
+            const maxW = d.cell.width - 4, maxH = d.cell.height - 4;
             const k = Math.min(maxW / p.width, maxH / p.height);
             const w = p.width * k, h = p.height * k;
             doc.addImage(data, fmt, cx - w / 2, cy - h / 2, w, h);
-          } catch (e) { /* image skip */ }
+          } catch (e) { console.warn('Image skipped', e); }
         }
       }
     });
 
-    // ---- Footer (every page) ----
+    // ---- Footer (every page), same as the other reports ----
     const pages = doc.internal.getNumberOfPages();
-    const pageH = doc.internal.pageSize.getHeight();
     for (let i = 1; i <= pages; i++) {
       doc.setPage(i);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(7.5);
-      doc.setTextColor(71, 85, 105);
-      doc.text('Imo Chicken & Agro (Pvt) Ltd', M, pageH - 6);
-      doc.text('Page ' + i + ' of ' + pages, pageW - M, pageH - 6, { align: 'right' });
+      RP.drawPlainFooter(doc, i, pages);
     }
-
     return doc;
+  }
+
+  // Thumbnails can come as WEBP or other types jsPDF cannot read: redraw each one as JPEG on a canvas
+  function toJpegDataUrl(dataUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL('image/jpeg', 0.9));
+      };
+      img.onerror = reject;
+      img.src = dataUrl;
+    });
+  }
+
+  async function toPdfImages(images) {
+    const out = {};
+    await Promise.all(Object.keys(images).map(async (id) => {
+      try {
+        out[id] = await toJpegDataUrl(images[id]);
+      } catch (e) {
+        console.warn('Image skipped', id, e);
+      }
+    }));
+    return out;
   }
 
   // ===== Download PDF =====
@@ -271,14 +283,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (ids.length) {
         try {
           const res = await fetchJsonRetry(`${API_URL_WATER}?action=getWaterImages&ids=${encodeURIComponent(ids.join(','))}`);
-          images = (res && res.images) || {};
+          images = await toPdfImages((res && res.images) || {});
         } catch (e) {
           console.warn('Image fetch failed', e);
         }
       }
 
       const month = monthInput.value;
-      const doc = buildWaterPdf(currentRecords, images, month);
+      const logo = await window.ReportPdf.standardLogo();
+      const doc = buildWaterPdf(currentRecords, images, month, logo);
       doc.save('Water-Plant-Report-' + (month || 'report') + '.pdf');
 
     } catch (err) {

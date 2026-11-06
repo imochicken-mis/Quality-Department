@@ -1,4 +1,4 @@
-.kpi-blank-main{gap:0;padding:.45rem 0 1rem}
+﻿.kpi-blank-main{gap:0;padding:.45rem 0 1rem}
 .kpi-dashboard{width:100%;box-sizing:border-box;padding:1.45rem 1.5rem 1.15rem;background:#fff;border:1px solid #dbe5f1;border-radius:18px;box-shadow:0 8px 28px rgba(15,23,42,.08)}
 .kpi-heading-row{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;padding:.1rem 0 1.25rem;border-bottom:1px solid #edf2f7}
 .kpi-heading-copy{display:flex;align-items:center;gap:1.15rem;min-width:0}
@@ -868,3 +868,23 @@ body.dark-mode.kpi-page .main-content::before{background:#0f172a}
 .kpi-heading-row{padding:2.6rem 1.5rem 1.5rem !important}
 /* Date column of the day-wise and monthly tables: a little wider */
 .kpi-criteria-table thead th:first-child,.kpi-criteria-table tbody th{width:180px}
+/* Hide Progress and KPI Formula headings on individual KPI pages */
+.kpi-progress-panel > h2,
+.kpi-formula-panel > div > h2{
+  display:none !important;
+}
+
+/* Reduce gap between KPI cards and Progress / Formula boxes */
+.kpi-summary-grid + .kpi-detail-row{
+  margin-top:.75rem !important;
+}
+
+/* Weekend columns in KPI daily tables */
+.kpi-criteria-table th.is-saturday{
+  background:#e5e7eb !important;
+  color:#475569 !important;
+}
+.kpi-criteria-table th.is-sunday{
+  background:#fee2e2 !important;
+  color:#b91c1c !important;
+}

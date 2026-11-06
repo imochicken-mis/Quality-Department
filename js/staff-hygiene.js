@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (employees.some(employee =>
       !employee.name || !employee.status || employee.failedCriteria.length === 0
     )) {
-      showMessage('Fail una employee kenekta ID/Name dīla criteria tick karanna.', 'error');
+      showMessage('Please fill in all required fields.', 'error');
       return;
     }
 

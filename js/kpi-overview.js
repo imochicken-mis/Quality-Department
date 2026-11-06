@@ -28,13 +28,6 @@ monthInput.value =
     6: { target: 95, better: 'higher' },
     7: { target: 95, better: 'higher' }
   };
-  const DAILY_ACTIONS = {
-    2: 'getKpi2Daily',
-    3: 'getKpi3Daily',
-    4: 'getKpi4Daily',
-    5: 'getKpi5Daily',
-    6: 'getKpi6Daily'
-  };
   const statusOf = (n, kpiText) => {
     const value = parseFloat(String(kpiText).replace('%', '').trim());
     if (!Number.isFinite(value)) return null;
@@ -47,68 +40,172 @@ monthInput.value =
     return `${f.label}: ${f.top(data) ?? '-'} / ${f.bottom(data) ?? '-'}`;
   };
 
-  function ensureMiniDonuts() {
+  // ===== Donut chart =====
+  // KPI 1 (no daily data): the ring fills to the KPI value.
+  // KPI 2-7: the ring is split into Achieved days (green) and Not Achieved days (red),
+  //          counted over the dates that have data in the selected month.
+  const RING_R = 48;
+  const RING_LEN = 2 * Math.PI * RING_R;
+  const arc = (len, offset) =>
+    `stroke-dasharray="${len.toFixed(2)} ${(RING_LEN - len).toFixed(2)}" stroke-dashoffset="${(-offset).toFixed(2)}"`;
+
+  function ensureDonuts() {
     document.querySelectorAll('.kpi-tile').forEach((card) => {
       const value = card.querySelector('.kpi-tile-value[data-kpi]');
-      if (!value || card.querySelector('.kpi-mini-donut')) return;
+      if (!value || card.querySelector('.kpi-donut')) return;
       const n = value.dataset.kpi;
-      if (!DAILY_ACTIONS[n]) return;
       const donut = document.createElement('div');
-      donut.className = 'kpi-passfail-bar';
+      donut.className = 'kpi-donut is-no-data';
       donut.dataset.kpiDonut = n;
       donut.innerHTML = `
-        <strong>–</strong>
-        <div class="kpi-passfail-track">
-          <i class="pass"></i>
-          <i class="fail"></i>
-        </div>
-      `;
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="kpi-donut-track" cx="60" cy="60" r="${RING_R}"></circle>
+          <circle class="kpi-donut-fill" cx="60" cy="60" r="${RING_R}" stroke-dasharray="0 ${RING_LEN}"></circle>
+          <circle class="kpi-donut-ach" cx="60" cy="60" r="${RING_R}" stroke-dasharray="0 ${RING_LEN}"></circle>
+          <circle class="kpi-donut-not" cx="60" cy="60" r="${RING_R}" stroke-dasharray="0 ${RING_LEN}"></circle>
+        </svg>
+        <b class="kpi-donut-value">–</b>`;
       card.appendChild(donut);
+      const legend = document.createElement('div');
+      legend.className = 'kpi-donut-legend';
+      legend.dataset.kpiLegend = n;
+      card.appendChild(legend);
     });
   }
 
-  async function updateMiniDonut(n, month) {
-    const donut = document.querySelector(`.kpi-passfail-bar[data-kpi-donut="${n}"]`);
+  const donutOf = (n) => document.querySelector(`.kpi-donut[data-kpi-donut="${n}"]`);
+  const legendOf = (n) => document.querySelector(`.kpi-donut-legend[data-kpi-legend="${n}"]`);
+
+  // KPI 1: single value ring. text = "95.19%" or null; achieved = true / false / null
+  function setDonut(n, text, achieved) {
+    const donut = donutOf(n);
     if (!donut) return;
+    const num = text == null ? NaN : parseFloat(String(text).replace('%', '').trim());
+    const has = Number.isFinite(num);
+    const pct = has ? Math.min(Math.max(num, 0), 100) : 0;
+    donut.classList.remove('is-days');
+    donut.querySelector('.kpi-donut-fill').setAttribute(
+      'stroke-dasharray', `${(pct / 100 * RING_LEN).toFixed(2)} ${RING_LEN.toFixed(2)}`);
+    donut.querySelector('.kpi-donut-value').textContent = has ? String(text).trim() : '–';
+    donut.classList.toggle('is-achieved', has && achieved === true);
+    donut.classList.toggle('is-below-target', has && achieved === false);
+    donut.classList.toggle('is-no-data', !has);
+    const legend = legendOf(n);
+    if (legend) legend.innerHTML = '';
+  }
+
+  // KPI 2-7: Achieved days vs Not Achieved days
+  function setDonutDays(n, achievedDays, notDays, unit = 'days', aLabel = 'Achieved', nLabel = 'Not achieved') {
+    const donut = donutOf(n);
+    if (!donut) return;
+    const total = achievedDays + notDays;
+    if (!total) { setDonut(n, null, null); return; }
+    const a = achievedDays / total * RING_LEN;
+    const b = notDays / total * RING_LEN;
+    donut.classList.add('is-days');
+    donut.classList.remove('is-no-data', 'is-achieved', 'is-below-target');
+    donut.querySelector('.kpi-donut-ach').setAttribute('stroke-dasharray', `${a.toFixed(2)} ${(RING_LEN - a).toFixed(2)}`);
+    donut.querySelector('.kpi-donut-ach').setAttribute('stroke-dashoffset', '0');
+    donut.querySelector('.kpi-donut-not').setAttribute('stroke-dasharray', `${b.toFixed(2)} ${(RING_LEN - b).toFixed(2)}`);
+    donut.querySelector('.kpi-donut-not').setAttribute('stroke-dashoffset', (-a).toFixed(2));
+    donut.querySelector('.kpi-donut-value').innerHTML =
+      `<span class="d-num">${total.toLocaleString('en-US')}</span><span class="d-lbl">${unit}</span>`;
+    const legend = legendOf(n);
+    if (legend) legend.innerHTML = `
+      <span class="lg lg-ach"><i></i>${aLabel}: <b>${achievedDays.toLocaleString('en-US')}</b></span>
+      <span class="lg lg-not"><i></i>${nLabel}: <b>${notDays.toLocaleString('en-US')}</b></span>`;
+  }
+
+  async function loadDays(n, month) {
     try {
-      const response = await fetch(`${API_URL}?action=${DAILY_ACTIONS[n]}&month=${month}&_r=${Date.now()}`, { cache: 'no-store' });
+      const response = await fetch(`${API_URL}?action=getKpi${n}Daily&month=${month}&_r=${Date.now()}`, { cache: 'no-store' });
       const data = await response.json();
-      let pass = 0;
-      let fail = 0;
-      (data.days || []).forEach((day) => {
-        const value = parseFloat(String(day.kpi || '').replace('%', '').trim());
-        if (!Number.isFinite(value)) return;
-        if (statusOf(n, value + '%')) pass++;
-        else fail++;
+      if (!data.success || !Array.isArray(data.days)) { setDonut(n, null, null); return; }
+      let achievedDays = 0;
+      let notDays = 0;
+      data.days.forEach((day) => {
+        const r = statusOf(n, day.kpi);
+        if (r === true) achievedDays++;
+        else if (r === false) notDays++;
       });
-      const total = pass + fail;
-      const pct = total ? pass / total * 100 : 0;
-      donut.style.setProperty('--kpi-pass-pct', pct + '%');
-
-      donut.dataset.tooltip = total
-        ? `Pass Dates: ${pass}   |   Fail Dates: ${fail}`
-        : 'No day data';
-
-donut.innerHTML = total
-  ? `
-    <strong>${total}</strong>
-    <div class="kpi-passfail-track">
-      <i class="pass"></i>
-      <i class="fail"></i>
-    </div>
-  `
-  : `<strong>–</strong>`;
-    } catch (_) {
-      donut.innerHTML = '<strong>–</strong><small>No day data</small>';
-      donut.style.setProperty('--kpi-donut-pct', '0%');
+      setDonutDays(n, achievedDays, notDays);
+    } catch (error) {
+      setDonut(n, null, null);
     }
   }
 
+  // ===== Active / Inactive toggle on each card (saved in the "KPI Status" sheet) =====
+  let kpiToggleReady = false;
+
+  function applyKpiActive(n, active) {
+    const card = document.querySelector(`.kpi-tile-value[data-kpi="${n}"]`)?.closest('.kpi-tile');
+    if (!card) return;
+
+    const sw = card.querySelector('.kpi-switch');
+    if (sw) {
+      sw.setAttribute('aria-checked', active ? 'true' : 'false');
+      sw.title = active ? 'Active - click to deactivate' : 'Inactive - click to activate';
+    }
+  }
+
+  function initKpiToggles() {
+    if (kpiToggleReady) return;
+    kpiToggleReady = true;
+
+    document.querySelectorAll('.kpi-tile-value[data-kpi]').forEach((el) => {
+      const card = el.closest('.kpi-tile');
+      if (!card || card.querySelector('.kpi-switch')) return;
+      const n = el.dataset.kpi;
+
+      const sw = document.createElement('button');
+      sw.type = 'button';
+      sw.className = 'kpi-switch';
+      sw.setAttribute('role', 'switch');
+      sw.setAttribute('aria-checked', 'true');
+      sw.title = 'Active - click to deactivate';
+      sw.innerHTML = '<span class="kpi-switch-knob"></span>';
+
+      sw.addEventListener('click', async (ev) => {
+        ev.preventDefault();      // the card is a link: do not open the KPI page
+        ev.stopPropagation();
+        const next = sw.getAttribute('aria-checked') !== 'true';
+        applyKpiActive(n, next);
+        sw.disabled = true;
+        try {
+          const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: 'setKpiStatus', kpi: Number(n), active: next })
+          });
+          const data = await response.json();
+          if (!data.success) throw new Error(data.error || 'Save failed');
+        } catch (error) {
+          applyKpiActive(n, !next);   // put it back if the save failed
+          alert('Could not save KPI status: ' + (error.message || error));
+        } finally {
+          sw.disabled = false;
+        }
+      });
+
+      card.appendChild(sw);
+    });
+
+    fetch(`${API_URL}?action=getKpiStatus&_r=${Date.now()}`, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.statuses) {
+          Object.keys(data.statuses).forEach((n) => applyKpiActive(n, data.statuses[n]));
+        }
+      })
+      .catch(() => {});
+  }
+
   async function loadValues() {
+    initKpiToggles();
     const month = monthInput.value;
 if (!month) return;
 
-ensureMiniDonuts();
+ensureDonuts();
 
 
 document.querySelectorAll('.kpi-tile').forEach((card) => {
@@ -156,10 +253,21 @@ if (detail) {
               (achieved ? 'is-achieved' : 'is-below-target');
           }
         }
-        await updateMiniDonut(n, month);
+        if (n === '1') {
+          // KPI 1 has no daily log: split the tested parameters into compliant / non-compliant
+          const tested = Number(String(data.totalTested ?? '').replace(/,/g, ''));
+          const comp = Number(String(data.totalCompliance ?? '').replace(/,/g, ''));
+          if (ok && tested > 0 && comp >= 0 && comp <= tested) {
+            setDonutDays(n, comp, tested - comp, 'tested', 'Compliant', 'Non-compliant');
+          } else {
+            setDonut(n, null, null);
+          }
+        }
+        else loadDays(n, month);
         el.closest('.kpi-tile')?.classList.remove('is-loading');
       } catch (error) {
         el.textContent = '-';
+        setDonut(n, null, null);
         if (detail) detail.textContent = '';
         const status = document.querySelector(`.kpi-tile-status[data-kpi-status="${n}"]`);
         if (status) { status.textContent = ''; status.className = 'kpi-tile-status'; }
@@ -174,11 +282,3 @@ if (detail) {
 });
   loadValues();
 })();
-const focusBtn = document.getElementById('kpiFocusBtn');
-
-focusBtn?.addEventListener('click', () => {
-  document.body.classList.toggle('kpi-focus-mode');
-
-  focusBtn.textContent =
-    document.body.classList.contains('kpi-focus-mode') ? '⛶' : '⛶';
-});

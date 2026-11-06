@@ -1,5 +1,5 @@
 // ============================================
-// RETURN SUMMARY (rep-wise totals) - Admin
+// SALES RETURN SUMMARY (rep-wise totals) - Admin
 // Uses the same data as the Sales Returns Report (getSalesReturnsReport)
 // Period: Full Month / Week 1-4 (29-31 count as Week 4)
 // ============================================

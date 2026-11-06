@@ -136,7 +136,7 @@ const REPORT_PAGES = {
   shopreturns: 'shop-returns.html',
   complaint: 'customer-complaint.html',
   rejection: 'rejection.html',
-  admin: 'master-report.html',
+  admin: 'kpi-overview.html',
   shygiene: 'staff-hygiene.html',
   hygiene3: 'personal-hygiene-3.html',
   sampleparameters: 'sample-parameters.html',
@@ -162,7 +162,7 @@ function getFirstAllowedPage(user) {
   }
 
   // Admin accounts should open the CCP Control Report first.
-  if (reports.includes('admin')) return 'master-report.html';
+  if (reports.includes('admin')) return 'kpi-overview.html';
 
   const key = Object.keys(REPORT_PAGES).find(k => reports.includes(k));
   return key ? REPORT_PAGES[key] : null;

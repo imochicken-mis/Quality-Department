@@ -107,7 +107,7 @@
       doc.setFontSize(7.5);
       doc.setTextColor(100, 116, 139);
       doc.text(`Generated ${generated}`, margin.left, pageHeight - 22);
-      doc.text('© 2026 Imo Chicken & Agro (Pvt) Ltd. All rights reserved.', pageWidth / 2, pageHeight - 22, { align: 'center' });
+      doc.text('© 2026 Imo Chicken & Agro (Pvt) Ltd. MIS Department . All rights reserved.', pageWidth / 2, pageHeight - 22, { align: 'center' });
       doc.text(`Page ${page} of ${pages}`, pageWidth - margin.right, pageHeight - 22, { align: 'right' });
     }
 

@@ -212,7 +212,7 @@ body.dark-mode .report-export-option:hover { background: #22304a; color: #bfdbfe
 /* Legacy PDF controls are replaced by the shared export menu. */
 .report-page .report-print-bar { display: none !important; }
 /* Shared thin full grid for every visible report data table.
-   CCP Control and Return Summary remain horizontal-only by design. */
+   CCP Control and Sales Return Summary remain horizontal-only by design. */
 .report-page :is(.report-sheet:not(.pdf-mode), .inspection-report-body, .sample-report-table-wrap) table:not(.ccp-master-table):not(.rs-table):not(.report-doc-table):not(.report-foot-table) :is(th, td) {
   border-top: 0 !important;
   border-left: 0 !important;

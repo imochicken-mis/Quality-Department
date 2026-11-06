@@ -877,7 +877,7 @@ body.dark-mode .labour-total input {
 body.dashboard-body .main-content .slaughter-page-section {
   overflow: hidden !important;
 }
-/* ===== Report tables: horizontal row lines only (same as CCP Control and Return Summary) ===== */
+/* ===== Report tables: horizontal row lines only (same as CCP Control and Sales Return Summary) ===== */
 body.dashboard-body.report-page table th,
 body.dashboard-body.report-page table td {
   border-left: 0 !important;
@@ -885,8 +885,35 @@ body.dashboard-body.report-page table td {
   border-top: 0 !important;
   border-bottom: 1px solid #cbd5e1 !important;
 }
-/* CCP Control and Return Summary keep their vertical dividers in the heading rows */
+/* CCP Control and Sales Return Summary keep their vertical dividers in the heading rows */
 body.dashboard-body.report-page .mr-table thead th,
 body.dashboard-body.report-page .rs-table thead th {
   border-right: 1px solid #cbd5e1 !important;
+}
+body.dashboard-body.report-page table thead tr:first-child th {
+  border-top: 1px solid #cbd5e1 !important;
+}
+body.dashboard-body.report-page table thead th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 8 !important;
+  background: #e8edf5 !important;
+}
+body.dark-mode.dashboard-body.report-page table thead th {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+/* Birds Quality Report: let the heading scroll with the table content. */
+body.dashboard-body.keep-title .report-table thead,
+body.dashboard-body.keep-title .report-table thead th {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+body.dashboard-body.keep-title .report-foot-table {
+  border: 1px solid #cbd5e1 !important;
+  border-collapse: collapse !important;
+}
+body.dashboard-body.keep-title .report-foot-table td {
+  border: 1px solid #cbd5e1 !important;
 }

@@ -35,7 +35,7 @@ body.dark-mode .rr-table td.rr-ok { color: #4ade80; }
 /* rework lines (item 1, item 2 ...) - kg and item line up */
 .rr-line { line-height: 1.6; padding: 1px 0; }
 
-/* ===== Return Summary ===== */
+/* ===== Sales Return Summary ===== */
 .rs-section { margin-top: 1.5rem; }
 .rs-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.6rem; }
 .rs-head h3 { margin: 0; font-size: 1rem; font-weight: 800; color: #0f172a; }

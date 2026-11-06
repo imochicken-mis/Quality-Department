@@ -165,7 +165,7 @@
     doc.setFontSize(7.5);
     doc.setTextColor(100, 116, 139);
     doc.text(`Generated ${new Date().toLocaleString()}`, 24, pageHeight - 22);
-    doc.text('© 2026 Imo Chicken & Agro (Pvt) Ltd. All rights reserved.', pageWidth / 2, pageHeight - 22, { align: 'center' });
+    doc.text('© 2026 Imo Chicken & Agro (Pvt) Ltd. MIS Department . All rights reserved.', pageWidth / 2, pageHeight - 22, { align: 'center' });
     doc.text(`Page ${pageNo}`, pageWidth - 24, pageHeight - 22, { align: 'right' });
     doc.setTextColor(0, 0, 0);
   }
@@ -532,7 +532,7 @@
     doc.setFontSize(7.5);
     doc.setTextColor(100, 116, 139);
     doc.text(`Generated ${new Date().toLocaleString()}`, STD_LEFT, height - 22);
-    doc.text('© 2026 Imo Chicken & Agro (Pvt) Ltd. All rights reserved.', width / 2, height - 22, { align: 'center' });
+    doc.text('© 2026 Imo Chicken & Agro (Pvt) Ltd. MIS Department . All rights reserved.', width / 2, height - 22, { align: 'center' });
     doc.text(`Page ${pageNo} of ${pages}`, width - STD_LEFT, height - 22, { align: 'right' });
     doc.setTextColor(0, 0, 0);
   }
@@ -625,4 +625,10 @@
       }
     });
   });
+
+  // Shared with other report scripts (e.g. the water report PDF) so they get the same header, title and footer
+  window.ReportPdf = {
+    standardLogo, drawPlainHeader, drawPlainTitle, drawPlainFooter,
+    STD_LEFT, STD_TABLE_TOP, STD_TABLE_TOP_LATER, STD_FOOTER_SPACE
+  };
 })();
