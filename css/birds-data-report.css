@@ -127,3 +127,6 @@ body.dark-mode.report-page .birds-data-table { border-color: #64748b !important;
 @media (max-width: 720px) {
   .birds-data-table-wrap { max-height: calc(100vh - 220px); }
 }
+/* Dark mode: table body text light enough to read on the dark background */
+body.dark-mode .birds-data-table tbody td,
+body.dark-mode .birds-data-table tbody td.birds-data-qty { color: #e2e8f0 !important; }
