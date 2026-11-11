@@ -1300,3 +1300,6 @@ body.dark-mode .remark-input {
 .sidebar-link.active::before {
   background: #9ac0ff;
 }
+/* Open sidebar groups show every item in full (no clipping of the item list) */
+.sidebar-group:not(.collapsed) .sidebar-sub-wrap { grid-template-rows: auto; }
+.sidebar-group:not(.collapsed) .sidebar-sub-links { overflow: visible; }

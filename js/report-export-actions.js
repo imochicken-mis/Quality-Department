@@ -351,20 +351,50 @@
     })));
   }
 
-  // Body rows keep rowspan/colspan so merged cells (e.g. the Rep name) line up with the screen
-  // Tick and cross symbols are drawn with ZapfDingbats (the standard PDF font has no ✓ / ✗ glyphs)
-  function standardBody(table) {
-    return [...table.querySelectorAll('tbody tr')].map(row => [...row.cells].map(cell => {
-      const text = cellValue(cell);
-      const spans = {};
-      if (cell.rowSpan > 1) spans.rowSpan = cell.rowSpan;
-      if (cell.colSpan > 1) spans.colSpan = cell.colSpan;
-      if (text === '✓') return { content: '4', ...spans, styles: { font: 'ZapfDingbats', halign: 'center' } };
-      if (text === '✗' || text === '×') return { content: '8', ...spans, styles: { font: 'ZapfDingbats', halign: 'center' } };
-      if (text === 'A') return { content: text, ...spans, styles: { fillColor: [209, 250, 229], textColor: [22, 101, 52], fontStyle: 'bold', halign: 'center' } };
-      if (text === 'NA') return { content: text, ...spans, styles: { fillColor: [254, 226, 226], textColor: [153, 27, 27], fontStyle: 'bold', halign: 'center' } };
-      return { content: text, ...spans, styles: { halign: /^[\d.,\-—]*$/.test(text) ? 'center' : 'left' } };
-    }));
+  // One PDF cell from a screen cell. Spans are kept only when withSpans is true.
+  function standardCell(cell, withSpans) {
+    const text = cellValue(cell);
+    const spans = {};
+    if (withSpans && cell.rowSpan > 1) spans.rowSpan = cell.rowSpan;
+    if (withSpans && cell.colSpan > 1) spans.colSpan = cell.colSpan;
+    if (text === '✓') return { content: '4', ...spans, styles: { font: 'ZapfDingbats', halign: 'center' } };
+    if (text === '✗' || text === '×') return { content: '8', ...spans, styles: { font: 'ZapfDingbats', halign: 'center' } };
+    if (text === 'A') return { content: text, ...spans, styles: { fillColor: [209, 250, 229], textColor: [22, 101, 52], fontStyle: 'bold', halign: 'center' } };
+    if (text === 'NA') return { content: text, ...spans, styles: { fillColor: [254, 226, 226], textColor: [153, 27, 27], fontStyle: 'bold', halign: 'center' } };
+    return { content: text, ...spans, styles: { halign: /^[\d.,\-—]*$/.test(text) ? 'center' : 'left' } };
+  }
+
+  // Body rows. Without expand: merged cells keep their rowspan/colspan (as on screen).
+  // With expand: a merged cell is written again in every row it covers, so each row shows its Date, Rep, Truck, etc.
+  function standardBody(table, expand) {
+    const rows = [...table.querySelectorAll('tbody tr')];
+    if (!expand) return rows.map(row => [...row.cells].map(cell => standardCell(cell, true)));
+
+    const grid = [];
+    rows.forEach((tr, r) => {
+      grid[r] = grid[r] || [];
+      let col = 0;
+      [...tr.cells].forEach(cell => {
+        while (grid[r][col]) col += 1;
+        for (let dr = 0; dr < cell.rowSpan; dr += 1) {
+          grid[r + dr] = grid[r + dr] || [];
+          for (let dc = 0; dc < cell.colSpan; dc += 1) {
+            const kind = dr === 0 && dc === 0 ? 'origin' : (dc === 0 ? 'cont' : 'covered');
+            grid[r + dr][col + dc] = { cell, kind };
+          }
+        }
+        col += cell.colSpan;
+      });
+    });
+    return grid.map(cols => {
+      const out = [];
+      for (let c = 0; c < cols.length; c += 1) {
+        const entry = cols[c];
+        if (!entry || entry.kind === 'covered') continue;
+        out.push(standardCell(entry.cell, entry.kind === 'origin'));
+      }
+      return out;
+    });
   }
 
   function drawStandardHeader(doc, logo, docRows) {
@@ -537,30 +567,132 @@
     doc.setTextColor(0, 0, 0);
   }
 
+  // Text of every logical cell (merged cells copied into each row they cover)
+  function logicalGrid(table) {
+    const grid = [];
+    [...table.querySelectorAll('tbody tr')].forEach((tr, r) => {
+      grid[r] = grid[r] || [];
+      let col = 0;
+      [...tr.cells].forEach(cell => {
+        while (grid[r][col] !== undefined) col += 1;
+        const text = cellValue(cell);
+        for (let dr = 0; dr < cell.rowSpan; dr += 1) {
+          grid[r + dr] = grid[r + dr] || [];
+          for (let dc = 0; dc < cell.colSpan; dc += 1) grid[r + dr][col + dc] = text;
+        }
+        col += cell.colSpan;
+      });
+    });
+    return grid;
+  }
+
+  // Standard PDF, split into pages by row height. A merged cell stays merged on its page. When a page break
+  // cuts through a merged cell, the next page starts that cell again with its text (Date, Rep, Truck No, ...).
   function buildStandardPdf(table, logo) {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    const newDoc = () => new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+    const doc = newDoc();
     const period = periodText();
     const title = reportName();
-
-    doc.autoTable({
-      head: standardHead(table),
-      body: standardBody(table),
-      startY: STD_TABLE_TOP,
-      margin: { left: STD_LEFT, right: STD_LEFT, top: STD_TABLE_TOP_LATER, bottom: STD_FOOTER_SPACE },
+    const bottomLimit = doc.internal.pageSize.getHeight() - STD_FOOTER_SPACE - 4;
+    const headers = standardHead(table);
+    const tableOptions = () => ({
+      head: headers,
       styles: { fontSize: 7.5, cellPadding: 3, textColor: [15, 23, 42], lineColor: [30, 41, 59], lineWidth: 0.25, valign: 'middle', font: 'helvetica' },
       headStyles: { fillColor: [234, 240, 248], textColor: [15, 23, 42], fontStyle: 'bold', fontSize: 7 },
-      theme: 'grid',
-      didDrawPage: data => {
-        drawPlainHeader(doc, logo);
-        if (data.pageNumber === 1) drawPlainTitle(doc, period, title);
-      }
+      theme: 'grid'
     });
 
-    const pages = doc.internal.getNumberOfPages();
-    for (let page = 1; page <= pages; page += 1) {
+    // Logical grid: every row lists its cells; a merged cell is an 'origin' in its first row and a 'cont' in the rows it covers
+    const trs = [...table.querySelectorAll('tbody tr')];
+    const grid = [];
+    trs.forEach((tr, r) => {
+      grid[r] = grid[r] || [];
+      let col = 0;
+      [...tr.cells].forEach(cell => {
+        while (grid[r][col]) col += 1;
+        for (let dr = 0; dr < cell.rowSpan; dr += 1) {
+          grid[r + dr] = grid[r + dr] || [];
+          for (let dc = 0; dc < cell.colSpan; dc += 1) {
+            const kind = dr === 0 && dc === 0 ? 'origin' : (dc === 0 ? 'cont' : 'covered');
+            grid[r + dr][col + dc] = { cell, kind, originRow: r };
+          }
+        }
+        col += cell.colSpan;
+      });
+    });
+
+    const cellFor = (cell, span, withColSpan) => {
+      const obj = standardCell(cell, withColSpan);
+      if (span > 1) obj.rowSpan = span;
+      return obj;
+    };
+
+    // Body rows from..to, as they appear on one page
+    function bodyRows(from, to) {
+      const out = [];
+      for (let r = from; r <= to; r += 1) {
+        const row = [];
+        (grid[r] || []).forEach(e => {
+          if (!e || e.kind === 'covered') return;
+          if (e.kind === 'origin') {
+            row.push(cellFor(e.cell, Math.min(e.originRow + e.cell.rowSpan - 1, to) - r + 1, true));
+          } else if (r === from) {
+            // merged cell continues from the previous page: start it again here with its text
+            row.push(cellFor(e.cell, Math.min(e.originRow + e.cell.rowSpan - 1, to) - from + 1, false));
+          }
+        });
+        out.push(row);
+      }
+      return out;
+    }
+
+    // Heights, measured on throw-away documents
+    function heightOf(body) {
+      const tmp = newDoc();
+      tmp.autoTable(Object.assign(tableOptions(), {
+        body: body,
+        startY: 0,
+        margin: { left: STD_LEFT, right: STD_LEFT, top: 0, bottom: 0 }
+      }));
+      return tmp.lastAutoTable.finalY;
+    }
+    const headH = heightOf([]);
+    const rowH = trs.map((tr, r) => Math.max(1, heightOf(bodyRows(r, r)) - headH));
+
+    // Pack rows into pages
+    const pages = [];
+    const availFor = first => bottomLimit - (first ? STD_TABLE_TOP : STD_TABLE_TOP_LATER) - headH;
+    let start = 0;
+    let used = 0;
+    let avail = availFor(true);
+    for (let r = 0; r < trs.length; r += 1) {
+      if (r > start && used + rowH[r] > avail) {
+        pages.push([start, r - 1]);
+        start = r;
+        used = 0;
+        avail = availFor(false);
+      }
+      used += rowH[r];
+    }
+    if (trs.length) pages.push([start, trs.length - 1]);
+
+    pages.forEach((range, i) => {
+      if (i > 0) doc.addPage();
+      drawPlainHeader(doc, logo);
+      if (i === 0) drawPlainTitle(doc, period, title);
+      doc.autoTable(Object.assign(tableOptions(), {
+        body: bodyRows(range[0], range[1]),
+        startY: i === 0 ? STD_TABLE_TOP : STD_TABLE_TOP_LATER,
+        margin: { left: STD_LEFT, right: STD_LEFT, top: STD_TABLE_TOP_LATER, bottom: STD_FOOTER_SPACE },
+        pageBreak: 'avoid'
+      }));
+    });
+
+    const total = doc.internal.getNumberOfPages();
+    for (let page = 1; page <= total; page += 1) {
       doc.setPage(page);
-      drawPlainFooter(doc, page, pages);
+      drawPlainFooter(doc, page, total);
     }
     return doc;
   }

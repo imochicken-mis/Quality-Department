@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ]);
 
     const period = `Month: ${formatMonth(month)}   Records: ${records.length}`;
-    const title = 'Water Plant Report';
+    const title = 'Waste Water Plant Report';
     const widthsMm = [20, 15, 14, 32, 22, 24, 18, 17, 16, 16, 19, 20, 28, 22];
     const columnStyles = {};
     widthsMm.forEach((w, i) => { columnStyles[i] = { cellWidth: w * MM }; });

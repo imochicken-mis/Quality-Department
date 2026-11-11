@@ -1060,7 +1060,7 @@ function setupNavGroups(nav, ownerMode) {
     const storeKey = 'sidebarGroupOpen:' + name;
 
     let open = false;   // every group starts collapsed; the active page's group still opens below
-    try { if (localStorage.getItem(storeKey) === '1') open = true; } catch (e) {}
+    try { if (sessionStorage.getItem(storeKey) === '1') open = true; } catch (e) {}
 
     // Always open the group that contains the page we are on
     const here = window.location.pathname.split('/').pop().toLowerCase() || 'index.html';
@@ -1075,7 +1075,7 @@ function setupNavGroups(nav, ownerMode) {
     toggle.addEventListener('click', () => {
       open = !open;
       apply();
-      try { localStorage.setItem(storeKey, open ? '1' : '0'); } catch (e) {}
+      try { sessionStorage.setItem(storeKey, open ? '1' : '0'); } catch (e) {}
     });
   });
 }

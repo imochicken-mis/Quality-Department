@@ -200,6 +200,24 @@ monthInput.value =
       .catch(() => {});
   }
 
+  // Counts from 0 up to the value (e.g. 95.19%), keeping the same decimals and the % sign
+  function countUp(el, text) {
+    const match = String(text).match(/^(-?[\d.,]+)(.*)$/);
+    const target = match ? parseFloat(match[1].replace(/,/g, '')) : NaN;
+    if (!Number.isFinite(target)) { el.textContent = text; return; }
+    const decimals = (match[1].split('.')[1] || '').length;
+    const suffix = match[2] || '';
+    const start = performance.now();
+    const duration = 900;
+    const step = now => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = (target * eased).toFixed(decimals) + suffix;
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
   async function loadValues() {
     initKpiToggles();
     const month = monthInput.value;
@@ -208,11 +226,12 @@ if (!month) return;
 ensureDonuts();
 
 
-document.querySelectorAll('.kpi-tile').forEach((card) => {
-  card.classList.add('is-loading');
-});
+// One loading animation for the whole grid; every tile shows together once all of them (values and donuts) are ready
+const grid = document.querySelector('.kpi-grid');
+grid?.classList.add('is-loading-all');
 
-document.querySelectorAll('.kpi-tile-value[data-kpi]').forEach(async (el) => {
+const countQueue = [];   // count-up runs after the grid is revealed, so the 0 -> value animation is visible
+const jobs = [...document.querySelectorAll('.kpi-tile-value[data-kpi]')].map(async (el) => {
       const n = el.dataset.kpi;
       const detail = document.querySelector(`.kpi-tile-detail[data-kpi="${n}"]`);
       el.textContent = '…';
@@ -220,7 +239,7 @@ document.querySelectorAll('.kpi-tile-value[data-kpi]').forEach(async (el) => {
         const response = await fetch(`${API_URL}?action=getKpi${n}&month=${month}&_r=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
         const ok = data.success && data.kpi;
-        el.textContent = ok ? data.kpi : '-';
+        countQueue.push({ el, text: ok ? data.kpi : '-' });
 if (detail) {
   const f = FIGURES[n];
   const [firstLabel, secondLabel] = f.label.split(' / ');
@@ -263,7 +282,7 @@ if (detail) {
             setDonut(n, null, null);
           }
         }
-        else loadDays(n, month);
+        else await loadDays(n, month);
         el.closest('.kpi-tile')?.classList.remove('is-loading');
       } catch (error) {
         el.textContent = '-';
@@ -274,6 +293,10 @@ if (detail) {
         el.closest('.kpi-tile')?.classList.remove('is-loading');
       }
     });
+
+    await Promise.all(jobs);
+    grid?.classList.remove('is-loading-all');
+    countQueue.forEach(item => countUp(item.el, item.text));
   }
 
   monthInput.addEventListener('change', () => {

@@ -78,7 +78,7 @@
     return row;
   }
 
-  function drawChart(S) {
+  function drawChart(S, animate) {
     var opt = S.opt, chart = opt.chart, rows = S.rows;
     chart.hidden = false;
     var width = Math.max(320, Math.round(chart.clientWidth) || 900);
@@ -167,6 +167,7 @@
       '<path class="trend-line" d="' + curve + '"></path>' +
       '<text class="target-label" x="' + (width - right) + '" y="' + (yT - 8) + '" text-anchor="end">' + (opt.standardLabel || '') + '</text>' +
       dots + labels + '</svg>';
+    if (animate) animateChart(chart);
 
     // glass hover card
     var tip = getTip();
@@ -244,12 +245,31 @@
     box.hidden = false;
   }
 
+  // The line draws itself from left to right, then the points fade in
+  function animateChart(chart) {
+    var line = chart.querySelector('.trend-line');
+    if (line && line.getTotalLength) {
+      var len = line.getTotalLength();
+      line.style.transition = 'none';
+      line.style.strokeDasharray = len;
+      line.style.strokeDashoffset = len;
+      line.getBoundingClientRect();
+      line.style.transition = 'stroke-dashoffset 1.2s ease-in-out';
+      line.style.strokeDashoffset = '0';
+    }
+    chart.querySelectorAll('.trend-dot').forEach(function (dot, i) {
+      dot.style.opacity = '0';
+      dot.style.transition = 'opacity .4s ease ' + (0.9 + i * 0.05) + 's';
+      requestAnimationFrame(function () { dot.style.opacity = '1'; });
+    });
+  }
+
   function mount(opt) {
     var chart = opt.chart;
     if (!chart) return;
     var S = prepare(opt);
     chart._kpiTrend = S;
-    drawChart(S);
+    drawChart(S, true);
     drawTable(S);
 
     // redraw when the chart box changes width (sidebar hide / show, window resize)

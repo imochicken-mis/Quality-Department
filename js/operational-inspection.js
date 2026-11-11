@@ -94,7 +94,7 @@
         const statusOptions = `
             <li role="option" class="status-opt ok" data-value="✓">✓ Acceptable</li>
             <li role="option" class="status-opt bad" data-value="✗">✗ Not Acceptable</li>
-            ${stage === 'preOperational' ? '<li role="option" class="status-opt" data-value="NA">NA</li>' : ''}`;
+            `;
         return `<tr data-stage-row data-item-no="${escapeHtml(item.itemNo)}" data-checkpoint="${escapeHtml(item.checkPoint)}" data-acceptance="${escapeHtml(item.acceptanceCriteria || '')}">
           <td>${escapeHtml(item.itemNo)}</td>
           <td>${escapeHtml(item.checkPoint)}</td>

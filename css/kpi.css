@@ -689,3 +689,16 @@ body.dark-mode .kpi-donut-legend b{color:#475569 !important}
 }
 .kpi-switch[aria-checked="true"] .kpi-switch-knob{transform:translateX(16px)}
 .kpi-switch:disabled{opacity:.6;cursor:wait}
+/* Reserve the height of each line on the tile so the card does not move when the values load */
+.kpi-tile-value{display:block;min-height:2rem}
+.kpi-tile-status{min-height:1.1rem}
+.kpi-tile-detail{display:block;min-height:3.6rem}
+.kpi-tile-std{min-height:1.1rem}
+/* Skeleton loading: while the grid loads, every tile shows a shimmering placeholder; the content appears together */
+.kpi-grid.is-loading-all .kpi-tile > * { visibility: hidden; }
+.kpi-grid.is-loading-all .kpi-tile {
+  background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 37%, #eef2f7 63%);
+  background-size: 400% 100%;
+  animation: kpiSkeleton 1.4s ease infinite;
+}
+@keyframes kpiSkeleton { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }

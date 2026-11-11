@@ -105,3 +105,5 @@ body.dark-mode .status-menu { background:#1e293b; border-color:#475569; }
   .inspection-stage-footer { align-items:stretch; flex-direction:column; }
   .inspection-save { align-self:flex-end; }
 }
+/* Input page header: dashboard.css forces a light header background on report pages; keep the dark header with white text */
+body.dashboard-body.report-page.operational-input-page .inspection-table thead th { background:#273746 !important; color:#ffffff !important; }
