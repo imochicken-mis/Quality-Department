@@ -1303,3 +1303,11 @@ body.dark-mode .remark-input {
 /* Open sidebar groups show every item in full (no clipping of the item list) */
 .sidebar-group:not(.collapsed) .sidebar-sub-wrap { grid-template-rows: auto; }
 .sidebar-group:not(.collapsed) .sidebar-sub-links { overflow: visible; }
+/* Phone: the sidebar menu button sits at the top-left, so page headers start a little further right */
+@media (max-width: 768px) {
+  .page-header { padding-left: 64px; }
+}
+/* Phone: the blue hide/show arrow on the side is not shown (the menu button at the top-left is used) */
+@media (max-width: 768px) {
+  .sidebar-toggle-arrow { display: none !important; }
+}

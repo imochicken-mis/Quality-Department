@@ -238,7 +238,10 @@ const jobs = [...document.querySelectorAll('.kpi-tile-value[data-kpi]')].map(asy
       try {
         const response = await fetch(`${API_URL}?action=getKpi${n}&month=${month}&_r=${Date.now()}`, { cache: 'no-store' });
         const data = await response.json();
-        const ok = data.success && data.kpi;
+        // A KPI with no day count (denominator 0 or missing) has no data: shown as No Data, not as a value
+        const denominator = n === '1' ? Number(data.totalTested) : (n === '2' ? Number(data.sold) : Number(data.denominator));
+        const hasDay = Number.isFinite(denominator) && denominator > 0;
+        const ok = data.success && data.kpi && hasDay;
         countQueue.push({ el, text: ok ? data.kpi : '-' });
 if (detail) {
   const f = FIGURES[n];

@@ -352,6 +352,12 @@ body.login-page > * { position: relative; z-index: 1; }
 
 @media (max-width: 640px) {
   .login-topbar { padding: 12px 16px; flex-wrap: wrap; }
+  /* Phone: the hero text is centred like the login card (the laptop layout keeps its left padding) */
+  .login-hero { padding: 0 0 8px; text-align: center; }
+  .login-badge, .login-points { margin-left: auto; margin-right: auto; }
+  .login-title, .login-lead { margin-left: auto; margin-right: auto; }
+  /* Phone: the login card fits the screen width and stays centred (no 360px minimum that pushes it off the left edge) */
+  .login-card { min-width: 0; width: 100%; max-width: 420px; margin: 0 auto; justify-self: center; }
   .login-tagline { display: none; }
   .login-brand-logo { height: 42px; }
   .login-main { padding: 24px 16px; }

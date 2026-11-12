@@ -440,3 +440,8 @@ body.dark-mode .hanging-time-input:disabled { background: #334155 !important; co
   background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%) !important;
   cursor: not-allowed !important;
 }
+/* Phone: the table of the input page scrolls sideways when it is wider than the screen */
+@media (max-width: 768px) {
+  .birds-table-wrap { overflow: visible; }
+  .birds-table-scroll { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+}

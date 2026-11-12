@@ -1,0 +1,185 @@
+/* Shared phone and tablet layout fixes. Keep data tables usable with horizontal scrolling. */
+:root { color-scheme: light; }
+img, svg, video, canvas { max-width: 100%; }
+input, select, textarea, button { max-width: 100%; }
+input, select, textarea, button { font: inherit; }
+.table-responsive, .table-wrap, .table-container, .report-table-wrap, .birds-data-table-wrap, .table-scroll { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { max-width: 100%; }
+@media (max-width: 768px) {
+  html, body { min-width: 0; }
+  body.dashboard-body { height: auto; min-height: 100vh; overflow: auto; }
+  .dashboard-layout { display: block; min-height: 100vh; }
+  .main-content { width: 100%; min-width: 0; height: auto; min-height: 100vh; margin-left: 0; padding: 76px 14px 24px; overflow: visible; }
+  .page-header { width: 100%; padding: 0 0 12px; margin-bottom: 14px; border-left: 0; border-bottom: 1px solid #e2e8f0; }
+  .page-header-text h1 { font-size: clamp(1.15rem, 5vw, 1.5rem); line-height: 1.2; overflow-wrap: anywhere; }
+  .page-header-datetime { flex-direction: row; flex-wrap: wrap; gap: 6px 14px; }
+  .form-section, .report-area, .report-card, .card, .content-card { min-width: 0; max-width: 100%; padding: 14px; }
+  .form-grid, .form-row, .input-grid, .filters-row, .filter-row { grid-template-columns: minmax(0, 1fr) !important; }
+  .form-grid > *, .form-row > *, .input-grid > *, .filters-row > *, .filter-row > * { min-width: 0; width: 100%; }
+  .form-actions, .action-buttons, .button-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .form-actions button, .action-buttons button { min-height: 44px; }
+  table { font-size: 0.82rem; }
+  th, td { padding: 8px 10px; }
+  .modal, .modal-content, .preview-modal, .preview-modal-content { width: min(100% - 24px, 640px); max-width: none; max-height: calc(100dvh - 24px); overflow: auto; }
+  .report-sheet, .report-area, .chart-container { max-width: 100%; overflow-x: auto; }
+  .sidebar-toggle { position: fixed; top: 12px; left: 12px; z-index: 1200; }
+  .sidebar-overlay { z-index: 1090; }
+  .sidebar { z-index: 1100; }
+}
+@media (max-width: 480px) {
+  .main-content { padding: 68px 10px 18px; }
+  .form-section, .report-area, .report-card, .card, .content-card { padding: 11px; border-radius: 12px; }
+  label { overflow-wrap: anywhere; }
+  input, select, textarea { min-height: 42px; }
+  button, .btn, a.button { min-height: 42px; }
+}
+
+/* Birds Quality had legacy !important desktop sizing that overrode the shared mobile rules. */
+@media (max-width: 768px) {
+  body.dashboard-body .main-content {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    margin: 0 !important;
+    padding: 76px 14px 24px !important;
+    overflow: visible !important;
+  }
+  body.dashboard-body .main-content > div[style*="display:flex"] {
+    width: 100%;
+    min-width: 0;
+    gap: 10px !important;
+  }
+  body.dashboard-body .filter-section {
+    width: 100%;
+    max-width: none;
+  }
+  body.dashboard-body .birds-date-note {
+    width: 100%;
+    max-width: none !important;
+    margin-left: 0 !important;
+  }
+  body.dashboard-body .birds-data-section,
+  body.dashboard-body .birds-table-wrap,
+  body.dashboard-body .birds-empty {
+    min-width: 0;
+    min-height: 220px !important;
+  }
+  body.dashboard-body .birds-table-wrap { overflow: hidden !important; }
+  body.dashboard-body .birds-table-scroll {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    overflow: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 480px) {
+  body.dashboard-body .main-content { padding: 68px 10px 18px !important; }
+  body.dashboard-body .main-content > div[style*="display:flex"] { flex-direction: column; }
+}
+
+/* Keep the Birds Quality entry grid scrollable on touch screens in both directions. */
+@media (max-width: 768px) {
+  body.dashboard-body .main-content .birds-data-section {
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+  body.dashboard-body .main-content .birds-table-wrap {
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+  body.dashboard-body .main-content .birds-table-scroll {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    height: min(62dvh, 540px) !important;
+    min-height: 220px !important;
+    max-height: 62dvh !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.dashboard-body .main-content .birds-table {
+    width: max-content !important;
+    min-width: 1400px !important;
+  }
+}
+
+/* Shared input-page scrolling for every dashboard module on phones. */
+@media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    min-width: 0 !important;
+    height: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+  body.dashboard-body {
+    min-height: 100dvh !important;
+    height: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    touch-action: pan-y;
+  }
+  body.dashboard-body .dashboard-layout {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 100dvh !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  body.dashboard-body .main-content {
+    display: block !important;
+    position: relative;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh !important;
+    margin: 0 !important;
+    padding: 72px 12px 28px !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+  body.dashboard-body .main-content > *,
+  body.dashboard-body form,
+  body.dashboard-body .slaughter-form,
+  body.dashboard-body .form-section,
+  body.dashboard-body .form-card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  body.dashboard-body input,
+  body.dashboard-body select,
+  body.dashboard-body textarea,
+  body.dashboard-body button {
+    max-width: 100%;
+    font-size: max(16px, 1em);
+  }
+  body.dashboard-body .birds-table-scroll,
+  body.dashboard-body .birds-data-table-wrap,
+  body.dashboard-body .table-scroll,
+  body.dashboard-body .table-wrap,
+  body.dashboard-body .table-responsive,
+  body.dashboard-body .table-container,
+  body.dashboard-body .report-table-wrap {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 65dvh;
+    overflow: auto !important;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (max-width: 480px) {
+  body.dashboard-body .main-content { padding: 68px 10px 24px !important; }
+}
