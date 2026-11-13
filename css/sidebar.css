@@ -267,11 +267,14 @@
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
+  /* Phone: the menu button decides. The desktop arrow's saved "hidden" state must not block it. */
+  .sidebar,
+  .sidebar.sidebar-hidden {
+    transform: translateX(-100%) !important;
   }
-  .sidebar.open {
-    transform: translateX(0);
+  .sidebar.open,
+  .sidebar.sidebar-hidden.open {
+    transform: translateX(0) !important;
   }
 
   .sidebar-toggle {
