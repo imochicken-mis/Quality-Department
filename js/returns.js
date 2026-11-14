@@ -89,6 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const inp = (field, i, v) =>
     `<input type="number" step="0.01" min="0" class="ret-input" data-f="${field}" data-i="${i}" value="${esc(v)}" />`;
 
+  // Vehicle / Meat temp: per row, decimals allowed (can be below 0)
+  const tempInp = (field, i, v) =>
+    `<input type="number" step="0.1" class="ret-input" data-f="${field}" data-i="${i}" value="${esc(v)}" />`;
+
   const itemSelect = (i, k, selected) => {
     const sel = String(selected || '').trim();
     const list = masterItems.slice();
@@ -136,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ===== "Already saved" (gray) state =====
-  const isSaved = r => ['coolRoom', 'rework', 'itemToRework', 'rejection']
+  const isSaved = r => ['vehicleTemp', 'meatTemp', 'coolRoom', 'rework', 'itemToRework', 'rejection']
     .some(k => String(r[k] == null ? '' : r[k]).trim() !== '');
   const extraBox = document.querySelector('.returns-extra');
   const savedNote = $('retSavedNote');
@@ -214,6 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${esc(r.batchNo) || '-'}</td>
         <td>${esc(r.itemName) || '-'}</td>
         <td>${esc(r.qty) || '-'}</td>
+        <td>${tempInp('vehicleTemp', i, r.vehicleTemp)}</td>
+        <td>${tempInp('meatTemp', i, r.meatTemp)}</td>
         <td>${inp('coolRoom', i, r.coolRoom)}</td>
         <td class="rw-cell" id="rwq${i}">${rwQtyHtml(i)}</td>
         <td class="rw-cell" id="rwi${i}">${rwItemHtml(i)}</td>
@@ -221,12 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <td class="ret-bal" id="bal${i}">-</td>
       </tr>`).join('');
 
-    // Truck + temps: one value per group, prefill from first row that has it
+    // Truck No: one value per group, prefill from first row that has it
     const first = k => (rows.find(r => r[k] !== '') || {})[k] || '';
     $('retTruck').value = first('truckNo');
-    $('retVehTemp').value = first('vehicleTemp');
-    $('retMeatTemp').value = first('meatTemp');
-    extraBox.classList.toggle('ret-saved', !!(first('truckNo') || first('vehicleTemp') || first('meatTemp')));
+    extraBox.classList.toggle('ret-saved', !!first('truckNo'));
 
     // Already saved rows -> gray
     const trs = $('retBody').querySelectorAll('tr');
@@ -281,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.className = 'ret-bal ' + (bal === 0 ? 'ok' : 'bad');
       t.qty += n(r.qty); t.cool += cool; t.rew += rew; t.rej += rej;
     });
-    $('retTotal').innerHTML = `<td></td><td></td><td>Total</td><td>${r2(t.qty).toFixed(2)}</td>` +
+    $('retTotal').innerHTML = `<td></td><td></td><td>Total</td><td>${r2(t.qty).toFixed(2)}</td><td></td><td></td>` +
       `<td>${r2(t.cool).toFixed(2)}</td><td>${r2(t.rew).toFixed(2)}</td><td></td>` +
       `<td>${r2(t.rej).toFixed(2)}</td><td>${r2(t.qty - t.cool - t.rew - t.rej).toFixed(2)}</td>`;
   }
@@ -295,6 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
         title: esc(`${i + 1}. ${r.itemName} — ${r.qty} kg`),
         fields: [
           { label: 'Batch No', value: r.batchNo },
+          { label: 'Vehicle Temp (°C)', value: val('vehicleTemp', i) },
+          { label: 'Meat Temp (°C)', value: val('meatTemp', i) },
           { label: 'Cool Room (kg)', value: val('coolRoom', i) },
           { label: 'Rework (kg)', value: reworkHasQty(i) ? String(rew) : '' },
           { label: 'Item To Be Rework', value: reworkText(rw[i]) },
@@ -309,9 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
       meta: [
         { label: '📅 Date', value: dateInput.value.split('-').reverse().join('-') },
         { label: 'Rep', value: esc(repSelect.value) },
-        { label: 'Truck No', value: esc(formatTruck($('retTruck').value)) || '—' },
-        { label: 'Vehicle Temp', value: esc($('retVehTemp').value) || '—' },
-        { label: 'Meat Temp', value: esc($('retMeatTemp').value) || '—' }
+        { label: 'Truck No', value: esc(formatTruck($('retTruck').value)) || '—' }
       ],
       sections: pvSections
     }))) return;
@@ -319,6 +323,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updates = rows.map((r, i) => ({
       rowIndex: r.rowIndex,
+      vehicleTemp: val('vehicleTemp', i),
+      meatTemp: val('meatTemp', i),
       coolRoom: val('coolRoom', i),
       rework: reworkHasQty(i) ? reworkTotal(i) : '',
       itemToRework: reworkText(rw[i]),
@@ -335,8 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           action: 'saveReturnsData',
           truckNo: formatTruck($('retTruck').value),
-          vehicleTemp: $('retVehTemp').value,
-          meatTemp: $('retMeatTemp').value,
           updates
         })
       });

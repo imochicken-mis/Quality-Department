@@ -13,6 +13,21 @@ const OWNER_EXTRA_PAGES = new Set([
   'sample-parameters-report.html'
 ]);
 
+// "user3reports" permission = only these 7 report pages (User 3), without full "admin" access
+const USER3_REPORT_PAGES = new Set([
+  'returns-report.html',
+  'returns-summary.html',
+  'shop-returns-report.html',
+  'rejection-report.html',
+  'coolroom-rejection-report.html',
+  'sales-rejection-report.html',
+  'shop-rejection-report.html'
+]);
+function user3ReportAccess(reports, key, page) {
+  return key === 'admin' && reports.includes('user3reports') &&
+    USER3_REPORT_PAGES.has(String(page || '').toLowerCase());
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   console.info('[sidebar] script v8 (owner pages) running');
@@ -142,7 +157,7 @@ function filterNavLinks(user) {
   document.querySelectorAll('.sidebar-link[data-report]').forEach(link => {
     const key = link.getAttribute('data-report').trim().toLowerCase();
     const page = (link.getAttribute('href') || '').split('/').pop().split('?')[0].toLowerCase();
-    if (userReports.includes(key) || (isOwner && (key === 'usercontrol' || OWNER_EXTRA_PAGES.has(page)))) {
+    if (userReports.includes(key) || user3ReportAccess(userReports, key, page) || (isOwner && (key === 'usercontrol' || OWNER_EXTRA_PAGES.has(page)))) {
       link.style.display = 'flex';
       shown.push(key);
     } else {
@@ -756,7 +771,7 @@ function enforcePageAccess(user) {
   let file = window.location.pathname.split('/').pop().toLowerCase() || 'index.html';
   const key = PAGE_KEYS[file];
   if (!key) return true;                       // not a report page
-  if (parseReports(user).includes(key)) return true;
+  if (parseReports(user).includes(key) || user3ReportAccess(parseReports(user), key, file)) return true;
 
   const next = getFirstAllowedPage(user);
   if (next) {
@@ -1014,11 +1029,21 @@ function buildNavLinks(user) {
   };
 
   let items = NAV_ITEMS
-    .filter(item => allowed.includes(item.key) || (isOwner && (item.key === 'usercontrol' || OWNER_EXTRA_PAGES.has(String(item.page).toLowerCase()))))
+    .filter(item => allowed.includes(item.key) || user3ReportAccess(allowed, item.key, item.page) || (isOwner && (item.key === 'usercontrol' || OWNER_EXTRA_PAGES.has(String(item.page).toLowerCase()))))
     .map(item => isOwner
       ? { ...item, group: item.key === 'usercontrol' ? null : (item.group === 'KPI' ? 'KPI' : (ownerGroupByKey[String(item.key).toLowerCase()] || 'Other')) }
       : item
     );
+
+  // User 6: Personal Hygiene 3 comes first, Operational Inspection after it
+  if (!isOwner) {
+    const hy = items.findIndex(item => item.key === 'hygiene3');
+    const oi = items.findIndex(item => item.key === 'operationalinspection');
+    if (hy > oi && oi !== -1) {
+      const moved = items.splice(hy, 1)[0];
+      items.splice(oi, 0, moved);
+    }
+  }
 
   // Operational Inspection is shared by User 1, User 2 and User 6.
   // Keep the same input page available inside each owner user group.

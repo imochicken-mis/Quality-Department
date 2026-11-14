@@ -4,7 +4,7 @@
     ['water', 'Water Plant Data'], ['packing', 'Packing Data'],
     ['birdsquality', 'Birds Quality'], ['returns', 'Sales Returns'],
     ['shopreturns', 'Shop Returns'], ['complaint', 'Complaint'], ['rejection', 'Rejection'], ['operationalinspection', 'Operational Inspection'],
-    ['hygiene', 'Personal Hygiene'], ['shygiene', 'Personal Hygiene 2'], ['hygiene3', 'Personal Hygiene 3'], ['sampleparameters', 'Sample Parameters'], ['admin', 'Reports']
+    ['hygiene', 'Personal Hygiene'], ['shygiene', 'Personal Hygiene 2'], ['hygiene3', 'Personal Hygiene 3'], ['sampleparameters', 'Sample Parameters'], ['user3reports', 'User 3 Reports'], ['admin', 'Reports']
   ];
   const avatarOptions = [
     { key:'female', label:'Classic', file:'assets/images/avatars.png' },

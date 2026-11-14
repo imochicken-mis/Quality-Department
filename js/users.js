@@ -140,7 +140,8 @@ const REPORT_PAGES = {
   shygiene: 'staff-hygiene.html',
   hygiene3: 'personal-hygiene-3.html',
   sampleparameters: 'sample-parameters.html',
-  operationalinspection: 'operational-inspection.html'
+  operationalinspection: 'operational-inspection.html',
+  user3reports: 'returns-report.html'
 };
 
 // "ccp, Birds ; ev" or ["ccp","birds"] -> ["ccp","birds","ev"]

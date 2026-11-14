@@ -101,25 +101,28 @@ body.dark-mode .rw-del { background: #7f1d1d; color: #fecaca; border-color: #991
 .returns-table .rw-cell { overflow: visible; }
 /* Explicit column map: each header and control shares one fixed column. */
 .returns-table col.ret-col-number { width: 3%; }
-.returns-table col.ret-col-batch { width: 8%; }
-.returns-table col.ret-col-item { width: 11%; }
-.returns-table col.ret-col-qty { width: 8%; }
-.returns-table col.ret-col-cool { width: 11%; }
-.returns-table col.ret-col-rework { width: 11%; }
-.returns-table col.ret-col-rework-item { width: 26%; }
-.returns-table col.ret-col-rejection { width: 11%; }
-.returns-table col.ret-col-balance { width: 11%; }
-.returns-table td:nth-child(6) .rw-line,
-.returns-table td:nth-child(7) .rw-line { width: 100%; justify-content: center; }
-.returns-table td:nth-child(7) .ret-select { width: min(220px, calc(100% - 34px)); }
+.returns-table col.ret-col-batch { width: 7%; }
+.returns-table col.ret-col-item { width: 10%; }
+.returns-table col.ret-col-qty { width: 6%; }
+.returns-table col.ret-col-temp { width: 7%; }
+.returns-table col.ret-col-cool { width: 9%; }
+.returns-table col.ret-col-rework { width: 9%; }
+.returns-table col.ret-col-rework-item { width: 22%; }
+.returns-table col.ret-col-rejection { width: 9%; }
+.returns-table col.ret-col-balance { width: 9%; }
+/* Columns: 1 #, 2 Batch, 3 Item, 4 Qty, 5 Vehicle Temp, 6 Meat Temp, 7 Cool Room,
+   8 Rework, 9 Item To Be Rework, 10 Rejection, 11 Balance */
+.returns-table td:nth-child(8) .rw-line,
+.returns-table td:nth-child(9) .rw-line { width: 100%; justify-content: center; }
+.returns-table td:nth-child(9) .ret-select { width: min(220px, calc(100% - 34px)); }
 /* Headings centred over their columns, so the boxes below line up under them */
 /* Batch No, Qty and Balance values centred in their columns */
 .returns-table td:nth-child(2),
 .returns-table td:nth-child(2) > *,
 .returns-table td:nth-child(4),
 .returns-table td:nth-child(4) > *,
-.returns-table td:nth-child(9),
-.returns-table td:nth-child(9) > * {
+.returns-table td:nth-child(11),
+.returns-table td:nth-child(11) > * {
   text-align: center !important;
   justify-content: center;
 }
@@ -128,17 +131,19 @@ body.dark-mode .rw-del { background: #7f1d1d; color: #fecaca; border-color: #991
   text-align: center !important;
   justify-content: center;
 }
-/* Same box size for the quantity boxes (Cool Room, Rework, Rejection) so the row looks even */
+/* Same box size for the input boxes (Vehicle Temp, Meat Temp, Cool Room, Rework, Rejection) so the row looks even */
 .returns-table td:nth-child(5) .ret-input,
 .returns-table td:nth-child(6) .ret-input,
-.returns-table td:nth-child(8) .ret-input {
+.returns-table td:nth-child(7) .ret-input,
+.returns-table td:nth-child(8) .ret-input,
+.returns-table td:nth-child(10) .ret-input {
   width: calc(100% - 12px);
   margin: 0 auto;
   display: block;
   text-align: center;
 }
 /* Item To Be Rework box: a bit narrower than the column, same height as the quantity boxes */
-.returns-table td:nth-child(7) .ret-select {
+.returns-table td:nth-child(9) .ret-select {
   height: 40px;
   padding: 6px 8px;
   width: calc(100% - 12px);

@@ -22,6 +22,7 @@
 .rr-table td.rr-num { text-align: right; }
 .rr-table td.rr-date { font-weight: 700; }
 .rr-table .rr-no { color: #94a3b8; }
+.rr-table .rr-line { line-height: 1.6; padding: 1px 0; }
 .rr-table td.rr-bad { background: #ef4444 !important; color: #fff !important; font-weight: 800; }
 .rr-table td.rr-ok { color: #15803d; font-weight: 700; }
 .rr-table tfoot td { background: #dbe4f0; font-weight: 800; }

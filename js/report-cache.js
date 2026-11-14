@@ -41,5 +41,12 @@ window.ReportCache = (function () {
     return restored;
   }
 
+  // Page refresh (F5 / Ctrl+R) -> always load fresh data from the sheet.
+  // Normal navigation between pages still uses the cache (fast).
+  try {
+    const nav = performance.getEntriesByType('navigation')[0];
+    if (nav && nav.type === 'reload') clear();
+  } catch (e) { /* ignore */ }
+
   return { get, set, clear, restoreInput };
 })();

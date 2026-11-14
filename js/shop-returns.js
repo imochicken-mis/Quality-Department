@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let editMode = false;
   let rows = [], customers = [], reasons = [], conditions = [], loadToken = 0;
+  let rw = [];   // per row: rework lines [{ qty, item }, ...]
+  let bt = [];   // per row: batch numbers ['N26242', 'N26245', ...]
 
   async function getJson(url) {
     for (let i = 0; i < 3; i++) {
@@ -46,6 +48,15 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) { console.error('Lists load error:', e); }
   })();
 
+  // ===== Masterdata items (Item To Be Rework dropdown) =====
+  let masterItems = [];
+  const masterReady = (async function loadMasterItems() {
+    try {
+      const res = await getJson(API_URL_SHOP + '?action=getMasterData');
+      if (res.success) masterItems = res.items || [];
+    } catch (e) { console.error('Masterdata load error:', e); }
+  })();
+
   dateInput.addEventListener('change', loadRows);
   repSelect.addEventListener('change', loadRows);
 
@@ -64,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = ++loadToken;
     show('loading');
     try {
-      await listsReady;
+      await Promise.all([listsReady, masterReady]);
       const [res, cus] = await Promise.all([
         getJson(`${API_URL_SHOP}?action=getShopReturnsByDateRep&date=${encodeURIComponent(date)}&rep=${encodeURIComponent(rep)}`),
         getJson(`${API_URL_SHOP}?action=getShopCustomers&rep=${encodeURIComponent(rep)}`)
@@ -124,14 +135,67 @@ document.addEventListener('DOMContentLoaded', () => {
   const numInp = (field, i, v) =>
     `<input type="number" step="0.01" min="0" class="sr-input sr-num" data-f="${field}" data-i="${i}" value="${esc(v)}" />`;
 
+  // ===== Rework lines: one returned item -> one or more new items =====
+  // Sheet: L = total rework qty, R = "Item" (single) or "ItemA (10kg); ItemB (5kg)" (many)
+  const LINE_RE = /^(.*) \(([\d.]+)kg\)$/;
+  function parseRework(total, itemText) {
+    const t = String(itemText || '').trim();
+    if (t) {
+      const parts = t.split('; ').map(p => p.match(LINE_RE));
+      if (parts.every(Boolean)) return parts.map(m => ({ qty: m[2], item: m[1] }));
+    }
+    return [{ qty: (total === '' || total == null) ? '' : String(total), item: t }];
+  }
+  const reworkTotal = i => r2(rw[i].reduce((a, l) => a + n(l.qty), 0));
+  const reworkHasQty = i => rw[i].some(l => String(l.qty).trim() !== '');
+  function reworkText(lines) {
+    const used = lines.filter(l => l.item || n(l.qty) > 0);
+    if (used.length <= 1) return used.length ? used[0].item : '';
+    return used.map(l => `${l.item} (${r2(n(l.qty))}kg)`).join('; ');
+  }
+
+  const rwItemSelect = (i, k, selected) => {
+    const sel = String(selected || '').trim();
+    const list = masterItems.slice();
+    if (sel && list.indexOf(sel) === -1) list.unshift(sel);   // saved value still shows
+    return `<select class="sr-input sr-select" data-f="rwItem" data-i="${i}" data-k="${k}">` +
+      '<option value="">-- Select Item --</option>' +
+      list.map(it => `<option value="${esc(it)}"${it === sel ? ' selected' : ''}>${esc(it)}</option>`).join('') +
+      '</select>';
+  };
+
+  const rwHtml = i => rw[i].map((l, k) =>
+    '<div class="sr-rw-line">' +
+      `<input type="number" step="0.01" min="0" class="sr-input sr-num" placeholder="kg" data-f="rwQty" data-i="${i}" data-k="${k}" value="${esc(l.qty)}" />` +
+      rwItemSelect(i, k, l.item) +
+      (k === 0
+        ? `<button type="button" class="sr-rw-btn sr-rw-add" data-add="${i}" title="Add another item">+</button>`
+        : `<button type="button" class="sr-rw-btn sr-rw-del" data-del="${i}:${k}" title="Remove">&times;</button>`) +
+    '</div>'
+  ).join('');
+
+  // ===== Batch numbers: one or more per returned item (+ button), each with its own production date =====
+  const batchList = i => bt[i].map(b => String(b).trim().toUpperCase()).filter(Boolean);
+  const btHtml = i =>
+    '<div class="sr-bt-line sr-bt-head"><span>Batch no</span><span></span><span>Production date</span></div>' +
+    bt[i].map((b, k) =>
+      '<div class="sr-bt-line">' +
+        `<input type="text" class="sr-input sr-text" data-f="batchNo" data-i="${i}" data-k="${k}" placeholder="N26242" value="${esc(b)}" />` +
+        (k === 0
+          ? `<button type="button" class="sr-rw-btn sr-rw-add" data-badd="${i}" title="Add another batch no">+</button>`
+          : `<button type="button" class="sr-rw-btn sr-rw-del" data-bdel="${i}:${k}" title="Remove">&times;</button>`) +
+        `<b class="sr-prod" id="prod${i}_${k}">-</b>` +
+      '</div>'
+    ).join('');
+
   // Row already has saved decisions?  (Batch No is not counted)
-  const isSaved = r => ['customer', 'reason', 'condition', 'coolRoom', 'rework', 'rejectQty']
+  const isSaved = r => ['customer', 'reason', 'condition', 'coolRoom', 'rework', 'itemToRework', 'rejectQty']
     .some(k => String(r[k] == null ? '' : r[k]).trim() !== '');
 
   // Saved cards are locked
   function lockSaved() {
     body.querySelectorAll('.sr-card.sr-saved').forEach(card =>
-      card.querySelectorAll('input, select, textarea').forEach(el => { el.disabled = true; }));
+      card.querySelectorAll('input, select, textarea, button').forEach(el => { el.disabled = true; }));
   }
 
   function removeSavedAlert() {
@@ -168,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editMode = true;
     body.querySelectorAll('.sr-card').forEach(card => {
       card.classList.remove('sr-saved');
-      card.querySelectorAll('input, select, textarea').forEach(el => { el.disabled = false; });
+      card.querySelectorAll('input, select, textarea, button').forEach(el => { el.disabled = false; });
     });
     removeSavedAlert();
     updateSavedNote();
@@ -177,6 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Render =====
     function render() {
     editMode = false;
+    rw = rows.map(r => parseRework(r.rework, r.itemToRework));
+    bt = rows.map(r => {
+      const list = String(r.batchNo || '').split(';').map(s => s.trim()).filter(Boolean);
+      return list.length ? list : [''];
+    });
     body.innerHTML = rows.map((r, i) => `
       <section class="sr-card${isSaved(r) ? ' sr-saved' : ''}">
         <header class="sr-card-head">
@@ -188,24 +257,21 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="sr-grid">
           <label class="sr-field"><span>Customer</span>${customerCell(i, r.customer)}</label>
           <div class="sr-field"><span>Reason for return</span>${listCell('reason', i, reasons, r.reason)}</div>
-          <label class="sr-field"><span>Batch no</span>
-            <input type="text" class="sr-input sr-text" data-f="batchNo" data-i="${i}" placeholder="N26242" value="${esc(r.batchNo)}" />
-          </label>
-          <div class="sr-field"><span>Production date</span><b class="sr-prod" id="prod${i}">-</b></div>
           <label class="sr-field"><span>Loading date</span>
             <input type="date" class="sr-input" data-f="loadingDate" data-i="${i}" value="${esc(r.loadingDate)}" />
           </label>
+          <div class="sr-field sr-batches" id="sr-bt${i}">${btHtml(i)}</div>
           <div class="sr-decision">
             <div class="sr-decision-title">Decision taken (kg)</div>
             <label class="sr-field"><span>Cool room</span>${numInp('coolRoom', i, r.coolRoom)}</label>
-            <label class="sr-field"><span>Rework</span>${numInp('rework', i, r.rework)}</label>
             <label class="sr-field"><span>Reject qty</span>${numInp('rejectQty', i, r.rejectQty)}</label>
+            <div class="sr-field sr-rework"><span>Rework (kg) and item to be reworked</span><div id="sr-rw${i}">${rwHtml(i)}</div></div>
           </div>
           <div class="sr-field sr-wide"><span>Product condition</span>${listCell('condition', i, conditions, r.condition)}</div>
         </div>
       </section>`).join('');
 
-    rows.forEach((r, i) => updateProd(i));
+    rows.forEach((r, i) => updateAllProd(i));
     lockSaved();
     if (body.querySelector('.sr-card.sr-saved')) showSavedAlert();
     else removeSavedAlert();
@@ -219,9 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const listVal = (f, i) => { const v = val(f, i); return v === SR_OTHER ? val(f + 'Other', i).trim() : v; };
 
   // ===== Production date from Batch No =====
-  function updateProd(i) {
-    const b = val('batchNo', i).trim();
-    const cell = $('prod' + i);
+  function updateAllProd(i) { bt[i].forEach((b, k) => updateProd(i, k)); }
+
+  function updateProd(i, k) {
+    const b = String(bt[i][k] || '').trim();
+    const cell = $('prod' + i + '_' + k);
+    if (!cell) return;
     if (!b) { cell.textContent = '-'; cell.className = 'sr-prod'; cell.title = ''; return; }
     const d = prodDate(b);
     if (!d) { cell.textContent = 'Invalid'; cell.className = 'sr-prod bad'; cell.title = 'Batch No must end with YYDDD (e.g. N26242)'; return; }
@@ -235,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function recalc() {
     const t = { qty: 0, cool: 0, rew: 0, rej: 0 };
     rows.forEach((r, i) => {
-      const cool = n(val('coolRoom', i)), rew = n(val('rework', i)), rej = n(val('rejectQty', i));
+      const cool = n(val('coolRoom', i)), rew = reworkTotal(i), rej = n(val('rejectQty', i));
       const bal = r2(n(r.qty) - cool - rew - rej);
       const cell = $('bal' + i);
       cell.textContent = 'Balance ' + bal.toFixed(2);
@@ -270,36 +339,78 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!t.classList.contains('sr-input')) return;
     const i = t.dataset.i, f = t.dataset.f;
 
+    if (f === 'rwQty') rw[+i][+t.dataset.k].qty = t.value;
+    if (f === 'rwItem') rw[+i][+t.dataset.k].item = t.value;
+
     if (t.tagName === 'SELECT' && (f === 'reason' || f === 'condition')) {
       const other = el(f + 'Other', i);
       other.style.display = t.value === SR_OTHER ? '' : 'none';
       if (t.value === SR_OTHER && evt === 'change') other.focus();
     }
-    if (f === 'batchNo') updateProd(i);
+    if (f === 'batchNo') { bt[+i][+t.dataset.k] = t.value; updateProd(+i, +t.dataset.k); }
 
     t.closest('.sr-card').classList.remove('sr-saved');     // edited -> not gray anymore
     recalc();
     updateSavedNote();
   }));
 
+  // + / x buttons for batch numbers
+  body.addEventListener('click', e => {
+    const add = e.target.closest('[data-badd]'), del = e.target.closest('[data-bdel]');
+    if (!add && !del) return;
+    let i;
+    if (add) {
+      i = +add.dataset.badd;
+      bt[i].push('');
+    } else {
+      const [bi, bk] = del.dataset.bdel.split(':').map(Number);
+      i = bi;
+      bt[i].splice(bk, 1);
+    }
+    $('sr-bt' + i).innerHTML = btHtml(i);
+    updateAllProd(i);
+    (add || del).closest('.sr-card').classList.remove('sr-saved');
+    updateSavedNote();
+  });
+
+  // + / x buttons: add or remove a rework line
+  body.addEventListener('click', e => {
+    const add = e.target.closest('[data-add]'), del = e.target.closest('[data-del]');
+    if (!add && !del) return;
+    let i;
+    if (add) {
+      i = +add.dataset.add;
+      rw[i].push({ qty: '', item: '' });
+    } else {
+      const [ri, rk] = del.dataset.del.split(':').map(Number);
+      i = ri;
+      rw[i].splice(rk, 1);
+    }
+    $('sr-rw' + i).innerHTML = rwHtml(i);
+    (add || del).closest('.sr-card').classList.remove('sr-saved');
+    recalc();
+    updateSavedNote();
+  });
+
   // Return date changed -> re-check production dates
-  dateInput.addEventListener('change', () => rows.forEach((r, i) => { if (el('batchNo', i)) updateProd(i); }));
+  dateInput.addEventListener('change', () => rows.forEach((r, i) => { if (bt[i]) updateAllProd(i); }));
 
   // ===== Save =====
   $('srSaveBtn').addEventListener('click', async () => {
     const pvSections = rows.map((r, i) => {
-      const b = val('batchNo', i).trim().toUpperCase();
-      const bal = r2(n(r.qty) - n(val('coolRoom', i)) - n(val('rework', i)) - n(val('rejectQty', i)));
+      const bl = batchList(i);
+      const bal = r2(n(r.qty) - n(val('coolRoom', i)) - reworkTotal(i) - n(val('rejectQty', i)));
       return {
         title: esc(`${i + 1}. ${r.itemName} — ${r.qty} kg`),
         fields: [
           { label: 'Customer', value: val('customer', i) },
           { label: 'Reason for return', value: listVal('reason', i) },
-          { label: 'Batch No', value: b },
-          { label: 'Production date', value: b ? (prodDate(b) || 'Invalid ⚠') : '' },
+          { label: 'Batch No', value: bl.join(', ') },
+          { label: 'Production date', value: bl.map(b => prodDate(b) || 'Invalid ⚠').join(', ') },
           { label: 'Loading date', value: val('loadingDate', i) },
           { label: 'Cool room (kg)', value: val('coolRoom', i) },
-          { label: 'Rework (kg)', value: val('rework', i) },
+          { label: 'Rework (kg)', value: reworkHasQty(i) ? String(reworkTotal(i)) : '' },
+          { label: 'Item To Be Rework', value: reworkText(rw[i]) },
           { label: 'Reject qty (kg)', value: val('rejectQty', i) },
           { label: 'Product condition', value: listVal('condition', i) },
           { label: 'Balance (kg)', value: bal.toFixed(2) + (bal === 0 ? '' : '  ⚠ not 0') }
@@ -321,10 +432,11 @@ document.addEventListener('DOMContentLoaded', () => {
       rowIndex: r.rowIndex,
       customer: val('customer', i),
       reason: listVal('reason', i),
-      batchNo: val('batchNo', i).trim().toUpperCase(),
+      batchNo: batchList(i).join('; '),
       loadingDate: val('loadingDate', i),
       coolRoom: val('coolRoom', i),
-      rework: val('rework', i),
+      rework: reworkHasQty(i) ? reworkTotal(i) : '',
+      itemToRework: reworkText(rw[i]),
       rejectQty: val('rejectQty', i),
       condition: listVal('condition', i)
     }));

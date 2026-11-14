@@ -53,6 +53,53 @@
 .sr-decision-title { grid-column: 1 / -1; font-size: 0.8rem; font-weight: 700; color: #1e293b; }
 .sr-num { text-align: left; }
 
+/* ----- top row: Customer | Reason | Loading date | Batch no (+) | Production date ----- */
+.sr-grid { grid-template-columns: minmax(170px, 1fr) minmax(170px, 1fr) 150px auto; align-items: start; }
+.sr-batches { min-width: 0; }
+/* Loading date box and Batch no box: same height */
+.sr-input[data-f="loadingDate"],
+.sr-bt-line .sr-input { height: 40px; box-sizing: border-box; }
+/* professional.css gives every date input min-height 48px / width 320px, so override it here */
+body.dashboard-body:not(.report-page) .sr-input[data-f="loadingDate"] {
+  min-height: 40px; height: 40px; width: 100% !important;
+}.sr-bt-line { display: grid; grid-template-columns: 150px 28px 110px; align-items: center; gap: 0.5rem; }
+.sr-bt-line + .sr-bt-line { margin-top: 0.4rem; }
+.sr-bt-head { margin-bottom: 0.3rem; font-size: 0.78rem; font-weight: 600; color: #475569; }
+.sr-bt-head span:last-child { grid-column: 3; }
+.sr-bt-line .sr-prod { padding: 0; }
+body.dark-mode .sr-bt-head { color: #94a3b8; }
+@media (max-width: 1100px) {
+  .sr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sr-batches { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .sr-grid { grid-template-columns: 1fr; }
+}
+
+/* ----- rework lines (qty + item + / x) ----- */
+/* Decision boxes on one line: Cool room | Reject qty | Rework (qty + item + button) */
+.sr-decision { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 3fr); align-items: start; gap: 0.5rem 0.75rem; }
+.sr-decision .sr-input { padding: 0.35rem 0.5rem; font-size: 0.85rem; border-radius: 7px; height: 40px; box-sizing: border-box; }
+.sr-decision .sr-field > span { font-size: 0.72rem; margin-bottom: 0.2rem; }
+.sr-rework { min-width: 0; }
+.sr-rw-line { display: flex; align-items: center; gap: 0.5rem; }
+.sr-rw-line + .sr-rw-line { margin-top: 0.5rem; }
+/* boxes fill the Decision box: Cool room 1 : Reject qty 1 : Rework qty 1 + Item 2 */
+.sr-rw-line .sr-num { flex: 1 1 0; min-width: 0; width: auto; }
+.sr-rw-line .sr-select { flex: 2 1 0; min-width: 0; width: auto; }
+.sr-rw-btn {
+  width: 28px; height: 28px; border-radius: 50%; padding: 0; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; line-height: 1; font-weight: 700; font-family: inherit; cursor: pointer;
+}
+.sr-rw-add { border: 1.5px solid #2563eb; background: #eff6ff; color: #2563eb; }
+.sr-rw-add:hover { background: #2563eb; color: #fff; }
+.sr-rw-del { border: 1.5px solid #fecaca; background: #fee2e2; color: #b91c1c; }
+.sr-rw-del:hover { background: #fecaca; }
+.sr-rw-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+body.dark-mode .sr-rw-add { background: #1e3a8a; color: #bfdbfe; border-color: #3b82f6; }
+body.dark-mode .sr-rw-del { background: #7f1d1d; color: #fecaca; border-color: #991b1b; }
+
 /* ----- totals bar (always visible under the cards) ----- */
 .sr-total {
   display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; flex-shrink: 0;
@@ -90,7 +137,10 @@ body.dark-mode .sr-card.sr-saved .sr-input { background: #334155; color: #94a3b8
 body.dark-mode .sr-saved-note { color: #4ade80; }
 
 @media (max-width: 520px) {
-  .sr-decision { grid-template-columns: 1fr; }
+  .sr-decision { grid-template-columns: 1fr 1fr; }
+  .sr-rework { grid-column: 1 / -1; }
+  .sr-rw-line { flex-wrap: wrap; }
+  .sr-rw-line .sr-num { width: 100%; flex: 1 1 100%; }
 }
 /* locked (already saved) */
 .sr-input:disabled { cursor: not-allowed; }

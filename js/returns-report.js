@@ -4,13 +4,14 @@
 // ============================================
 const API_URL_RETURNS_REPORT = 'https://script.google.com/macros/s/AKfycbxY0TPyoSAOTACaDzjOAwI4y3Fo5Movlx5G6hhROxNBHUpx7cZSRctCRaWNtd1iw4U6/exec';
 
-async function fetchJsonRetry(url, tries = 4) {
+// fresh = true -> skip the browser cache AND the server cache (Load button)
+async function fetchJsonRetry(url, tries = 4, fresh = false) {
   let lastErr;
-  const hit = ReportCache.get(url);
+  const hit = fresh ? null : ReportCache.get(url);
   if (hit) return hit;
   for (let i = 0; i < tries; i++) {
     try {
-      const res = await fetch(url + '&_r=' + Date.now());
+      const res = await fetch(url + (fresh ? '&fresh=1' : '') + '&_r=' + Date.now());
       const json = JSON.parse(await res.text());
       ReportCache.set(url, json);
       return json;
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const reworkItemCell = r => { const L = reworkLines(r); return L ? stack(L.map(l => esc(l.item))) : val(r.itemToRework); };
 
   let allRows = [];
+  let forceFresh = false;   // set by the Load button
 
   const restored = ReportCache.restoreInput(monthInput, 'returnsreport');
   if (!monthInput.value) {
@@ -60,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (restored) setTimeout(loadReport, 0);
 
-  loadBtn && loadBtn.addEventListener('click', () => { ReportCache.clear(); loadReport(); });
+  loadBtn && loadBtn.addEventListener('click', () => { forceFresh = true; ReportCache.clear(); loadReport(); });
   monthInput.addEventListener('change', loadReport);
   repSelect.addEventListener('change', render);          // rep filter works on loaded data
 
@@ -151,8 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
     $('reportSheet').style.display = 'none';
     $('reportLoading').style.display = 'flex';
 
+    const fresh = forceFresh;
+    forceFresh = false;
+
     try {
-      const res = await fetchJsonRetry(API_URL_RETURNS_REPORT + '?action=getSalesReturnsReport&month=' + encodeURIComponent(month));
+      const res = await fetchJsonRetry(API_URL_RETURNS_REPORT + '?action=getSalesReturnsReport&month=' + encodeURIComponent(month), 4, fresh);
       if (!res.success) throw new Error(res.error || 'Failed to load');
 
       allRows = res.rows || [];

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!form) return;
 
   // Red text when the value is below the limit
-  const LOW_LIMITS = { washingPoints: 11,gizzardTemp: 10,};
+  const LOW_LIMITS = { washingPoints: 11,gizzardTemp: 4,};
   function markLow(input, limit) {
     const v = parseFloat(input.value);
     input.classList.toggle('value-low', input.value !== '' && !isNaN(v) && v < limit);

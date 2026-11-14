@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../css/birds.css?v=1" />
   <link rel="stylesheet" href="../css/professional.css?v=23" />
   <link rel="stylesheet" href="../css/preview-modal.css?v=2" />
-  <link rel="stylesheet" href="../css/returns.css?v=5" />
+  <link rel="stylesheet" href="../css/returns.css?v=7" />
   <link rel="stylesheet" href="../css/mobile-responsive.css?v=4" />
 </head>
 <body class="dashboard-body">
@@ -81,20 +81,19 @@
 
         <div class="birds-table-wrap" id="retWrap" style="display:none">
           <div class="returns-extra">
-            <div class="form-group"><label for="retTruck">Truck No</label><input type="text" id="retTruck" placeholder="LN-2885" /></div>
-            <div class="form-group"><label for="retVehTemp">Vehicle Temp (&deg;C)</label><input type="number" step="0.1" id="retVehTemp" /></div>
-            <div class="form-group"><label for="retMeatTemp">Meat Temp (&deg;C)</label><input type="number" step="0.1" id="retMeatTemp" /></div>
+            <div class="form-group"><label for="retTruck">Truck No</label><input type="text" id="retTruck" placeholder="" /></div>
           </div>
           <div class="birds-table-scroll">
             <table class="birds-table returns-table">
               <colgroup>
                 <col class="ret-col-number" /><col class="ret-col-batch" /><col class="ret-col-item" />
-                <col class="ret-col-qty" /><col class="ret-col-cool" /><col class="ret-col-rework" />
+                <col class="ret-col-qty" /><col class="ret-col-temp" /><col class="ret-col-temp" /><col class="ret-col-cool" /><col class="ret-col-rework" />
                 <col class="ret-col-rework-item" /><col class="ret-col-rejection" /><col class="ret-col-balance" />
               </colgroup>
               <thead>
                 <tr>
                   <th>#</th><th>Batch No</th><th>Returned Item</th><th>Qty (kg)</th>
+                  <th>Vehicle Temp (&deg;C)</th><th>Meat Temp (&deg;C)</th>
                   <th>Cool Room</th><th>Rework</th><th>Item To Be Rework</th><th>Rejection</th><th>Balance</th>
                 </tr>
               </thead>
@@ -113,9 +112,9 @@
   </div>
   <script src="../js/input-feedback.js?v=1"></script>
   <script src="../js/users.js?v=3"></script>
-  <script src="../js/sidebar.js?v=23"></script>
+  <script src="../js/sidebar.js?v=25"></script>
   <script src="../js/preview-modal.js?v=3"></script>
-  <script src="../js/returns.js?v=3"></script>
+  <script src="../js/returns.js?v=4"></script>
   <script src="../js/footer-ticker.js?v=7"></script>
 </body>
 </html>

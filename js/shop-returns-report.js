@@ -38,6 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const f2 = x => r2(x).toFixed(2);
   const dmy = s => { const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? m[3] + '/' + m[2] + '/' + m[1] : s; };
 
+  // "A; B" (several batches) -> one value per line, so each batch and its production date line up
+  const splitList = v => String(v == null ? '' : v).split(';').map(s => s.trim()).filter(Boolean);
+  const stackCell = (v, fmt) => {
+    const list = splitList(v);
+    if (!list.length) return val('');
+    return list.map(x => '<div class="rr-line">' + esc(fmt ? fmt(x) : x) + '</div>').join('');
+  };
+
   let allRows = [];
 
   const restored = ReportCache.restoreInput(monthInput, 'shopreturnsreport');
@@ -98,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cell(spCus, i, val(r.customerAddress), 'rr-wrap') +
         '<td class="rr-left">' + val(r.reason) + '</td>' +
         '<td class="rr-left">' + val(r.itemName) + '</td>' +
-        '<td>' + val(r.batchNo) + '</td>' +
-        '<td>' + val(dmy(r.productionDate)) + '</td>' +
+        '<td>' + stackCell(r.batchNo) + '</td>' +
+        '<td>' + stackCell(r.productionDate, dmy) + '</td>' +
         '<td>' + val(dmy(r.loadingDate)) + '</td>' +
         '<td class="rr-num">' + val(r.qty) + '</td>' +
         '<td class="rr-num">' + val(r.coolRoom) + '</td>' +

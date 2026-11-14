@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     nameInput.addEventListener('input', () => {
       const value = nameInput.value.trim();
-      statusInput.value = !value ? '' : (/^\d+$/.test(value) ? 'Company' : 'Manpower');
+      statusInput.value = !value ? '' : (/^\d/.test(value) ? 'Company' : 'Manpower');
     });
 
     return row;
