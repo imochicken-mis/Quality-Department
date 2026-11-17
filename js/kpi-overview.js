@@ -11,9 +11,9 @@ monthInput.value =
   // Name of each KPI's two figures, and the field names each route returns for them
   const FIGURES = {
     1: { label: 'Compliant / Tested', top: (d) => d.totalCompliance, bottom: (d) => d.totalTested },
-    2: { label: 'Complaints / Sold', top: (d) => d.complaints, bottom: (d) => d.sold },
+    2: { label: 'Complaint Qty (Kg) / Sold Qty (Kg)', top: (d) => d.complaints, bottom: (d) => d.sold },
     3: { label: 'Rejection / Prd Qty', top: (d) => d.numerator, bottom: (d) => d.denominator },
-    4: { label: 'Out / Criteria', top: (d) => d.numerator, bottom: (d) => d.denominator },
+    4: { label: 'Compliance / Criteria', top: (d) => d.numerator, bottom: (d) => d.denominator },
     5: { label: 'Kilo / Dress Weight', top: (d) => d.numerator, bottom: (d) => d.denominator },
     6: { label: 'Compliant / Total', top: (d) => d.numerator, bottom: (d) => d.denominator },
     7: { label: 'Compliant / Total', top: (d) => d.numerator, bottom: (d) => d.denominator }
