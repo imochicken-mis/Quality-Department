@@ -1,7 +1,7 @@
 // ============================================
 // SALES RETURN SUMMARY (rep-wise totals) - Admin
 // Uses the same data as the Sales Returns Report (getSalesReturnsReport)
-// Period: Full Month / Week 1-4 (29-31 count as Week 4)
+// Filter: From Date - To Date (loads every month in the range)
 // ============================================
 const API_URL_RETURNS_SUMMARY = 'https://script.google.com/macros/s/AKfycbxY0TPyoSAOTACaDzjOAwI4y3Fo5Movlx5G6hhROxNBHUpx7cZSRctCRaWNtd1iw4U6/exec';
 
@@ -24,10 +24,10 @@ async function fetchJsonRetry(url, tries = 4) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const monthInput = document.getElementById('reportMonth');
-  const weekSelect = document.getElementById('summaryWeek');
+  const fromInput = document.getElementById('reportFrom');
+  const toInput = document.getElementById('reportTo');
   const loadBtn = document.getElementById('loadReportBtn');
-  if (!monthInput) return;
+  if (!fromInput || !toInput) return;
 
   const $ = id => document.getElementById(id);
   const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g,
@@ -38,27 +38,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let allRows = [];
     
-  const restored = ReportCache.restoreInput(monthInput, 'returnssummary');
-  if (!monthInput.value) {
+  const restoredFrom = ReportCache.restoreInput(fromInput, 'returnssummaryFrom');
+  const restoredTo = ReportCache.restoreInput(toInput, 'returnssummaryTo');
+  const pad = x => String(x).padStart(2, '0');
+  const ymd = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  if (!fromInput.value || !toInput.value) {
     const d = new Date();
-    monthInput.value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    fromInput.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-01';   // 1st of this month
+    toInput.value = ymd(d);                                                      // today
   }
-  if (restored) setTimeout(loadReport, 0);
+  if (restoredFrom || restoredTo) setTimeout(loadReport, 0);
 
   loadBtn && loadBtn.addEventListener('click', () => { ReportCache.clear(); loadReport(); });
-  monthInput.addEventListener('change', loadReport);
-  weekSelect.addEventListener('change', render);        // period works on loaded data
+  fromInput.addEventListener('change', loadReport);
+  toInput.addEventListener('change', loadReport);
+
+  const dmy = s => String(s).split('-').reverse().join('-');   // yyyy-mm-dd -> dd-mm-yyyy
 
   function render() {
-    const wk = weekSelect.value;
-    const inPeriod = r => {
-      if (wk === 'all') return true;
-      const day = parseInt(String(r.date).slice(8, 10), 10);   // yyyy-mm-dd -> dd
-      return Math.min(4, Math.ceil(day / 7)) === +wk;          // 29-31 -> week 4
-    };
-
     const byRep = {};
-    allRows.filter(inPeriod).forEach(r => {
+    allRows.forEach(r => {
       const k = r.rep || '-';
       const o = byRep[k] || (byRep[k] = { qty: 0, cool: 0, rew: 0, rej: 0 });
       o.qty += n(r.qty); o.cool += n(r.coolRoom); o.rew += n(r.rework); o.rej += n(r.rejection);
@@ -83,29 +82,46 @@ document.addEventListener('DOMContentLoaded', () => {
         '<td class="rr-num">' + f2(t.rej) + '</td></tr>'
       : '';
 
-    $('rptPeriod').textContent = weekSelect.options[weekSelect.selectedIndex].text;
+    $('rptFrom').textContent = dmy(fromInput.value);
+    $('rptTo').textContent = dmy(toInput.value);
     $('rptReps').textContent = reps.length;
   }
 
   async function loadReport() {
-    const month = monthInput.value;
-    if (!month) return;
+    const from = fromInput.value, to = toInput.value;
+    if (!from || !to) return;
+    if (from > to) {
+      $('reportSheet').style.display = 'none';
+      $('reportLoading').style.display = 'none';
+      $('reportEmpty').innerHTML = '<p>From Date must be before or the same as To Date</p>';
+      $('reportEmpty').style.display = '';
+      return;
+    }
     $('reportEmpty').style.display = 'none';
     $('reportSheet').style.display = 'none';
     $('reportLoading').style.display = 'flex';
 
     try {
-      const res = await fetchJsonRetry(API_URL_RETURNS_SUMMARY + '?action=getSalesReturnsReport&month=' + encodeURIComponent(month));
-      if (!res.success) throw new Error(res.error || 'Failed to load');
+      // The API works per month: load every month in the range, then keep only the chosen dates
+      const months = [];
+      let y = +from.slice(0, 4), m = +from.slice(5, 7);
+      const lastKey = to.slice(0, 7);
+      while (y + '-' + pad(m) <= lastKey && months.length < 36) {
+        months.push(y + '-' + pad(m));
+        if (++m > 12) { m = 1; y++; }
+      }
+      const results = await Promise.all(months.map(mo =>
+        fetchJsonRetry(API_URL_RETURNS_SUMMARY + '?action=getSalesReturnsReport&month=' + encodeURIComponent(mo))));
+      results.forEach(res => { if (!res.success) throw new Error(res.error || 'Failed to load'); });
 
-      allRows = res.rows || [];
+      allRows = results.reduce((all, res) => all.concat(res.rows || []), [])
+        .filter(r => r.date >= from && r.date <= to);
       $('reportLoading').style.display = 'none';
       if (!allRows.length) {
-        $('reportEmpty').innerHTML = '<p>No sales returns found for ' + esc(month) + '</p>';
+        $('reportEmpty').innerHTML = '<p>No sales returns found from ' + esc(dmy(from)) + ' to ' + esc(dmy(to)) + '</p>';
         $('reportEmpty').style.display = '';
         return;
       }
-      $('rptMonth').textContent = month;
       render();
       $('reportSheet').style.display = '';
     } catch (err) {

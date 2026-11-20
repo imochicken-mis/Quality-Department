@@ -1,5 +1,5 @@
 /* ===== Sales Return Summary page ===== */
-.rr-filter select#summaryWeek { min-width: 190px; }
+.rr-filter input[type="date"] { min-width: 190px; }
 .rr-table.rs-table { min-width: 0; max-width: 760px; }
 .rs-table thead tr:nth-child(2) th { background: #fde68a; }
 body.dark-mode .rs-table thead tr:nth-child(2) th { background: #854d0e; color: #fef3c7; }

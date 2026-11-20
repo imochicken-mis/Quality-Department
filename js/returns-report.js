@@ -83,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // sort so duplicates sit next to each other
     const list = rows.slice().sort((a, b) =>
-      a.date.localeCompare(b.date) || a.rep.localeCompare(b.rep) || a.batchNo.localeCompare(b.batchNo));
+      a.date.localeCompare(b.date) || a.rep.localeCompare(b.rep) ||
+      (a.grNo || '').localeCompare(b.grNo || '') || a.batchNo.localeCompare(b.batchNo));
 
     // rowspan for consecutive rows with the same key (first row = count, others = 0)
     function spans(keyFn) {
@@ -102,7 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const spDate  = spans(r => r.date);
     const spRep   = spans(grp);
     const spTruck = spans(trk);
-    const spBatch = spans(r => trk(r) + '|' + r.batchNo);
+    const spGr    = spans(r => trk(r) + '|' + (r.grNo || ''));
+    const spBatch = spans(r => trk(r) + '|' + (r.grNo || '') + '|' + r.batchNo);
     const spVeh   = spans(r => trk(r) + '|' + r.vehicleTemp);
     const spMeat  = spans(r => trk(r) + '|' + r.meatTemp);
 
@@ -117,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cell(spDate, i, esc(dmy(r.date)), 'rr-date') +
         cell(spRep, i, val(r.rep), 'rr-left') +
         cell(spTruck, i, val(r.truckNo)) +
+        cell(spGr, i, val(r.grNo)) +
         cell(spBatch, i, val(r.batchNo)) +
         '<td>' + val(r.itemCode) + '</td>' +
         '<td class="rr-left">' + val(r.itemName) + '</td>' +
@@ -132,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('');
 
     const totBal = r2(t.qty - t.cool - t.rew - t.rej);
-    $('reportFoot').innerHTML = '<tr><td colspan="6" class="rr-left">TOTAL</td>' +
+    $('reportFoot').innerHTML = '<tr><td colspan="7" class="rr-left">TOTAL</td>' +
       '<td class="rr-num">' + f2(t.qty) + '</td><td colspan="2"></td>' +
       '<td class="rr-num">' + f2(t.cool) + '</td><td class="rr-num">' + f2(t.rew) + '</td><td></td>' +
       '<td class="rr-num">' + f2(t.rej) + '</td><td class="rr-num">' + f2(totBal) + '</td></tr>';

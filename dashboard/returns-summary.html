@@ -60,18 +60,12 @@
 
       <div class="filter-section rr-filter">
         <div class="form-group">
-          <label for="reportMonth">SELECT MONTH <span class="required">*</span></label>
-          <input type="month" id="reportMonth" />
+          <label for="reportFrom">FROM DATE <span class="required">*</span></label>
+          <input type="date" id="reportFrom" />
         </div>
         <div class="form-group">
-          <label for="summaryWeek">PERIOD</label>
-          <select id="summaryWeek">
-            <option value="all">Full Month</option>
-            <option value="1">Week 1 (1 - 7)</option>
-            <option value="2">Week 2 (8 - 14)</option>
-            <option value="3">Week 3 (15 - 21)</option>
-            <option value="4">Week 4 (22 - end)</option>
-          </select>
+          <label for="reportTo">TO DATE <span class="required">*</span></label>
+          <input type="date" id="reportTo" />
         </div>
         <button class="btn-report-load" id="loadReportBtn" type="button">LOAD REPORT</button>        <div class="report-export-wrap">
           <button class="report-export-trigger" type="button" aria-label="Export report" aria-expanded="false" title="Export options">
@@ -89,15 +83,15 @@
       </div>
 
       <div id="reportArea" class="report-area">
-        <div class="birds-empty" id="reportEmpty"><p>Select a month above to generate the return summary</p></div>
+        <div class="birds-empty" id="reportEmpty"><p>Select a date range above to generate the return summary</p></div>
         <div class="birds-loading" id="reportLoading" style="display:none">
           <div class="loading-spinner"></div><p>Loading report data...</p>
         </div>
         <div id="reportSheet" class="report-sheet" style="display:none">
           <div class="report-title-row">
             <div class="report-date-batch">
-              <span><strong>Month:</strong> <span id="rptMonth">-</span></span>
-              <span><strong>Period:</strong> <span id="rptPeriod">Full Month</span></span>
+              <span><strong>From:</strong> <span id="rptFrom">-</span></span>
+              <span><strong>To:</strong> <span id="rptTo">-</span></span>
               <span><strong>Reps:</strong> <span id="rptReps">0</span></span>
             </div>
             <div class="report-main-title">Sales Return Summary</div>
@@ -126,7 +120,7 @@
   <script src="../js/users.js"></script>
   <script src="../js/sidebar.js?v=25"></script>
   <script src="../js/report-cache.js?v=2"></script>
-  <script src="../js/returns-summary.js?v=1"></script>
+  <script src="../js/returns-summary.js?v=2"></script>
   <script src="../js/report-export-menu.js?v=1"></script>
   <script src="../js/report-export-actions.js?v=7"></script>
   <script src="../js/footer-ticker.js?v=7"></script>

@@ -6,7 +6,7 @@
   font-size: 0.9rem; font-weight: 500; font-family: inherit; color: #0f172a; background: #fff;
 }
 .returns-table td, .returns-table th { text-align: center; }
-.returns-table td:nth-child(3) { text-align: left; }
+.returns-table td:nth-child(4) { text-align: center; }
 .ret-input {
   width: 90px; padding: 0.4rem 0.5rem; border: 1.5px solid #e2e8f0; border-radius: 8px;
   font-size: 0.85rem; font-family: inherit; text-align: left; background: #fff; color: #0f172a;
@@ -96,31 +96,35 @@ body.dark-mode .rw-del { background: #7f1d1d; color: #fecaca; border-color: #991
   .returns-extra { grid-template-columns: 1fr; gap: 10px; }
 }
 /* Keep the decision columns wide enough for their controls and header text. */
-.returns-table { table-layout: fixed; min-width: 1320px; }
+.returns-table { table-layout: fixed; min-width: 1400px; }
+.returns-table tbody td { white-space: nowrap; }
 .birds-table-scroll { overflow-x: auto; }
 .returns-table .rw-cell { overflow: visible; }
 /* Explicit column map: each header and control shares one fixed column. */
 .returns-table col.ret-col-number { width: 3%; }
+.returns-table col.ret-col-gr { width: 7%; }
 .returns-table col.ret-col-batch { width: 7%; }
-.returns-table col.ret-col-item { width: 10%; }
+.returns-table col.ret-col-item { width: 14%; }
 .returns-table col.ret-col-qty { width: 6%; }
 .returns-table col.ret-col-temp { width: 7%; }
 .returns-table col.ret-col-cool { width: 9%; }
 .returns-table col.ret-col-rework { width: 9%; }
-.returns-table col.ret-col-rework-item { width: 22%; }
+.returns-table col.ret-col-rework-item { width: 17%; }
 .returns-table col.ret-col-rejection { width: 9%; }
 .returns-table col.ret-col-balance { width: 9%; }
-/* Columns: 1 #, 2 Batch, 3 Item, 4 Qty, 5 Vehicle Temp, 6 Meat Temp, 7 Cool Room,
+/* Columns: 1 #, 2 GR No, 3 Batch, 4 Item, 5 Qty, 6 Meat Temp, 7 Cool Room,
    8 Rework, 9 Item To Be Rework, 10 Rejection, 11 Balance */
 .returns-table td:nth-child(8) .rw-line,
 .returns-table td:nth-child(9) .rw-line { width: 100%; justify-content: center; }
 .returns-table td:nth-child(9) .ret-select { width: min(220px, calc(100% - 34px)); }
 /* Headings centred over their columns, so the boxes below line up under them */
-/* Batch No, Qty and Balance values centred in their columns */
+/* GR No, Batch No, Qty and Balance values centred in their columns */
 .returns-table td:nth-child(2),
 .returns-table td:nth-child(2) > *,
-.returns-table td:nth-child(4),
-.returns-table td:nth-child(4) > *,
+.returns-table td:nth-child(3),
+.returns-table td:nth-child(3) > *,
+.returns-table td:nth-child(5),
+.returns-table td:nth-child(5) > *,
 .returns-table td:nth-child(11),
 .returns-table td:nth-child(11) > * {
   text-align: center !important;
@@ -132,7 +136,6 @@ body.dark-mode .rw-del { background: #7f1d1d; color: #fecaca; border-color: #991
   justify-content: center;
 }
 /* Same box size for the input boxes (Vehicle Temp, Meat Temp, Cool Room, Rework, Rejection) so the row looks even */
-.returns-table td:nth-child(5) .ret-input,
 .returns-table td:nth-child(6) .ret-input,
 .returns-table td:nth-child(7) .ret-input,
 .returns-table td:nth-child(8) .ret-input,
@@ -141,6 +144,21 @@ body.dark-mode .rw-del { background: #7f1d1d; color: #fecaca; border-color: #991
   margin: 0 auto;
   display: block;
   text-align: center;
+}
+/* Edit Batch No / Qty button + the inputs it shows in those two columns */
+.ret-bq-bar { margin: 0 0 8px; display: flex; gap: 8px; }
+#retEmpty { flex-direction: column; gap: 12px; }
+.ret-rm { border: none; background: none; color: #b91c1c; font-size: 1.1rem; cursor: pointer; line-height: 1; }
+.returns-table td:nth-child(4) .ret-select { width: calc(100% - 12px); }
+.ret-bq-btn {
+  padding: 5px 12px; font-size: 0.78rem; font-weight: 600; font-family: inherit; cursor: pointer;
+  border: 1.5px solid #3b82f6; border-radius: 8px; background: #fff; color: #1d4ed8;
+}
+.ret-bq-btn:hover { background: #eff6ff; }
+body.dark-mode .ret-bq-btn { background: #1e293b; color: #93c5fd; border-color: #475569; }
+.returns-table td:nth-child(3) .ret-input,
+.returns-table td:nth-child(5) .ret-input {
+  width: calc(100% - 12px); margin: 0 auto; display: block; text-align: center;
 }
 /* Item To Be Rework box: a bit narrower than the column, same height as the quantity boxes */
 .returns-table td:nth-child(9) .ret-select {

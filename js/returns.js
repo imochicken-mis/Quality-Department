@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
   $('retTruck').addEventListener('blur', e => { e.target.value = formatTruck(e.target.value); });
 
   let rows = [];
+  let loaded = [];      // loaded Batch No / Qty, to find what the user changed
+  let bqOn = false;     // Batch No / Qty edit boxes visible
+  let addMode = false;  // entering NEW rows (no data for this date + rep yet)
     let editMode = false;
   let rw = [];   // per returned row: rework lines [{ qty, item }, ...]   // per returned row: rework lines [{ qty, item }, ...]
 
@@ -60,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   repSelect.addEventListener('change', loadRows);
 
   function show(state, msg) {
+    $('retAddNew').style.display = 'none';
     $('retEmpty').style.display = state === 'empty' ? 'flex' : 'none';
     $('retLoading').style.display = state === 'loading' ? 'flex' : 'none';
     $('retWrap').style.display = state === 'table' ? 'flex' : 'none';
@@ -70,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Load rows =====
   async function loadRows() {
     const date = dateInput.value, rep = repSelect.value;
+    addMode = false;
     if (!date || !rep) { show('empty'); return; }
     show('loading');
     try {
@@ -77,7 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.success) throw new Error(res.error);
       await masterReady;
       rows = res.rows || [];
-      if (!rows.length) { show('empty', 'No returned items for this date and rep'); return; }
+      if (!rows.length) {
+        show('empty', 'No returned items for this date and rep');
+        $('retAddNew').style.display = 'inline-block';   // let the user enter them as new
+        return;
+      }
       render();
       show('table');
     } catch (e) {
@@ -140,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ===== "Already saved" (gray) state =====
-  const isSaved = r => ['vehicleTemp', 'meatTemp', 'coolRoom', 'rework', 'itemToRework', 'rejection']
+  const isSaved = r => ['meatTemp', 'coolRoom', 'rework', 'itemToRework', 'rejection']
     .some(k => String(r[k] == null ? '' : r[k]).trim() !== '');
   const extraBox = document.querySelector('.returns-extra');
   const savedNote = $('retSavedNote');
@@ -209,16 +218,149 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSavedNote();
   }
 
+  // ===== Add New (no data for this date + rep: enter the whole set, saved as new rows) =====
+  const blankRow = () => ({ isNew: true, rowIndex: null, grNo: '', batchNo: '', itemName: '', qty: '',
+    truckNo: '', coolRoom: '', rework: '', itemToRework: '', rejection: '', vehicleTemp: '', meatTemp: '' });
+
+  const newItemSelect = (i, selected) =>
+    `<select class="ret-input ret-select" data-f="itemName" data-i="${i}">` +
+    '<option value="">-- Select Item --</option>' +
+    masterItems.map(it => `<option value="${esc(it)}"${it === selected ? ' selected' : ''}>${esc(it)}</option>`).join('') +
+    '</select>';
+
+  // Re-draw the table without losing what was typed (rows are copied back from the boxes first)
+  function rerenderKeep() {
+    rows.forEach((r, i) => {
+      r.coolRoom = val('coolRoom', i);
+      r.rejection = val('rejection', i);
+      r.meatTemp = val('meatTemp', i);
+      r.rework = reworkHasQty(i) ? String(reworkTotal(i)) : '';
+      r.itemToRework = reworkText(rw[i]);
+    });
+    const t = $('retTruck').value, v = $('retVehicleTemp').value;
+    render();
+    $('retTruck').value = t;
+    $('retVehicleTemp').value = v;
+  }
+
+  $('retAddNew').addEventListener('click', async () => {
+    await masterReady;
+    addMode = true;
+    rows = [blankRow()];
+    render();
+    $('retTruck').value = '';
+    $('retVehicleTemp').value = '';
+    show('table');
+  });
+  $('retAddRow').addEventListener('click', () => { rows.push(blankRow()); rerenderKeep(); });
+  $('retBody').addEventListener('click', e => {
+    const rm = e.target.closest('[data-rm]');
+    if (!rm || rows.length < 2) return;
+    const i = +rm.dataset.rm;
+    rerenderKeep();            // copy typed values first, then drop the row
+    rows.splice(i, 1);
+    rerenderKeep();
+  });
+
+  async function saveNew() {
+    for (let i = 0; i < rows.length; i++) {
+      const r = rows[i];
+      if (!String(r.batchNo).trim() || !r.itemName || !(n(r.qty) > 0)) {
+        alert(`Row ${i + 1}: Batch No, Item and Qty are required`);
+        return;
+      }
+    }
+    const pvSections = rows.map((r, i) => ({
+      title: esc(`${i + 1}. ${r.itemName} — ${r.qty} kg`),
+      fields: [
+        { label: 'GR No', value: r.grNo },
+        { label: 'Batch No', value: r.batchNo },
+        { label: 'Meat Temp (°C)', value: val('meatTemp', i) },
+        { label: 'Cool Room (kg)', value: val('coolRoom', i) },
+        { label: 'Rework (kg)', value: reworkHasQty(i) ? String(reworkTotal(i)) : '' },
+        { label: 'Item To Be Rework', value: reworkText(rw[i]) },
+        { label: 'Rejection (kg)', value: val('rejection', i) }
+      ]
+    }));
+    if (!(await confirmSave({
+      title: 'Confirm Save — New Sales Returns',
+      subtitle: 'These rows will be added as new data for this date and rep',
+      meta: [
+        { label: '📅 Date', value: dateInput.value.split('-').reverse().join('-') },
+        { label: 'Rep', value: esc(repSelect.value) },
+        { label: 'Truck No', value: esc(formatTruck($('retTruck').value)) || '—' },
+        { label: 'Vehicle Temp (°C)', value: esc($('retVehicleTemp').value) || '—' }
+      ],
+      sections: pvSections
+    }))) return;
+
+    const btn = $('retSaveBtn'), label = btn.innerHTML;
+    btn.innerHTML = 'Saving...'; btn.disabled = true;
+    try {
+      await fetch(API_URL_RETURNS, {
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: 'addReturnsData',
+          date: dateInput.value,
+          rep: repSelect.value,
+          truckNo: formatTruck($('retTruck').value),
+          vehicleTemp: $('retVehicleTemp').value,
+          rows: rows.map((r, i) => ({
+            grNo: r.grNo, batchNo: r.batchNo, itemName: r.itemName, qty: r.qty,
+            coolRoom: val('coolRoom', i),
+            rework: reworkHasQty(i) ? reworkTotal(i) : '',
+            itemToRework: reworkText(rw[i]),
+            rejection: val('rejection', i),
+            meatTemp: val('meatTemp', i)
+          }))
+        })
+      });
+      showSaveSuccessMessage(btn);
+      addMode = false;
+      setTimeout(loadRows, 3000);    // reload: the new rows now come from the sheet like any other data
+    } catch (e) {
+      alert('Error saving. Please try again.');
+    }
+    btn.innerHTML = label; btn.disabled = false;
+  }
+
+  // ===== Edit Batch No / Qty (the new values replace the old ones in the sheet on Save) =====
+  const bqBtn = $('retEditBq');
+  function setBq(on) {
+    bqOn = on;
+    const trs = $('retBody').querySelectorAll('tr');
+    rows.forEach((r, i) => {
+      const tds = trs[i].children;
+      tds[2].innerHTML = on
+        ? `<input type="text" class="ret-input" data-f="batchNo" data-i="${i}" value="${esc(r.batchNo)}" />`
+        : (esc(r.batchNo) || '-');
+      tds[4].innerHTML = on
+        ? `<input type="number" step="0.01" min="0" class="ret-input" data-f="qty" data-i="${i}" value="${esc(r.qty)}" />`
+        : (esc(r.qty) || '-');
+    });
+    bqBtn.innerHTML = on ? '&#10003; Done' : '&#9998; Edit Batch No / Qty';
+  }
+  bqBtn.addEventListener('click', () => {
+    if (!rows.length) return;
+    if (!bqOn && $('retBody').querySelector('tr.ret-saved')) enableEdit();   // unlock saved rows first
+    setBq(!bqOn);
+  });
+
     function render() {
     editMode = false;
-    rw = rows.map(r => parseRework(r.rework, r.itemToRework));
+    bqOn = false;
+    bqBtn.innerHTML = '&#9998; Edit Batch No / Qty';
+    bqBtn.style.display = addMode ? 'none' : '';
+    $('retAddRow').style.display = addMode ? '' : 'none';
+    loaded = rows.map(r => ({ batchNo: r.batchNo, qty: r.qty }));
+    rw =rows.map(r => parseRework(r.rework, r.itemToRework));
     $('retBody').innerHTML = rows.map((r, i) => `
       <tr>
-        <td>${toRomanNumber_(i + 1)}</td>
-        <td>${esc(r.batchNo) || '-'}</td>
-        <td>${esc(r.itemName) || '-'}</td>
-        <td>${esc(r.qty) || '-'}</td>
-        <td>${tempInp('vehicleTemp', i, r.vehicleTemp)}</td>
+        <td>${r.isNew ? `${toRomanNumber_(i + 1)} <button type="button" class="ret-rm" data-rm="${i}" title="Remove row">&times;</button>` : toRomanNumber_(i + 1)}</td>
+        <td>${r.isNew ? `<input type="text" class="ret-input" data-f="grNo" data-i="${i}" value="${esc(r.grNo)}" />` : (esc(r.grNo) || '-')}</td>
+        <td>${r.isNew ? `<input type="text" class="ret-input" data-f="batchNo" data-i="${i}" value="${esc(r.batchNo)}" />` : (esc(r.batchNo) || '-')}</td>
+        <td>${r.isNew ? newItemSelect(i, r.itemName) : (esc(r.itemName) || '-')}</td>
+        <td>${r.isNew ? `<input type="number" step="0.01" min="0" class="ret-input" data-f="qty" data-i="${i}" value="${esc(r.qty)}" />` : (esc(r.qty) || '-')}</td>
         <td>${tempInp('meatTemp', i, r.meatTemp)}</td>
         <td>${inp('coolRoom', i, r.coolRoom)}</td>
         <td class="rw-cell" id="rwq${i}">${rwQtyHtml(i)}</td>
@@ -230,7 +372,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Truck No: one value per group, prefill from first row that has it
     const first = k => (rows.find(r => r[k] !== '') || {})[k] || '';
     $('retTruck').value = first('truckNo');
-    extraBox.classList.toggle('ret-saved', !!first('truckNo'));
+    $('retVehicleTemp').value = first('vehicleTemp');
+    extraBox.classList.toggle('ret-saved', !!first('truckNo') || !!first('vehicleTemp'));
 
     // Already saved rows -> gray
     const trs = $('retBody').querySelectorAll('tr');
@@ -248,6 +391,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!el) return;
     if (el.dataset.f === 'rwQty') rw[+el.dataset.i][+el.dataset.k].qty = el.value;
     if (el.dataset.f === 'rwItem') rw[+el.dataset.i][+el.dataset.k].item = el.value;
+    if (el.dataset.f === 'grNo') rows[+el.dataset.i].grNo = el.value;
+    if (el.dataset.f === 'itemName') rows[+el.dataset.i].itemName = el.value;
+    if (el.dataset.f === 'batchNo') rows[+el.dataset.i].batchNo = el.value;
+    if (el.dataset.f === 'qty') rows[+el.dataset.i].qty = el.value;
     el.closest('tr').classList.remove('ret-saved');
     updateSavedNote();
     recalc();
@@ -285,21 +432,22 @@ document.addEventListener('DOMContentLoaded', () => {
       cell.className = 'ret-bal ' + (bal === 0 ? 'ok' : 'bad');
       t.qty += n(r.qty); t.cool += cool; t.rew += rew; t.rej += rej;
     });
-    $('retTotal').innerHTML = `<td></td><td></td><td>Total</td><td>${r2(t.qty).toFixed(2)}</td><td></td><td></td>` +
+    $('retTotal').innerHTML = `<td></td><td></td><td></td><td>Total</td><td>${r2(t.qty).toFixed(2)}</td><td></td>` +
       `<td>${r2(t.cool).toFixed(2)}</td><td>${r2(t.rew).toFixed(2)}</td><td></td>` +
       `<td>${r2(t.rej).toFixed(2)}</td><td>${r2(t.qty - t.cool - t.rew - t.rej).toFixed(2)}</td>`;
   }
 
   // ===== Save =====
   $('retSaveBtn').addEventListener('click', async () => {
+    if (addMode) { await saveNew(); return; }
     const pvSections = rows.map((r, i) => {
       const rew = reworkTotal(i), rej = n(val('rejection', i));
       const bal = r2(n(r.qty) - n(val('coolRoom', i)) - rew - rej);
       return {
         title: esc(`${i + 1}. ${r.itemName} — ${r.qty} kg`),
         fields: [
+          { label: 'GR No', value: r.grNo },
           { label: 'Batch No', value: r.batchNo },
-          { label: 'Vehicle Temp (°C)', value: val('vehicleTemp', i) },
           { label: 'Meat Temp (°C)', value: val('meatTemp', i) },
           { label: 'Cool Room (kg)', value: val('coolRoom', i) },
           { label: 'Rework (kg)', value: reworkHasQty(i) ? String(rew) : '' },
@@ -315,7 +463,8 @@ document.addEventListener('DOMContentLoaded', () => {
       meta: [
         { label: '📅 Date', value: dateInput.value.split('-').reverse().join('-') },
         { label: 'Rep', value: esc(repSelect.value) },
-        { label: 'Truck No', value: esc(formatTruck($('retTruck').value)) || '—' }
+        { label: 'Truck No', value: esc(formatTruck($('retTruck').value)) || '—' },
+        { label: 'Vehicle Temp (°C)', value: esc($('retVehicleTemp').value) || '—' }
       ],
       sections: pvSections
     }))) return;
@@ -323,7 +472,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updates = rows.map((r, i) => ({
       rowIndex: r.rowIndex,
-      vehicleTemp: val('vehicleTemp', i),
+      // Batch No / Qty are sent only when changed (they replace the old value in the sheet)
+      ...(String(r.batchNo).trim() !== String(loaded[i].batchNo).trim() ? { batchNo: String(r.batchNo).trim() } : {}),
+      ...(String(r.qty).trim() !== String(loaded[i].qty).trim() ? { qty: String(r.qty).trim() } : {}),
       meatTemp: val('meatTemp', i),
       coolRoom: val('coolRoom', i),
       rework: reworkHasQty(i) ? reworkTotal(i) : '',
@@ -341,10 +492,13 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({
           action: 'saveReturnsData',
           truckNo: formatTruck($('retTruck').value),
+          vehicleTemp: $('retVehicleTemp').value,
           updates
         })
       });
       showSaveSuccessMessage(btn);
+      loaded = rows.map(r => ({ batchNo: r.batchNo, qty: r.qty }));
+      setBq(false);
       markAllSaved();
       lockAll();
       editMode = false;
