@@ -32,5 +32,5 @@ const INC_CRITERIA = {
   'leakage m1': { section: 'Environmental & Utility Control', expected: 'No', deviation: 'Minor: Water or material leakages from pump/motor 1 (M1).' },
   'leakage m2': { section: 'Environmental & Utility Control', expected: 'No', deviation: 'Minor: Water or material leakages from pump/motor 2 (M2).' },
   'backwash sand bed': { section: 'Environmental & Utility Control', expected: 'Yes', deviation: 'Major: System blockage due to failure to perform sand bed backwash.' },
-  'backwash clarifier': { section: 'Environmental & Utility Control', expected: 'Good', deviation: 'Major: Clarifier backwash condition deteriorating or not performed adequately.' }
+  'backwash clarifier': { section: 'Environmental & Utility Control', expected: 'Yes', deviation: 'Major: Clarifier backwash condition deteriorating or not performed adequately.' }
 };
